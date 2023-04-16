@@ -1,6 +1,6 @@
 # IF2212-Tugas-Besar-OOP
 
-## Anggota Kelompok 6
+## Anggota Kelompok 5
 
 | No. | NIM | Nama |
 |-----|-----|------|
