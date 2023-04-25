@@ -1,19 +1,28 @@
 package src.Item.BahanBaku;
+import src.Item.Item;
 import src.Item.Buyable;
 import src.Item.Edible;
-import src.Item.Item;
 import java.util.Random;
 
-public class BahanBaku extends Item implements Edible, Buyable {
+public abstract class BahanBaku extends Item implements Edible, Buyable {
+    private String nama;
     private int harga;
     private int kekenyangan;
 
     public BahanBaku(String nama, int harga, int kekenyangan) {
-        super(nama);
+        this.nama = nama;
         this.harga = harga;
         this.kekenyangan = kekenyangan;
     }
 
+    public BahanBaku(String nama){
+        this.nama = nama;
+    }
+
+
+    public String nama(){
+        return nama;
+    }
 
     @Override
     public int getHarga(){
