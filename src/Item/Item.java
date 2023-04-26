@@ -6,5 +6,7 @@ public abstract class Item {
     public Item(String nama){
         this.nama = nama;
     }
-    public String getNama();
+    public String getNama(){
+        return nama;
+    }
 }
