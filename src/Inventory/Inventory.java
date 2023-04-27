@@ -1,6 +1,6 @@
 package src.Inventory;
 
-import java.awt.Point;
+import src.World.Point;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -4,9 +4,9 @@ import src.Pekerjaan.Pekerjaan;
 import src.Inventory.Inventory;
 import src.Item.Edible;
 import src.Item.Item;
+import src.World.Point;
 
 import java.util.Random;
-import java.awt.Point;
 
 public class Sim {
     private String nama;
