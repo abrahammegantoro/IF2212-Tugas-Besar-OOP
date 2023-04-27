@@ -1,4 +1,5 @@
 package src.Item.Furniture;
+
 import src.Item.Item;
 import src.Item.Buyable;
 import src.World.Point;
@@ -9,42 +10,35 @@ public abstract class Furniture extends Item implements Buyable {
     private int lebar;
     private int harga;
     private Point lokasi;
-    private String nama;
 
-    public Furniture(String nama, Point lokasi, int panjang, int lebar, int harga){
-        this.nama = nama;
+    public Furniture(String nama, Point lokasi, int panjang, int lebar, int harga) {
+        super(nama);
         this.lokasi = lokasi;
         this.panjang = panjang;
         this.lebar = lebar;
         this.harga = harga;
     }
 
-    public int getPanjang(){
+    public int getPanjang() {
         return panjang;
     }
 
-    public int getLebar(){
+    public int getLebar() {
         return lebar;
     }
 
-    public Point getLokasi(){
+    public Point getLokasi() {
         return lokasi;
     }
 
-    public String getNama(){
-        return nama;
-    }
-
-    
     @Override
-    public int getHarga(){
+    public int getHarga() {
         return harga;
     }
 
     @Override
-    public int getDeliveryTime(){
+    public int getDeliveryTime() {
         Random random = new Random();
-        return random.nextInt(1, 5)*30;
+        return random.nextInt(1, 5) * 30;
     }
-    
 }

@@ -32,7 +32,7 @@ public abstract class Bed extends Furniture{
                 sim.setStatus("Tidur");
                 System.out.println(sim.getNama() + " sedang tidur selama " + durasi + " detik.");
             try {
-                Thread.tidur(durasi * 1000);
+                Thread.sleep(durasi * 1000);
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
