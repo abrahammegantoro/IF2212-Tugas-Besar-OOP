@@ -12,7 +12,7 @@ public class Sim {
     private String nama;
     private Pekerjaan pekerjaan;
     private int uang;
-    private Inventory inventory;
+    private Inventory<Item> inventory;
     private int kekenyangan;
     private int mood;
     private int kesehatan;
@@ -20,21 +20,20 @@ public class Sim {
     private String namaRuanganSaatIni;
     private String namaRumahSaatIni;
     private String status;
-
     public Sim(String nama) {
         Random random = new Random();
 
         this.nama = nama;
         this.pekerjaan = new Pekerjaan(random.nextInt(1, 6)); // random.nextInt(1,5) ngerandom angka integer dari 1 sampai 5
         this.uang = 100;
-        this.inventory = new Inventory();
+        this.inventory = new Inventory<>();
         this.kekenyangan = 80;
         this.mood = 80;
         this.kesehatan = 80;
         this.posisiSim = new Point(0, 0);
         this.namaRuanganSaatIni = "Ruang Tamu";
-        this.namaRumahSaatIni = "Rumah" + this.nama; // Rumah + nama Sim
-        this.status = "None"; // None : tidak melakukan apa-apa
+        this.namaRumahSaatIni = "Rumah" + this.nama;
+        this.status = "None";
     }
 
     public String getNama() {

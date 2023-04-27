@@ -5,24 +5,20 @@ import src.Item.BahanBaku.*;
 
 import java.util.ArrayList;
 
-public abstract class Masakan extends Item implements Edible {
-    protected static ArrayList<BahanBaku> bahanBaku = new ArrayList<>();
+public class Masakan extends Item implements Edible {
+    // Atribut
+    private ArrayList<BahanBaku> bahanBaku = new ArrayList<>();
     private int kekenyangan;
-    private int porsi;
 
     //Konstruktor
-    public Masakan(int porsi, int kekenyangan){
-        this.porsi = porsi;
+    public Masakan(String namaMasakan, int kekenyangan){
+        super(namaMasakan);
         this.kekenyangan = kekenyangan; 
     }
 
-    // Getter
+    @Override
     public int getKekenyangan(){
         return kekenyangan;
-    }
-
-    public int getPorsi(){
-        return porsi;
     }
 
     public ArrayList<BahanBaku> getBahanBaku(){
