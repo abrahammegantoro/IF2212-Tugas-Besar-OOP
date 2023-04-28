@@ -43,7 +43,12 @@ public class MainMenu {
     }
 
     public void help(){
-        System.out.println("Simplicity merupakan ... (nanti dilengkapin)");
+        System.out.println("Simplicity merupakan permainan berbasis Command line interface.");
+        System.out.println("Dalam game ini, Anda akan membuat seorang Sim dan menjalankan kehidupan sebagai Sim.");
+        System.out.println("Sim memiliki banyak aksi yang dapat dilakukan oleh dirinya, dan setiap aksi itu dapat");
+        System.out.println("mempengaruhi kesejahteraan dari Sim yang Anda mainkan");
+
+        //Nanti ditambah lagi lebih lengkap
     }
 
     public void exit(){
