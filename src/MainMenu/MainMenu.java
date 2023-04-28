@@ -6,11 +6,11 @@ import src.Sim.Sim;
 public class MainMenu {
  
     public void start(){
-
+        //masih dalam proses
     }
 
     public void load(){
-
+        //masih dalam proses
     }
 
     public void addSim(){
@@ -24,7 +24,7 @@ public class MainMenu {
     }
 
     public void changeSim(){
-
+        //masih dalam proses
     }
 
     public void viewSimInfo(Sim sim){
