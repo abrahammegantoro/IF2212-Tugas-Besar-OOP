@@ -35,7 +35,6 @@ public class MainMenu {
         System.out.println("Kekenyangan : " + sim.getKekenyangan());
         System.out.println("Mood        : " + sim.getMood());
         System.out.println("Uang        : " + sim.getUang());
-
     }
 
     public void viewCurrentLocation(Sim sim){
