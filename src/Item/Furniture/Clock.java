@@ -6,7 +6,7 @@ public class Clock extends Furniture {
     }
 
     public void lihatWaktu(){
-        System.out.println(sim.getCurrentWorld().getClock().getRemainingTime());
+        System.out.println(sim.getClock().getSisaWaktu());
     }
 
 }
