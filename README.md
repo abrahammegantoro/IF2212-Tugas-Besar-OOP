@@ -44,4 +44,4 @@ git commit -m "<Pesan commit>"
 ```
 git push -u origin <nama_branch>
 ```
-
+6. Compare & Pull req
