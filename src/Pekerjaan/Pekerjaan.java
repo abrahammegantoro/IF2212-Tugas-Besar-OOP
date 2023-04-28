@@ -3,43 +3,62 @@ package src.Pekerjaan;
 public class Pekerjaan {
     private String namaPekerjaan;
     private int gaji;
-    private int timesWorked; // satuan sekon
-
-    public Pekerjaan(String namaPekerjaan) {
+    private int timedWorked = 0;
+    
+    public Pekerjaan(String namaPekerjaan){
         this.namaPekerjaan = namaPekerjaan;
-
-        if (namaPekerjaan.equals("Badut Sulap")) this.gaji = 15;
-        else if (namaPekerjaan.equals("Koki")) this.gaji = 30;
-        else if (namaPekerjaan.equals("Polisi")) this.gaji =  35;
-        else if (namaPekerjaan.equals("Programmer")) this.gaji = 45;
-        else if (namaPekerjaan.equals("Dokter")) this.gaji = 50;
-
-        this.timesWorked = 0;
+        if (namaPekerjaan.equals("Badut Sulap")){
+            gaji = 15;
+        } else if (namaPekerjaan.equals("Koki")){
+            gaji = 30;
+        } else if (namaPekerjaan.equals("Polisi")){
+            gaji = 35;
+        } else if (namaPekerjaan.equals("Programmer")){
+            gaji = 45;
+        } else if (namaPekerjaan.equals("Dokter")){
+            gaji = 50;
+        } else {
+            System.out.println("Pekerjaan yang dipilih tidak valid, pekerjaan yang dapat dipilih adalah sebagai berikut");
+            System.out.println("Badut sulap __ Gaji = 15");
+            System.out.println("Koki        __ Gaji = 30");
+            System.out.println("Polisi      __ Gaji = 35");
+            System.out.println("Programmer  __ Gaji = 45");
+            System.out.println("Dokter      __ Gaji = 50");
+        }
     }
 
-    public Pekerjaan(int hasilNomorAcak) {
-        if (hasilNomorAcak == 1) {this.namaPekerjaan = "Badut Sulap"; this.gaji = 15;}
-        else if (hasilNomorAcak == 2) {this.namaPekerjaan = "Koki"; this.gaji = 30;}
-        else if (hasilNomorAcak == 3) {this.namaPekerjaan = "Polisi"; this.gaji = 35;}
-        else if (hasilNomorAcak == 4) {this.namaPekerjaan = "Programmer"; this.gaji = 45;}
-        else if (hasilNomorAcak == 5) {this.namaPekerjaan = "Dokter"; this.gaji = 50;}
-
-        this.timesWorked = 0;
+    public Pekerjaan(int randomnumber){
+        if (randomnumber == 1){
+            namaPekerjaan = "Badut sulap";
+            gaji = 15;
+        } else if (randomnumber == 2){
+            namaPekerjaan = "Koki";
+            gaji = 30;            
+        } else if (randomnumber == 3){
+            namaPekerjaan = "Polisi";
+            gaji = 35;            
+        } else if (randomnumber == 4){
+            namaPekerjaan = "Programmer";
+            gaji = 45;            
+        } else if (randomnumber == 5){
+            namaPekerjaan = "Dokter";
+            gaji = 50;            
+        }
     }
 
-    public String getPekerjaan() {
+    public String getPekerjaan(){
         return namaPekerjaan;
     }
 
-    public int getGaji() {
+    public int getGaji(){
         return gaji;
     }
 
-    public int getTimesWorked() {
-        return timesWorked;
+    public int getTimedWorked(){
+        return timedWorked;
     }
 
-    public void addTimesWorked(int timesWorked) {
-        this.timesWorked += timesWorked;
+    public void addTimedWorked(int waktu){
+        timedWorked += waktu;
     }
 }
