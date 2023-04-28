@@ -64,12 +64,23 @@ public class MainMenu {
             } else if (input == 2){
                 System.out.println("Pertama, Anda harus membuat seorang Sim yang dapat dilakukan di opsi addSim.");
                 System.out.println("Setelah Sim dibuat, Sim Anda akan dispawn di suatu tempat bersamaan dengan rumah.");
-                System.out.println("Di dalam rumah, Anda dapat meletakkan berbagai item dan melakukan aksi dengan item tersebut.");
+                System.out.println("Di dalam rumah, Anda dapat meletakkan berbagai furniture dan melakukan aksi dengan item tersebut.");
                 System.out.println("Item dapat beli dengan uang yang Anda miliki. Untuk mendapatkan uang Anda harus bekerja.");
                 System.out.println("Selain itu, Sim Anda memiliki parameter kesejahteraan.");
                 System.out.println("Sim Anda akan mati bila salah satu atau beberapa parameter tersebut mencapai nilai 0.");
                 System.out.println("Kesejahteraan dapat dipengaruhi oleh aksi yang dilakukan oleh Sim.");
                 System.out.println("Oleh karena itu, Anda harus melakukan berbagai macam aksi untuk menjalankan hidup sebagai Sim.");
+            } else if (input == 3) {
+                System.out.println("Setiap Sim yang Anda buat akan memiliki rumah yang diperoleh saat Sim tersebut dibentuk.");
+                System.out.println("Rumah yang baru dibentuk akan terdiri dari 1 ruangan yang berukuran 6 x 6.");
+                System.out.println("Di dalam ruangan, Anda dapat meletakkan berbagai macam furniture.");
+                System.out.println("Furniture yang berada dalam ruangan dapat membuat Sim melakukan aksi khusus.");
+                System.out.println("");
+
+            } else if (input == 4) {
+                
+            } else if (input == 5) {
+                
             } else if (input == 0) {
                 end = true;
             }
