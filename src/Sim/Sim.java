@@ -20,12 +20,11 @@ public class Sim {
     private String namaRuanganSaatIni;
     private String namaRumahSaatIni;
     private String status;
-
     public Sim(String nama) {
         Random random = new Random();
 
         this.nama = nama;
-        // this.pekerjaan = new Pekerjaan(random.nextInt(1, 6)); // jgn lupa diuncomment
+        this.pekerjaan = new Pekerjaan(random.nextInt(1, 6));
         this.uang = 100;
         this.inventory = new Inventory<>();
         this.kekenyangan = 80;
@@ -156,7 +155,24 @@ public class Sim {
 
     // Bagian Danang
     public void kerja(int lamaKerja) {
-        /* Bagian Danang */
+        /*
+         * -10 kekenyangan / 30 detik
+         * -10 mood / 30 detik
+         *  +gaji / 4 menit
+         *  kelipatan 120 detik
+         */
+        if (lamaKerja % 120 != 0) {
+            System.out.println("Durasi kerja harus kelipatan 120");
+            return;
+        }
+
+        kekenyangan -= (lamaKerja / 30) * 10;
+        setKekenyangan(kekenyangan);
+        mood -= (lamaKerja / 30) * 10;
+        setMood(mood);
+
+        pekerjaan.addTimesWorked(lamaKerja);
+        uang += (lamaKerja / 240) * pekerjaan.getGaji();
     }
 
     // Bagian Abam
@@ -198,7 +214,7 @@ public class Sim {
     }
 
     public void ibadah(int lamaIbadah) {
-    // (efek: +3 mood/20 detik, -3 kekenyangan/20 detik)
+        // (efek: +3 mood/20 detik, -3 kekenyangan/20 detik)
         if (lamaIbadah % 20 != 0) {
             System.out.println("Durasi ibadah harus kelipatan 15");
             return;
@@ -222,7 +238,7 @@ public class Sim {
         kesehatan -= (lamaMenulisArtikel / 30) * 2;
         setKesehatan(kesehatan);
         kekenyangan -= (lamaMenulisArtikel / 30) * 3;
-        setKekenyangan(kekenyangan); 
+        setKekenyangan(kekenyangan);
     }
 
     public void bacaBuku(int lamaBaca) {
@@ -275,7 +291,7 @@ public class Sim {
         if (lamaMenonton % 30 != 0) {
             System.out.println("Durasi nonton simflix harus kelipatan 30");
             return;
-        }   
+        }
 
         mood += (lamaMenonton / 30) * 11;
         setMood(mood);
@@ -300,3 +316,4 @@ public class Sim {
         setKekenyangan(kekenyangan);
     }
 }
+

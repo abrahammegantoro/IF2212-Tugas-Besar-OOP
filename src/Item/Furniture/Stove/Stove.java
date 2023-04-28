@@ -151,7 +151,7 @@ public abstract class Stove extends Furniture {
     // }
     // return true;
     // }
-    public boolean cekBahanBaku(Inventory<Item> inventory, Masakan masakan) {
+    private boolean cekBahanBaku(Inventory<Item> inventory, Masakan masakan) {
         ArrayList<BahanBaku> bahanBaku = masakan.getBahanBaku();
         boolean foundAllIngredients = true;
 
