@@ -187,6 +187,7 @@ public class Sim {
     // Bagian Shulhan
     public void makan(Edible makanan) {
         /* Bagian Shulhan */
+        inventory.removeItem(makanan, 1);
         setKekenyangan(kekenyangan + makanan.getKekenyangan());
     }
 }
