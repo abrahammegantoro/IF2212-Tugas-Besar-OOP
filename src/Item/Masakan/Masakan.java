@@ -21,7 +21,12 @@ public class Masakan extends Item implements Edible {
         return kekenyangan;
     }
 
-    public ArrayList<BahanBaku> getBahanBaku(){
+    //addBahanBaku
+    public void addBahanBaku(BahanBaku bahan) {
+        bahanBaku.add(bahan);
+    }
+
+    public ArrayList<BahanBaku> getBahanBaku() {
         return bahanBaku;
     }
 
