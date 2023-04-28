@@ -65,19 +65,30 @@ public abstract class Stove extends Furniture {
 
         // Cek apakah bahan-bahan baku tersedia dan validasi apakah nomor masakan yang
         // dimasukkan valid berdasarkan resep
-        while (!cekBahanBaku(inventory, resep.get(noMasakan)) || !resep.containsKey(noMasakan)) {
+        while (noMasakan < 1 || noMasakan > resep.size()) {
             // inventory.showInventory();
             // System.out.println(cekBahanBaku(inventory, resep.get(noMasakan)));
-            if (!cekBahanBaku(inventory, resep.get(noMasakan))) {
-                System.out.println("Bahan-bahan baku tidak cukup, silakan pilih masakan lainnya.");
-                printResep();
-            } else {
-                System.out.println("Masakan tidak ditemukan, silakan masukan ulang nomor masakan.");
-                printResep();
-            }
+            System.out.println("\nNomor masakan yang dimasukkan salah, silakan masukan ulang nomor masakan.");
+            printResep();
             System.out.print("Masukkan nomor masakan yang ingin dimasak: ");
             noMasakan = scanner.nextInt();
         }
+
+        while (!cekBahanBaku(inventory, resep.get(noMasakan))) {
+            System.out.println("\nBahan-bahan baku tidak cukup, silakan pilih masakan lainnya.");
+            printResep();
+            System.out.print("Masukkan nomor masakan yang ingin dimasak: ");
+            noMasakan = scanner.nextInt();
+            while (noMasakan < 1 || noMasakan > resep.size()) {
+                // inventory.showInventory();
+                // System.out.println(cekBahanBaku(inventory, resep.get(noMasakan)));
+                System.out.println("\nNomor masakan yang dimasukkan salah, silakan masukan ulang nomor masakan.");
+                printResep();
+                System.out.print("Masukkan nomor masakan yang ingin dimasak: ");
+                noMasakan = scanner.nextInt();
+            }
+        }
+
         scanner.close();
 
         Masakan masakanTerpilih = resep.get(noMasakan);
