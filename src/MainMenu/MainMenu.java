@@ -20,23 +20,30 @@ public class MainMenu {
         
         Sim simBaru = new Sim(nama);
 
-        //nanti ditambah program untuk menambah sim ini ke list sim sudah dibuat
+        //nanti ditambah program untuk menambah sim ini ke daftar sim sudah dibuat
     }
 
     public void changeSim(){
 
     }
 
-    public void viewSimInfo(){
+    public void viewSimInfo(Sim sim){
+        System.out.println("Berikut adalah informasi sim yang sedang Anda mainkan");
+        System.out.println("Nama        : " + sim.getNama());
+        System.out.println("Pekerjaan   : " + sim.getPekerjaan());
+        System.out.println("Kesehatan   : " + sim.getKesehatan());
+        System.out.println("Kekenyangan : " + sim.getKekenyangan());
+        System.out.println("Mood        : " + sim.getMood());
+        System.out.println("Uang        : " + sim.getUang());
 
     }
 
-    public void viewCurrentLocation(){
-
+    public void viewCurrentLocation(Sim sim){
+        System.out.println("Sim sedang berada di rumah " + sim.getNamaRumahSaatIni() + ", pada ruangan " + sim.getNamaRuanganSaatIni());
     }
 
     public void help(){
-        System.out.println("Simplicity merupakan ");
+        System.out.println("Simplicity merupakan ... (nanti dilengkapin)");
     }
 
     public void exit(){

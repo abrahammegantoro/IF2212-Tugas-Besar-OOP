@@ -3,7 +3,7 @@ package src.Pekerjaan;
 public class Pekerjaan {
     private String namaPekerjaan;
     private int gaji;
-    private int timedWorked;
+    private int timedWorked = 0;
     
     public Pekerjaan(String namaPekerjaan){
         this.namaPekerjaan = namaPekerjaan;
@@ -58,7 +58,7 @@ public class Pekerjaan {
         return timedWorked;
     }
 
-    public void addTimedWorked(){
-
+    public void addTimedWorked(int waktu){
+        timedWorked += waktu;
     }
 }
