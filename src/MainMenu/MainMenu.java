@@ -4,6 +4,7 @@ import java.util.*;
 import src.Sim.Sim;
 
 public class MainMenu {
+    Scanner in = new Scanner(System.in);
  
     public void start(){
         //masih dalam proses
@@ -14,7 +15,6 @@ public class MainMenu {
     }
 
     public void addSim(){
-        Scanner in = new Scanner(System.in);
         System.out.print("Silahkan Masukkan nama sim : ");
         String nama = in.next();
         
@@ -42,16 +42,42 @@ public class MainMenu {
     }
 
     public void help(){
-        System.out.println("Simplicity merupakan permainan berbasis Command line interface.");
-        System.out.println("Dalam game ini, Anda akan membuat seorang Sim dan menjalankan kehidupan sebagai Sim.");
-        System.out.println("Sim memiliki banyak aksi yang dapat dilakukan oleh dirinya.");
-        System.out.println("setiap aksi dapat mempengaruhi kesejahteraan dari Sim yang Anda mainkan.");
+        boolean end = false;
+        int input;
 
-        //Nanti ditambah lagi lebih lengkap
+        while(!end){
+            System.out.println("HELP");
+            System.out.println("1. Apa itu Simplicity?");
+            System.out.println("2. Bagaimana cara memulai game ini?");
+            System.out.println("3. Tentang Rumah");
+            System.out.println("4. Tentang Pekerjaan");
+            System.out.println("5. Tentang Kesejahteraan");
+            System.out.println("0. Close\n");
+            
+            System.out.print("Masukkan pilihan Anda (Angka saja) : ");
+            input = in.nextInt();
+            if (input == 1){
+                System.out.println("Simplicity merupakan permainan berbasis Command line interface.");
+                System.out.println("Dalam game ini, Anda akan membuat seorang Sim dan menjalankan kehidupan sebagai Sim.");
+                System.out.println("Sebagai Sim, Anda akan tinggal dalam sebuah rumah dan melakukan berbagai aksi untuk menjalani kehidupan");
+                System.out.println("Segera buat Sim dan mulai kehidupan Anda sebagai Sim!!!\n");
+            } else if (input == 2){
+                System.out.println("Pertama, Anda harus membuat seorang Sim yang dapat dilakukan di opsi addSim.");
+                System.out.println("Setelah Sim dibuat, Sim Anda akan dispawn di suatu tempat bersamaan dengan rumah.");
+                System.out.println("Di dalam rumah, Anda dapat meletakkan berbagai item dan melakukan aksi dengan item tersebut.");
+                System.out.println("Item dapat beli dengan uang yang Anda miliki. Untuk mendapatkan uang Anda harus bekerja.");
+                System.out.println("Selain itu, Sim Anda memiliki parameter kesejahteraan.");
+                System.out.println("Sim Anda akan mati bila salah satu atau beberapa parameter tersebut mencapai nilai 0.");
+                System.out.println("Kesejahteraan dapat dipengaruhi oleh aksi yang dilakukan oleh Sim.");
+                System.out.println("Oleh karena itu, Anda harus melakukan berbagai macam aksi untuk menjalankan hidup sebagai Sim.");
+            } else if (input == 0) {
+                end = true;
+            }
+        }
     }
 
     public void exit(){
-        System.out.println("Terimakasih telah memainkan SImplicity");
+        System.out.println("Terimakasih telah memainkan Simplicity");
         System.exit(0);
     }
 }
