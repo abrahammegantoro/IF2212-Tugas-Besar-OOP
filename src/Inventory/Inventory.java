@@ -25,18 +25,18 @@ public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inve
         }
     }
 
-    public T getItem(T item) { // ambil item dan kurangi jumlahnya 1
-        if (items.containsKey(item)) {
-            if (items.get(item) > 1) {
-                items.put(item, items.get(item) - 1);
-            } else {
-                items.remove(item);
+    // remove item by item's name
+    public void removeItem(T item) {
+        for (Map.Entry<T, Integer> entry : items.entrySet()) {
+            if (entry.getKey() instanceof Item) {
+                Item inventoryItem = (Item) entry.getKey();
+                if (inventoryItem.getNama().equalsIgnoreCase(((Item) item).getNama())) {
+                    items.remove(entry.getKey());
+                    return;
+                }
             }
-            return item;
-        } else {
-            System.out.println("Item tidak ada di inventory");
-            return null;
         }
+        System.out.println("Item tidak ada di inventory");
     }
 
     public int getAmount(T item) {
@@ -47,33 +47,41 @@ public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inve
         }
     }
 
+    // getItems
+    public Map<T, Integer> getItems() {
+        return items;
+    }
+
+    public boolean isItemExist(T item) {
+        return items.containsKey(item);
+    }
+
     public void showInventory() {
-        // inventory dipastikan mengandung item dengan tipe data Item
         System.out.println("Inventory: ");
         System.out.println("Item_name\t\tAmount");
         System.out.println("---------------------------------");
-
+    
         for (Map.Entry<T, Integer> entry : items.entrySet()) {
             Item item = (Item) entry.getKey();
             int amount = entry.getValue();
-            System.out.println(item.getNama() + "\t\t" + amount);
+            System.out.printf("%-20s\t%d\n", item.getNama(), amount);
         }
-    }
+    }    
 
     // Driver code
     // public static void main(String[] args) {
-    //     Inventory<Item> inventory = new Inventory<>();
-    //     Masakan nasiAyam = new Masakan("Nasi Ayam", 16);
-    //     Masakan nasiKari = new Masakan("Nasi Kari", 30);
-    
-    //     try {
-    //         inventory.addItem(nasiAyam, 1);
-    //         inventory.addItem(nasiKari, 15);
-    //         inventory.showInventory();
-    
-    //         System.out.println("\nKekenyangan Nasi Ayam : " + nasiAyam.getKekenyangan());
-    //     } catch (IllegalArgumentException e) {
-    //         System.out.println("Terjadi kesalahan: " + e.getMessage());
-    //     }
+    // Inventory<Item> inventory = new Inventory<>();
+    // Masakan nasiAyam = new Masakan("Nasi Ayam", 16);
+    // Masakan nasiKari = new Masakan("Nasi Kari", 30);
+
+    // try {
+    // inventory.addItem(nasiAyam, 1);
+    // inventory.addItem(nasiKari, 15);
+    // inventory.showInventory();
+
+    // System.out.println("\nKekenyangan Nasi Ayam : " + nasiAyam.getKekenyangan());
+    // } catch (IllegalArgumentException e) {
+    // System.out.println("Terjadi kesalahan: " + e.getMessage());
+    // }
     // }
 }

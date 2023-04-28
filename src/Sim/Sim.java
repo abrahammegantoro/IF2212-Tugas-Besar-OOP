@@ -20,11 +20,12 @@ public class Sim {
     private String namaRuanganSaatIni;
     private String namaRumahSaatIni;
     private String status;
+
     public Sim(String nama) {
         Random random = new Random();
 
         this.nama = nama;
-        this.pekerjaan = new Pekerjaan(random.nextInt(1, 6)); // random.nextInt(1,5) ngerandom angka integer dari 1 sampai 5
+        // this.pekerjaan = new Pekerjaan(random.nextInt(1, 6)); // jgn lupa diuncomment
         this.uang = 100;
         this.inventory = new Inventory<>();
         this.kekenyangan = 80;
@@ -46,6 +47,22 @@ public class Sim {
 
     public int getUang() {
         return uang;
+    }
+
+    public Inventory<Item> getInventory() {
+        return inventory;
+    }
+
+    public void viewInventory() {
+        inventory.showInventory();
+    }
+
+    public void addItemToInventory(Item item, int amount) {
+        inventory.addItem(item, amount);
+    }
+
+    public boolean isItemInInventory(Item item) {
+        return inventory.isItemExist(item);
     }
 
     public int getKekenyangan() {
