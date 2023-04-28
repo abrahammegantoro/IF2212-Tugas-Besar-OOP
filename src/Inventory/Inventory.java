@@ -1,18 +1,23 @@
 package src.Inventory;
 
-import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
+import src.Item.Item;
+import src.Item.Masakan.Masakan; // buat driver
+
 public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inventory
-    private Map<T, Integer> items; // T adalah
+    private Map<T, Integer> items; // T adalah tipe data yang akan digunakan untuk inventory
 
     public Inventory() {
-        // Inisialisasi HashMap kosong
         this.items = new HashMap<>();
     }
 
     public void addItem(T item, int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Jumlah item tidak boleh kurang dari 1");
+        }
+
         if (items.containsKey(item)) {
             items.put(item, items.get(item) + amount);
         } else {
@@ -20,18 +25,18 @@ public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inve
         }
     }
 
-    public T getItem(T item) { // ambil item dan kurangi jumlahnya 1
-        if (items.containsKey(item)) {
-            if (items.get(item) > 1) {
-                items.put(item, items.get(item) - 1);
-            } else {
-                items.remove(item);
+    // remove item by item's name
+    public void removeItem(T item) {
+        for (Map.Entry<T, Integer> entry : items.entrySet()) {
+            if (entry.getKey() instanceof Item) {
+                Item inventoryItem = (Item) entry.getKey();
+                if (inventoryItem.getNama().equalsIgnoreCase(((Item) item).getNama())) {
+                    items.remove(entry.getKey());
+                    return;
+                }
             }
-            return item;
-        } else {
-            System.out.println("Item tidak ada di inventory");
-            return null;
         }
+        System.out.println("Item tidak ada di inventory");
     }
 
     public int getAmount(T item) {
@@ -42,50 +47,41 @@ public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inve
         }
     }
 
-    public void removeItem(T item, int amount) {
-        if (items.containsKey(item)) {
-            if (items.get(item) > amount) {
-                items.put(item, items.get(item) - amount);
-            } else {
-                items.remove(item);
-            }
-        } else {
-            System.out.println("Item tidak ada di inventory sehingga tidak dapat dihapus");
-        }
+    // getItems
+    public Map<T, Integer> getItems() {
+        return items;
     }
 
-    public void showInventory() { // show inventory SEMENTARA karena gpt ngelag
-        // show what class that item is
+    public boolean isItemExist(T item) {
+        return items.containsKey(item);
+    }
+
+    public void showInventory() {
         System.out.println("Inventory: ");
-        System.out.println("Item\t\tAmount");
-        System.out.println("-----------------------");
+        System.out.println("Item_name\t\tAmount");
+        System.out.println("---------------------------------");
+    
         for (Map.Entry<T, Integer> entry : items.entrySet()) {
-            System.out.printf("%-15s %d%n", entry.getKey(), entry.getValue());
+            Item item = (Item) entry.getKey();
+            int amount = entry.getValue();
+            System.out.printf("%-20s\t%d\n", item.getNama(), amount);
         }
-    }
+    }    
 
-//     // Driver code SEMENTARA
-//     public static void main(String[] args) {
-//         // Inventory<String> inventory = new Inventory<>();
-//         // inventory.addItem("Beras", 10);
-//         // inventory.addItem("Beras", 10);
-//         // inventory.addItem("Telur", 5);
-//         // inventory.addItem("Telur", 5);
-//         // inventory.addItem("Telur", 5);
+    // Driver code
+    // public static void main(String[] args) {
+    // Inventory<Item> inventory = new Inventory<>();
+    // Masakan nasiAyam = new Masakan("Nasi Ayam", 16);
+    // Masakan nasiKari = new Masakan("Nasi Kari", 30);
 
-//         // inventory.showInventory();
+    // try {
+    // inventory.addItem(nasiAyam, 1);
+    // inventory.addItem(nasiKari, 15);
+    // inventory.showInventory();
 
-//         Inventory<Object> inventory = new Inventory<>();
-//         inventory.addItem(new Point(1, 2), 10);
-//         inventory.addItem(new Point(1, 2), 10);
-//         inventory.addItem(5, 5);
-//         inventory.addItem(3, 5);
-//         inventory.addItem("Anjay", 5);
-
-//         inventory.showInventory();
-
-//         // masih nunggu class Item...
-//         // Inventory<Item> inventory = new Inventory<>();
-//         // inventory.addItem(new Masakan(blablabla), 10);
-//     }
+    // System.out.println("\nKekenyangan Nasi Ayam : " + nasiAyam.getKekenyangan());
+    // } catch (IllegalArgumentException e) {
+    // System.out.println("Terjadi kesalahan: " + e.getMessage());
+    // }
+    // }
 }

@@ -1,7 +1,7 @@
 package src.Item.BahanBaku;
+import src.Item.Item;
 import src.Item.Buyable;
 import src.Item.Edible;
-import src.Item.Item;
 import java.util.Random;
 
 public class BahanBaku extends Item implements Edible, Buyable {
@@ -13,7 +13,6 @@ public class BahanBaku extends Item implements Edible, Buyable {
         this.harga = harga;
         this.kekenyangan = kekenyangan;
     }
-
 
     @Override
     public int getHarga(){
