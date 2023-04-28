@@ -197,7 +197,14 @@ public class Sim {
 
     // Bagian Shulhan
     public void beliBarang(Item item) {
-        /* Bagian Shulhan */
+        if (uang < item.getHarga()){
+            System.out.println("Anda tidak memiliki uang yang cukup untuk membeli barang ini");
+        } else {
+            uang -= item.getHarga();
+            inventory.addItem(item, 1);
+        }
+
+        //Note : delivery time masih belum diurus
     }
 
     public void pindahRuangan(String namaRuangan) {
@@ -210,7 +217,10 @@ public class Sim {
 
     // Bagian Shulhan
     public void makan(Edible makanan) {
-        /* Bagian Shulhan */
+        inventory.removeItem(makanan, 1);
+        setKekenyangan(kekenyangan + makanan.getKekenyangan());
+
+        //note : waktu makan belum diurus
     }
 
     public void ibadah(int lamaIbadah) {
