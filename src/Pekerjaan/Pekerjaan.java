@@ -20,17 +20,29 @@ public class Pekerjaan {
         } else {
             System.out.println("Pekerjaan yang dipilih tidak valid, pekerjaan yang dapat dipilih adalah sebagai berikut");
             System.out.println("Badut sulap __ Gaji = 15");
-            System.out.println("Koki        __ Gaji = 35");
+            System.out.println("Koki        __ Gaji = 30");
             System.out.println("Polisi      __ Gaji = 35");
             System.out.println("Programmer  __ Gaji = 45");
             System.out.println("Dokter      __ Gaji = 50");
-            
         }
     }
 
     public Pekerjaan(int randomnumber){
         if (randomnumber == 1){
-            
+            namaPekerjaan = "Badut sulap";
+            gaji = 15;
+        } else if (randomnumber == 2){
+            namaPekerjaan = "Koki";
+            gaji = 30;            
+        } else if (randomnumber == 3){
+            namaPekerjaan = "Polisi";
+            gaji = 35;            
+        } else if (randomnumber == 4){
+            namaPekerjaan = "Programmer";
+            gaji = 45;            
+        } else if (randomnumber == 5){
+            namaPekerjaan = "Dokter";
+            gaji = 50;            
         }
     }
 
@@ -43,7 +55,7 @@ public class Pekerjaan {
     }
 
     public int getTimedWorked(){
-        return 0;
+        return timedWorked;
     }
 
     public void addTimedWorked(){

@@ -179,5 +179,6 @@ public class Sim {
     // Bagian Shulhan
     public void makan(Edible makanan) {
         /* Bagian Shulhan */
+        setKekenyangan(kekenyangan + makanan.getKekenyangan());
     }
 }
