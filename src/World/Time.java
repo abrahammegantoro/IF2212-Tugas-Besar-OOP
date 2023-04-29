@@ -36,29 +36,42 @@ public class Time {
     }
 
     public synchronized int getTimeRemaining() {
-        return 720000 - (currentTime % 720000);
+        return 720 - (currentTime % 720);
+    }
+
+    public synchronized void getActivityTimeRemaining() {
+        for (Map.Entry<String, Integer> entry : timeMap.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println(key + " : " + value);
+        }
     }
 
     public synchronized void incrementTime() {
         currentTime++;
-    }
-
-    public synchronized void consumeTime(int duration) {
-        while (duration > 0) {
-            try {
-                Thread.sleep(1000);
-                incrementTime();
-                for (Map.Entry<String, Integer> entry : timeMap.entrySet()) {
-                    String key = entry.getKey();
-                    Integer value = entry.getValue() - 1;
-                    timeMap.put(key, value);
-                }
-                duration--;
-            } catch (InterruptedException e) {
-                System.out.println("Thread interrupted");
-            }
+        for (Map.Entry<String, Integer> entry : timeMap.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue() - 1;
+            timeMap.put(key, value);
         }
     }
+
+    // public synchronized void consumeTime(int duration) {
+    // while (duration > 0) {
+    // try {
+    // Thread.sleep(1000);
+    // incrementTime();
+    // for (Map.Entry<String, Integer> entry : timeMap.entrySet()) {
+    // String key = entry.getKey();
+    // Integer value = entry.getValue() - 1;
+    // timeMap.put(key, value);
+    // }
+    // duration--;
+    // } catch (InterruptedException e) {
+    // System.out.println("Thread interrupted");
+    // }
+    // }
+    // }
 }
 
 // public class Time {

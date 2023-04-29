@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import src.Item.Item;
-// import src.Item.Masakan.Masakan; // buat driver
+import src.Item.Masakan.Masakan; // buat driver
 
 //GW BIKIN GENERICS BIAR MEMENUHI SYARAT TUGAS
-public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inventory
+public class Inventory<T extends Item> { // T adalah tipe data yang akan digunakan untuk inventory
     private Map<T, Integer> items; // T adalah tipe data yang akan digunakan untuk inventory
 
     public Inventory() {
@@ -19,11 +19,17 @@ public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inve
             throw new IllegalArgumentException("Jumlah item tidak boleh kurang dari 1");
         }
 
-        if (items.containsKey(item)) {
-            items.put(item, items.get(item) + amount);
-        } else {
-            items.put(item, amount);
+        // add item to the inventory, if item already exist (item with same name) then
+        // increase the quantity
+        for (T objek : items.keySet()) {
+            if (objek.getNama().equalsIgnoreCase(item.getNama())) {
+                items.put(objek, items.get(objek) + amount);
+                return;
+            }
         }
+
+        // if item doesn't exist in the inventory, then add it
+        items.put(item, amount);
     }
 
     // remove item by item's name
@@ -61,7 +67,7 @@ public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inve
         System.out.println("Inventory: ");
         System.out.println("Item_name\t\tAmount");
         System.out.println("---------------------------------");
-    
+
         for (Map.Entry<T, Integer> entry : items.entrySet()) {
             Item item = (Item) entry.getKey();
             int amount = entry.getValue();
@@ -70,19 +76,21 @@ public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inve
     }
 
     // Driver code
-    // public static void main(String[] args) {
-    // Inventory<Item> inventory = new Inventory<>();
-    // Masakan nasiAyam = new Masakan("Nasi Ayam", 16);
-    // Masakan nasiKari = new Masakan("Nasi Kari", 30);
+    public static void main(String[] args) {
+        Inventory<Item> inventory = new Inventory<>();
+        Masakan nasiAyam = new Masakan("Nasi Ayam", 16);
+        Masakan nasiKari = new Masakan("Nasi Kari", 30);
+        Masakan nasiKari2 = new Masakan("Nasi Kari", 30);
 
-    // try {
-    // inventory.addItem(nasiAyam, 1);
-    // inventory.addItem(nasiKari, 15);
-    // inventory.showInventory();
+        try {
+            inventory.addItem(nasiAyam, 1);
+            inventory.addItem(nasiKari, 15);
+            inventory.addItem(nasiKari2, 21);
+            inventory.showInventory();
 
-    // System.out.println("\nKekenyangan Nasi Ayam : " + nasiAyam.getKekenyangan());
-    // } catch (IllegalArgumentException e) {
-    // System.out.println("Terjadi kesalahan: " + e.getMessage());
-    // }
-    // }
+            System.out.println("\nKekenyangan Nasi Ayam : " + nasiAyam.getKekenyangan());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Terjadi kesalahan: " + e.getMessage());
+        }
+    }
 }
