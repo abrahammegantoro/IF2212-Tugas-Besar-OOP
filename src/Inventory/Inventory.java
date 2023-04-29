@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import src.Item.Item;
-import src.Item.Masakan.Masakan; // buat driver
+// import src.Item.Masakan.Masakan; // buat driver
 
+//GW BIKIN GENERICS BIAR MEMENUHI SYARAT TUGAS
 public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inventory
     private Map<T, Integer> items; // T adalah tipe data yang akan digunakan untuk inventory
 
@@ -66,7 +67,7 @@ public class Inventory<T> { // T adalah tipe data yang akan digunakan untuk inve
             int amount = entry.getValue();
             System.out.printf("%-20s\t%d\n", item.getNama(), amount);
         }
-    }    
+    }
 
     // Driver code
     // public static void main(String[] args) {

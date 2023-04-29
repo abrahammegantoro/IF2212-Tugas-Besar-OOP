@@ -1,13 +1,12 @@
 package src.Item.Furniture.Stove;
 
-import src.Item.BahanBaku.BahanBaku;
-import src.Item.Masakan.Masakan;
-import src.Sim.Sim;
-import src.World.Point;
+// import src.Item.BahanBaku.BahanBaku;
+// import src.Item.Masakan.Masakan;
+// import src.Sim.Sim;
 
 public class GasStove extends Stove {
-    public GasStove(Point lokasi) {
-        super("Kompor Gas", lokasi, 2, 1, 100);
+    public GasStove() {
+        super("Kompor Gas", 2, 1, 100);
     }
 
     //driver
