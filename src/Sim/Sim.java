@@ -193,6 +193,9 @@ public class Sim {
     // Bagian Danang
     public void berkunjung(String namaRumah, int lamaBerkunjung) {
         /* Bagian Danang */
+        pindahRumah(namaRumah);
+        
+        // Waktu dan Penghitungan Jarak belum
     }
 
     // Bagian Shulhan
