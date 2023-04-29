@@ -15,7 +15,10 @@ public class Rumah {
         this.namaRumah = sim.getNama();
         this.lokasi = lokasi;
         daftarRuangan = new ArrayList<Ruangan>();
-        daftarRuangan.add(new Ruangan("Ruang Tamu"));
+        Ruangan ruangTamu = new Ruangan("Ruang Tamu");
+        daftarRuangan.add(ruangTamu);
+        addRuangan(ruangTamu, "up", "Ruang A");
+        addRuangan(ruangTamu, "down", "Ruang B");
     }
 
     public String namaRumah() {
@@ -42,10 +45,10 @@ public class Rumah {
     private boolean isNamaRuanganAvailable(String namaRuangan) {
         for (Ruangan ruangan : daftarRuangan) {
             if (ruangan.getNamaRuangan().equals(namaRuangan)) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public void upgradeRumah(Sim sim) {
@@ -60,13 +63,11 @@ public class Rumah {
         System.out.println("Masukkan nama ruangan yang ingin diupgrade (input String): ");
         String ruanganUpgrade = scanner.nextLine();
 
-        // iterate daftarRuangan untuk cari ruangan yang ingin ditambah ruangan di sisi
-        // atas, bawah, kiri, atau, kanannya
-        for (Ruangan ruangan : daftarRuangan) {
-            if (!ruangan.getNamaRuangan().equals(ruanganUpgrade)) {
-                System.out.println("Ruangan tidak ditemukan");
-                return;
-            }
+        // cek apakah ruanganUpgrade ada di daftarRuangan
+        if (!isNamaRuanganAvailable(ruanganUpgrade)) {
+            System.out.println("Ruangan tidak ada");
+            scanner.close();
+            return;
         }
 
         Ruangan ruanganToUpgrade = null;
@@ -100,15 +101,19 @@ public class Rumah {
         // cek apakah sudah ada ruangan di arah yang diminta
         if (arah.equals("up") && ruanganToUpgrade.getUp() != null) {
             System.out.println("Tidak bisa menambah ruangan karena sudah ada ruangan di atasnya");
+            scanner.close();
             return;
         } else if (arah.equals("down") && ruanganToUpgrade.getDown() != null) {
             System.out.println("Tidak bisa menambah ruangan karena sudah ada ruangan di bawahnya");
+            scanner.close();
             return;
         } else if (arah.equals("left") && ruanganToUpgrade.getLeft() != null) {
             System.out.println("Tidak bisa menambah ruangan karena sudah ada ruangan di kirinya");
+            scanner.close();
             return;
         } else if (arah.equals("right") && ruanganToUpgrade.getRight() != null) {
             System.out.println("Tidak bisa menambah ruangan karena sudah ada ruangan di kanannya");
+            scanner.close();
             return;
         }
 
@@ -118,7 +123,7 @@ public class Rumah {
 
         // memastikan nama ruangan baru tidak sama dengan nama ruangan yang sudah ada,
         // jika sama, minta input ulang
-        while (!isNamaRuanganAvailable(namaRuanganBaru)) {
+        while (isNamaRuanganAvailable(namaRuanganBaru)) {
             System.out.println("\nNama ruangan sudah ada, silakan masukkan nama ruangan yang lain");
             System.out.println("Masukkan nama ruangan baru: ");
             namaRuanganBaru = scanner.nextLine();
@@ -143,14 +148,16 @@ public class Rumah {
 
         // upgradeThread.start();
         System.out.println("Pembangunan ruang " + namaRuanganBaru + " di rumah " + sim.getNama() + " dimulai");
-        Time.getInstance().setTimeMap("Rumah " + sim.getNama(), 1);
+        // Time.getInstance().setTimeMap("Rumah " + sim.getNama(), 1);
 
-        if (Time.getInstance().getTimeMap().containsKey("Rumah " + sim.getNama())
-                && Time.getInstance().getTimeMap().get("Rumah " + sim.getNama()) == 0) {
-            addRuangan(ruanganToUpgrade, arahFinal, namaRuanganBaru);
-            System.out.printf("%s berhasil ditambahkan ke rumah %s%n", namaRuanganBaru, namaRumah);
-            Time.getInstance().getTimeMap().remove("Rumah " + sim.getNama());
-        }
+        // if (Time.getInstance().getTimeMap().containsKey("Rumah " + sim.getNama())
+        //         && Time.getInstance().getTimeMap().get("Rumah " + sim.getNama()) == 0) {
+        //     addRuangan(ruanganToUpgrade, arahFinal, namaRuanganBaru);
+        //     System.out.printf("%s berhasil ditambahkan ke rumah %s%n", namaRuanganBaru, namaRumah);
+        //     Time.getInstance().getTimeMap().remove("Rumah " + sim.getNama());
+        // }
+        addRuangan(ruanganToUpgrade, arahFinal, namaRuanganBaru);
+        System.out.printf("%s berhasil ditambahkan ke rumah %s%n", namaRuanganBaru, namaRumah);
     }
 
     public void addRuangan(Ruangan ruangan, String arah, String namaRuangan) {

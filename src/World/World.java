@@ -22,6 +22,10 @@ public class World {
         this.daftarSim.add(sim);
     }
 
+    public List<Sim> getDaftarSim() {
+        return daftarSim;
+    }
+
     public List<Rumah> getDaftarRumah() {
         return daftarRumah;
     }
@@ -64,7 +68,6 @@ public class World {
         return true;
     }
 
-
     // driver world
     public static void main(String[] args) {
         World world = new World();
@@ -76,5 +79,10 @@ public class World {
         Sim sim2 = new Sim("Sim2");
         world.addSim(sim2);
         world.addRumah(sim2, new Point(0, 0));
+
+        // print daftar sim
+        for (Sim s : world.getDaftarSim()) {
+            System.out.println(s.getNama());
+        }
     }
 }
