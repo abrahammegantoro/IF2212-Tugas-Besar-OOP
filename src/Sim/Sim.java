@@ -2,11 +2,15 @@ package src.Sim;
 
 import src.Pekerjaan.Pekerjaan;
 import src.Inventory.Inventory;
-import src.Item.Edible;
+import src.World.Time;
+// import src.Item.Edible;
 import src.Item.Item;
+import src.Item.Furniture.*;
 import src.World.Point;
+import src.Item.Buyable;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class Sim {
     private String nama;
@@ -20,6 +24,7 @@ public class Sim {
     private String namaRuanganSaatIni;
     private String namaRumahSaatIni;
     private String status;
+
     public Sim(String nama) {
         Random random = new Random();
 
@@ -32,7 +37,7 @@ public class Sim {
         this.kesehatan = 80;
         this.posisiSim = new Point(0, 0);
         this.namaRuanganSaatIni = "Ruang Tamu";
-        this.namaRumahSaatIni = "Rumah" + this.nama;
+        this.namaRumahSaatIni = "Rumah " + this.nama;
         this.status = "None";
     }
 
@@ -154,40 +159,75 @@ public class Sim {
     }
 
     // Bagian Danang
-    public void kerja(int lamaKerja) {
+    public void kerja() {
         /*
          * -10 kekenyangan / 30 detik
          * -10 mood / 30 detik
-         *  +gaji / 4 menit
-         *  kelipatan 120 detik
+         * +gaji / 4 menit
+         * kelipatan 120 detik
          */
-        if (lamaKerja % 120 != 0) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Durasi Kerja :  ");
+        int durasi = input.nextInt();
+
+        while (durasi % 30 != 0) {
             System.out.println("Durasi kerja harus kelipatan 120");
-            return;
+            System.out.print("Durasi Kerja :  ");
+            durasi = input.nextInt();
         }
 
-        kekenyangan -= (lamaKerja / 30) * 10;
-        setKekenyangan(kekenyangan);
-        mood -= (lamaKerja / 30) * 10;
-        setMood(mood);
+        setStatus("Kerja");
+        Time.getInstance().consumeTime(durasi);
 
-        pekerjaan.addTimesWorked(lamaKerja);
-        uang += (lamaKerja / 240) * pekerjaan.getGaji();
+        setKekenyangan(kekenyangan - ((durasi / 30) * 10));
+        setMood(mood - ((durasi / 30) * 10));
+        setUang(uang + ((durasi / 240) * pekerjaan.getGaji()));
+
+        pekerjaan.addTimedWorked(durasi);
+        input.close();
     }
 
     // Bagian Abam
-    public void olahraga(int lamaOlahraga) {
-        if (lamaOlahraga % 20 != 0) {
+    public void olahraga() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Durasi Olahraga :  ");
+        int durasi = input.nextInt();
+
+        while (durasi % 20 != 0) {
             System.out.println("Durasi olahraga harus kelipatan 20");
-            return;
+            System.out.print("Durasi Olahraga :  ");
+            durasi = input.nextInt();
         }
 
-        kesehatan += (lamaOlahraga / 20) * 5;
-        setKesehatan(kesehatan);
-        mood += (lamaOlahraga / 20) * 10;
-        setMood(mood);
-        kekenyangan -= (lamaOlahraga / 20) * 5;
-        setKekenyangan(kekenyangan);
+        setStatus("Olahraga");
+        Time.getInstance().consumeTime(durasi);
+
+        setKesehatan(kesehatan + ((durasi / 20) * 5));
+        setMood(mood + ((durasi / 20) * 10));
+        setKekenyangan(kekenyangan - ((durasi / 20) * 5));
+
+        // final int durasiFinal = durasi;
+        // Thread olahragaThread = new Thread(new Runnable() {
+        //     public void run() {
+        //         try {
+        //             setStatus("Olahraga");
+        //             kesehatan += (durasiFinal / 20) * 5;
+        //             setKesehatan(kesehatan);
+        //             mood += (durasiFinal / 20) * 10;
+        //             setMood(mood);
+        //             kekenyangan -= (durasiFinal / 20) * 5;
+        //             setKekenyangan(kekenyangan);
+        //             Thread.sleep(10000);
+        //         } catch (InterruptedException e) {
+        //             System.out.println("Thread interrupted");
+        //         }
+        //     }
+        // });
+        
+        // olahragaThread.start();
+        input.close();
     }
 
     // Bagian Danang
@@ -197,14 +237,22 @@ public class Sim {
 
     // Bagian Shulhan
     public void beliBarang(Item item) {
-        if (uang < item.getHarga()){
-            System.out.println("Anda tidak memiliki uang yang cukup untuk membeli barang ini");
-        } else {
-            uang -= item.getHarga();
-            inventory.addItem(item, 1);
+
+        if (item instanceof Buyable) {
+            Buyable barang = (Buyable) item;
+            if (uang < barang.getHarga()) {
+                System.out.println("Anda tidak memiliki uang yang cukup untuk membeli barang ini");
+            } else {
+                Time.getInstance().setTimeMap(item.getNama(), barang.getDeliveryTime());
+                if (Time.getInstance().getTimeMap().containsKey(item.getNama()) && Time.getInstance().getTimeMap().get(item.getNama()) == 0) {
+                    uang -= barang.getHarga();
+                    inventory.addItem(item, 1);
+                    Time.getInstance().getTimeMap().remove(item.getNama());
+                }
+            }
         }
 
-        //Note : delivery time masih belum diurus
+        // Note : delivery time masih belum diurus
     }
 
     public void pindahRuangan(String namaRuangan) {
@@ -215,115 +263,148 @@ public class Sim {
         this.namaRumahSaatIni = namaRumah;
     }
 
-    // Bagian Shulhan
-    public void makan(Edible makanan) {
-        inventory.removeItem(makanan, 1);
-        setKekenyangan(kekenyangan + makanan.getKekenyangan());
+    public static void main(String[] args) {
+        Sim sim1 = new Sim("Gibran");
+        Item item = new MejaKursi();
+        System.out.println(sim1.getNama());
+        System.out.println(sim1.getPekerjaan());
+        System.out.println(sim1.getUang());
+        System.out.println(sim1.getInventory());
+        sim1.viewInventory();
+        sim1.addItemToInventory(item, 1);
+        sim1.viewInventory();
+        System.out.println(sim1.isItemInInventory(new Toilet()));
+        System.out.println(sim1.isItemInInventory(item));
+        System.out.println(sim1.getKekenyangan());
+        System.out.println(sim1.getMood());
+        System.out.println(sim1.getKesehatan());
+        System.out.println(sim1.getPosisiSim());
+        System.out.println(sim1.getNamaRuanganSaatIni());
+        System.out.println(sim1.getNamaRumahSaatIni());
+        System.out.println(sim1.getStatus());
+        sim1.setNama("Gibran Jakarta");
+        sim1.setPekerjaan(new Pekerjaan("Koki"));
+        sim1.setUang(100);
+        sim1.setKekenyangan(100);
+        sim1.setKekenyangan(105);
+        sim1.setMood(50);
+        sim1.setKesehatan(15);
 
-        //note : waktu makan belum diurus
+        sim1.kerja();
+        System.out.println(sim1.getKekenyangan());
+        System.out.println(sim1.getMood());
+        System.out.println(sim1.getKesehatan());
+        System.out.println(sim1.getUang());
+        // System.out.println(sim1.getPosisiSim());
     }
 
-    public void ibadah(int lamaIbadah) {
-        // (efek: +3 mood/20 detik, -3 kekenyangan/20 detik)
-        if (lamaIbadah % 20 != 0) {
-            System.out.println("Durasi ibadah harus kelipatan 15");
-            return;
-        }
-
-        mood += (lamaIbadah / 20) * 3;
-        setMood(mood);
-        kekenyangan -= (lamaIbadah / 20) * 3;
-        setKekenyangan(kekenyangan);
-    }
-
-    public void menulisArtikel(int lamaMenulisArtikel) {
-        // (efek: +5 mood/30 detik, -2 kesehatan/30 detik, -3 kekenyangan/30 detik)
-        if (lamaMenulisArtikel % 30 != 0) {
-            System.out.println("Durasi menulis artikel harus kelipatan 30");
-            return;
-        }
-
-        mood += (lamaMenulisArtikel / 30) * 5;
-        setMood(mood);
-        kesehatan -= (lamaMenulisArtikel / 30) * 2;
-        setKesehatan(kesehatan);
-        kekenyangan -= (lamaMenulisArtikel / 30) * 3;
-        setKekenyangan(kekenyangan);
-    }
-
-    public void bacaBuku(int lamaBaca) {
-        // (efek : +6 mood / 30 detik, -1 kesehatan/30 detik, -3 kekenyangan/30 detik)
-        if (lamaBaca % 30 != 0) {
-            System.out.println("Durasi baca buku harus kelipatan 30");
-            return;
-        }
-
-        mood += (lamaBaca / 30) * 6;
-        setMood(mood);
-        kesehatan -= (lamaBaca / 30) * 1;
-        setKesehatan(kesehatan);
-        kekenyangan -= (lamaBaca / 30) * 3;
-        setKekenyangan(kekenyangan);
-    }
-
-    public void bukaSimtagram(int lamaBuka) {
-        // (efek : +7 mood / 30 detik, -2 kesehatan/30 detik, -3 kekenyangan/30 detik)
-        if (lamaBuka % 30 != 0) {
-            System.out.println("Durasi buka simtagram harus kelipatan 30");
-            return;
-        }
-
-        mood += (lamaBuka / 30) * 7;
-        setMood(mood);
-        kesehatan -= (lamaBuka / 30) * 2;
-        setKesehatan(kesehatan);
-        kekenyangan -= (lamaBuka / 30) * 3;
-        setKekenyangan(kekenyangan);
-    }
-
-    public void bernyanyi(int lamaBernyanyi) {
-        // (efek : +5 mood / 30 detik, -2 kesehatan/30 detik, -5 kekenyangan/30 detik)
-        if (lamaBernyanyi % 30 != 0) {
-            System.out.println("Durasi bernyanyi harus kelipatan 30");
-            return;
-        }
-
-        mood += (lamaBernyanyi / 30) * 5;
-        setMood(mood);
-        kesehatan -= (lamaBernyanyi / 30) * 2;
-        setKesehatan(kesehatan);
-        kekenyangan -= (lamaBernyanyi / 30) * 5;
-        setKekenyangan(kekenyangan);
-    }
-
-    public void nontonSimflix(int lamaMenonton) {
-        // (efek : +11 mood/30 detik, -2 kesehatan/30 detik, -4 kekenyangan/30 detik)
-        if (lamaMenonton % 30 != 0) {
-            System.out.println("Durasi nonton simflix harus kelipatan 30");
-            return;
-        }
-
-        mood += (lamaMenonton / 30) * 11;
-        setMood(mood);
-        kesehatan -= (lamaMenonton / 30) * 2;
-        setKesehatan(kesehatan);
-        kekenyangan -= (lamaMenonton / 30) * 4;
-        setKekenyangan(kekenyangan);
-    }
-
-    public void belajar(int lamaBelajar) {
-        // (efek : -7 mood / 30 detik, -2 kesehatan/30 detik, -3 kekenyangan/30 detik)
-        if (lamaBelajar % 30 != 0) {
-            System.out.println("Durasi belajar harus kelipatan 30");
-            return;
-        }
-
-        mood -= (lamaBelajar / 30) * 7;
-        setMood(mood);
-        kesehatan -= (lamaBelajar / 30) * 2;
-        setKesehatan(kesehatan);
-        kekenyangan -= (lamaBelajar / 30) * 3;
-        setKekenyangan(kekenyangan);
-    }
 }
 
+
+
+
+
+
+
+    // public void ibadah(int lamaIbadah) {
+    //     // (efek: +3 mood/20 detik, -3 kekenyangan/20 detik)
+    //     if (lamaIbadah % 20 != 0) {
+    //         System.out.println("Durasi ibadah harus kelipatan 15");
+    //         return;
+    //     }
+
+    //     mood += (lamaIbadah / 20) * 3;
+    //     setMood(mood);
+    //     kekenyangan -= (lamaIbadah / 20) * 3;
+    //     setKekenyangan(kekenyangan);
+    // }
+
+    // public void menulisArtikel(int lamaMenulisArtikel) {
+    //     // (efek: +5 mood/30 detik, -2 kesehatan/30 detik, -3 kekenyangan/30 detik)
+    //     if (lamaMenulisArtikel % 30 != 0) {
+    //         System.out.println("Durasi menulis artikel harus kelipatan 30");
+    //         return;
+    //     }
+
+    //     mood += (lamaMenulisArtikel / 30) * 5;
+    //     setMood(mood);
+    //     kesehatan -= (lamaMenulisArtikel / 30) * 2;
+    //     setKesehatan(kesehatan);
+    //     kekenyangan -= (lamaMenulisArtikel / 30) * 3;
+    //     setKekenyangan(kekenyangan);
+    // }
+
+    // public void bacaBuku(int lamaBaca) {
+    //     // (efek : +6 mood / 30 detik, -1 kesehatan/30 detik, -3 kekenyangan/30 detik)
+    //     if (lamaBaca % 30 != 0) {
+    //         System.out.println("Durasi baca buku harus kelipatan 30");
+    //         return;
+    //     }
+
+    //     mood += (lamaBaca / 30) * 6;
+    //     setMood(mood);
+    //     kesehatan -= (lamaBaca / 30) * 1;
+    //     setKesehatan(kesehatan);
+    //     kekenyangan -= (lamaBaca / 30) * 3;
+    //     setKekenyangan(kekenyangan);
+    // }
+
+    // public void bukaSimtagram(int lamaBuka) {
+    //     // (efek : +7 mood / 30 detik, -2 kesehatan/30 detik, -3 kekenyangan/30 detik)
+    //     if (lamaBuka % 30 != 0) {
+    //         System.out.println("Durasi buka simtagram harus kelipatan 30");
+    //         return;
+    //     }
+
+    //     mood += (lamaBuka / 30) * 7;
+    //     setMood(mood);
+    //     kesehatan -= (lamaBuka / 30) * 2;
+    //     setKesehatan(kesehatan);
+    //     kekenyangan -= (lamaBuka / 30) * 3;
+    //     setKekenyangan(kekenyangan);
+    // }
+
+    // public void bernyanyi(int lamaBernyanyi) {
+    //     // (efek : +5 mood / 30 detik, -2 kesehatan/30 detik, -5 kekenyangan/30 detik)
+    //     if (lamaBernyanyi % 30 != 0) {
+    //         System.out.println("Durasi bernyanyi harus kelipatan 30");
+    //         return;
+    //     }
+
+    //     mood += (lamaBernyanyi / 30) * 5;
+    //     setMood(mood);
+    //     kesehatan -= (lamaBernyanyi / 30) * 2;
+    //     setKesehatan(kesehatan);
+    //     kekenyangan -= (lamaBernyanyi / 30) * 5;
+    //     setKekenyangan(kekenyangan);
+    // }
+
+    // public void nontonSimflix(int lamaMenonton) {
+    //     // (efek : +11 mood/30 detik, -2 kesehatan/30 detik, -4 kekenyangan/30 detik)
+    //     if (lamaMenonton % 30 != 0) {
+    //         System.out.println("Durasi nonton simflix harus kelipatan 30");
+    //         return;
+    //     }
+
+    //     mood += (lamaMenonton / 30) * 11;
+    //     setMood(mood);
+    //     kesehatan -= (lamaMenonton / 30) * 2;
+    //     setKesehatan(kesehatan);
+    //     kekenyangan -= (lamaMenonton / 30) * 4;
+    //     setKekenyangan(kekenyangan);
+    // }
+
+    // public void belajar(int lamaBelajar) {
+    //     // (efek : -7 mood / 30 detik, -2 kesehatan/30 detik, -3 kekenyangan/30 detik)
+    //     if (lamaBelajar % 30 != 0) {
+    //         System.out.println("Durasi belajar harus kelipatan 30");
+    //         return;
+    //     }
+
+    //     mood -= (lamaBelajar / 30) * 7;
+    //     setMood(mood);
+    //     kesehatan -= (lamaBelajar / 30) * 2;
+    //     setKesehatan(kesehatan);
+    //     kekenyangan -= (lamaBelajar / 30) * 3;
+    //     setKekenyangan(kekenyangan);
+    // }

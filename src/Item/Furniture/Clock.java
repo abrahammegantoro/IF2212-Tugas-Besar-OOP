@@ -1,12 +1,14 @@
 package src.Item.Furniture;
 
+import src.World.Time;
+
 public class Clock extends Furniture {
-    public Clock(Point lokasiClock){
-        super("Jam", lokasiClock, 1, 1, 10);
+    public Clock(){
+        super("Jam", 1, 1, 10);
     }
 
     public void lihatWaktu(){
-        System.out.println(sim.getCurrentWorld().getClock().getRemainingTime());
+        System.out.println(Time.getInstance().getTimeRemaining());
     }
 
 }

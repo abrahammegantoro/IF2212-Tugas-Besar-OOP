@@ -2,18 +2,15 @@ package src.Item.Furniture;
 
 import src.Item.Item;
 import src.Item.Buyable;
-import src.World.Point;
 import java.util.Random;
 
 public abstract class Furniture extends Item implements Buyable {
     private int panjang;
     private int lebar;
     private int harga;
-    private Point lokasi;
 
-    public Furniture(String nama, Point lokasi, int panjang, int lebar, int harga) {
+    public Furniture(String nama, int panjang, int lebar, int harga) {
         super(nama);
-        this.lokasi = lokasi;
         this.panjang = panjang;
         this.lebar = lebar;
         this.harga = harga;
@@ -25,10 +22,6 @@ public abstract class Furniture extends Item implements Buyable {
 
     public int getLebar() {
         return lebar;
-    }
-
-    public Point getLokasi() {
-        return lokasi;
     }
 
     @Override
