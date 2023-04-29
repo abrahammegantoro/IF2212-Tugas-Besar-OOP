@@ -82,7 +82,7 @@ public class Ruangan {
             }
         }
 
-        object.setlokasiObject(lokasiObject);
+        object.setLokasiObject(lokasiObject);
 
         daftarObject.add(object);
 
@@ -120,7 +120,7 @@ public class Ruangan {
             }
         }
 
-        object.setLocation(lokasiObject);
+        object.setLokasiObject(lokasiObject);
 
         daftarObject.add(object);
     }
@@ -169,7 +169,7 @@ public class Ruangan {
             Furniture currentFurniture = sim.getInventory().pilihFurniture();
             if (currentFurniture != null) {
                 try {
-                    addObject(currentFurniture);
+                    pasangBarang(currentFurniture);
                 } catch (RuanganException e) {
                     System.out.println("Penempatan furnitur gagal: " + e.getMessage());
                     sim.getInventory().addItem((Item) currentFurniture);
@@ -238,7 +238,7 @@ public class Ruangan {
             }
     
             try {
-                this.addObject(currentFurniture);
+                this.pasangObject(currentFurniture);
             } catch (RuanganException e) {
                 System.out.println("Penempatan furnitur gagal: " + e.getMessage());
                 sim.getInventory().addItem((Item) currentFurniture);
