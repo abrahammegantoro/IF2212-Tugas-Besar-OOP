@@ -2,7 +2,6 @@ package src.Item.Furniture.Bed;
 
 import src.Item.Furniture.Furniture;
 import src.Sim.Sim;
-import src.World.Point;
 
 import java.util.Scanner;
 
@@ -11,8 +10,8 @@ public abstract class Bed extends Furniture{
     Scanner input = new Scanner(System.in);
 
     //Konstruktor 
-    public Bed(String nama, Point lokasi, int panjang, int lebar, int harga){
-        super("Bed", lokasi, panjang, lebar, harga);
+    public Bed(String nama, int panjang, int lebar, int harga){
+        super("Bed", panjang, lebar, harga);
     }
 
     public void tidur(Sim sim){

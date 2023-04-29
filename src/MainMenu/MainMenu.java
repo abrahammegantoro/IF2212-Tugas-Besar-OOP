@@ -88,7 +88,7 @@ public class MainMenu {
     }
 
     public void exit(){
-        System.out.println("Terimakasih telah memainkan Simplicity");
+        System.out.println("Terima kasih telah memainkan Simplicity");
         System.exit(0);
     }
 }

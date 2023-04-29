@@ -11,13 +11,12 @@ import src.Item.BahanBaku.BahanBaku;
 import src.Item.Furniture.Furniture;
 import src.Item.Masakan.Masakan;
 import src.Sim.Sim;
-import src.World.Point;
 
 public abstract class Stove extends Furniture {
     private HashMap<Integer, Masakan> resep; // HashMap untuk menyimpan resep masakan
 
-    public Stove(String nama, Point lokasi, int panjang, int lebar, int harga) {
-        super(nama, lokasi, panjang, lebar, harga);
+    public Stove(String nama, int panjang, int lebar, int harga) {
+        super(nama, panjang, lebar, harga);
 
         // Inisialisasi HashMap resep
         resep = new HashMap<>();
