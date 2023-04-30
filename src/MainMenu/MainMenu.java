@@ -80,11 +80,11 @@ public class MainMenu {
                 System.out.println("Pekerjaan akan dipilih random saat Sim dibuat.");
                 System.out.println("Sim akan mendapat gaji setiap dia bekerja selama 4 menit.");
                 System.out.println("Sim juga nantinya dapat mengganti pekerjaan dengan membayar 50% dari gaji default pekerjaan tersebut.");
-                System.out.println("Sim yang mengganti pekerjaan hanya berlaku selam 1 hari, setelah 1 hari pekerjaannya akan kembali pekerjaan awal.");
-
-                
+                System.out.println("Sim yang mengganti pekerjaan hanya berlaku selam 1 hari, setelah 1 hari pekerjaannya akan kembali menjadi pekerjaan awal.");
             } else if (input == 5) {
-                
+                System.out.println("Sim memiliki parameter kesejahteraan yang terdiri dari 3 parameter, kesehatan, kekenyangan dan mood.");
+                System.out.println("Sim akan mati salah satu dari parameter tersebut menyentuh nilai 0.");
+                System.out.println("Parameter kesejahteraan bisa dipengaruhi oleh aksi yang dilakukan oleh Sim.");
             } else if (input == 0) {
                 end = true;
             }
@@ -92,7 +92,7 @@ public class MainMenu {
     }
 
     public void exit(){
-        System.out.println("Terima kasih telah memainkan Simplicity");
+        System.out.println("Terimakasih telah memainkan Simplicity");
         System.exit(0);
     }
 }
