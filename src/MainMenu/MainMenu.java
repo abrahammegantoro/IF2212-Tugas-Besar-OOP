@@ -75,9 +75,13 @@ public class MainMenu {
                 System.out.println("Rumah yang baru dibentuk akan terdiri dari 1 ruangan yang berukuran 6 x 6.");
                 System.out.println("Di dalam ruangan, Anda dapat meletakkan berbagai macam furniture.");
                 System.out.println("Furniture yang berada dalam ruangan dapat membuat Sim melakukan aksi khusus.");
-                System.out.println("");
-
+                System.out.println("Anda juga dapat menambah ruangan dalam rumah dalam melakukan upgrade.");
             } else if (input == 4) {
+                System.out.println("Pekerjaan akan dipilih random saat Sim dibuat.");
+                System.out.println("Sim akan mendapat gaji setiap dia bekerja selama 4 menit.");
+                System.out.println("Sim juga nantinya dapat mengganti pekerjaan dengan membayar 50% dari gaji default pekerjaan tersebut.");
+                System.out.println("Sim yang mengganti pekerjaan hanya berlaku selam 1 hari, setelah 1 hari pekerjaannya akan kembali pekerjaan awal.");
+
                 
             } else if (input == 5) {
                 
