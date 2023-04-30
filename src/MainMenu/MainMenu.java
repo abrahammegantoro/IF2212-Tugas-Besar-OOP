@@ -14,17 +14,17 @@ public class MainMenu {
         //masih dalam proses
     }
 
-    public void addSim(){
+    public void addSim(ArrayList<Sim> listSim){
         System.out.print("Silahkan Masukkan nama sim : ");
         String nama = in.next();
         
         Sim simBaru = new Sim(nama);
 
-        //nanti ditambah program untuk menambah sim ini ke daftar sim sudah dibuat
+        listSim.add(simBaru);
     }
 
-    public void changeSim(){
-        //masih dalam proses
+    public void changeSim(Sim currentSIm, Sim sim){
+        currentSIm = sim;
     }
 
     public void viewSimInfo(Sim sim){
