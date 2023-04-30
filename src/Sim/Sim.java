@@ -154,6 +154,10 @@ public class Sim {
         }
     }
 
+    public void setPosisiSim(Point posisiSim) {
+        this.posisiSim = posisiSim;
+    }
+
     public void setStatus(String status) {
         this.status = status;
     }
@@ -259,6 +263,7 @@ public class Sim {
     }
 
     // Bagian Shulhan
+    // Aksi yang jalan di belakang layar, tidak memengaruhi jalannya program lainnya
     public void beliBarang(Item item) {
 
         if (item instanceof Buyable) {
@@ -270,14 +275,19 @@ public class Sim {
                     @Override
                     public void run() {
                         int deliveryTime = barang.getDeliveryTime();
+                        System.out.println("Barang akan sampai dalam " + deliveryTime + " detik");
                         Time.getInstance().setTimeMap(item.getNama(), deliveryTime);
+
                     }
                 });
                 t.start();
+
                 System.out.println("Barang sampai");
                 uang -= barang.getHarga();
                 inventory.addItem(item, 1);
                 Time.getInstance().getTimeMap().remove(item.getNama());
+
+                // jika thread sepanjang delivery time, barang sampai
 
                 // while (!status.equals("None") && deliveryTime > 0 ) {
                 // try {
@@ -338,11 +348,12 @@ public class Sim {
         sim1.setMood(50);
         sim1.setKesehatan(15);
 
+        // System.out.println("Pembelian barang dimulai");
         sim1.olahraga();
         System.out.println("Kekenyangan : " + sim1.getKekenyangan());
-        System.out.println(sim1.getMood());
-        System.out.println(sim1.getKesehatan());
-        System.out.println(sim1.getUang());
+        System.out.printf("Mood %d\n", sim1.getMood());
+        System.out.printf("Kesehatan %d\n", sim1.getKesehatan());
+        System.out.printf("Uang %d\n", sim1.getUang());
 
         sim1.beliBarang(new Toilet());
         System.out.println(Time.getInstance().getCurrentTime());
@@ -354,112 +365,4 @@ public class Sim {
         Time.getInstance().getActivityTimeRemaining();
         System.out.println(sim1.getPosisiSim());
     }
-
 }
-
-// public void ibadah(int lamaIbadah) {
-// // (efek: +3 mood/20 detik, -3 kekenyangan/20 detik)
-// if (lamaIbadah % 20 != 0) {
-// System.out.println("Durasi ibadah harus kelipatan 15");
-// return;
-// }
-
-// mood += (lamaIbadah / 20) * 3;
-// setMood(mood);
-// kekenyangan -= (lamaIbadah / 20) * 3;
-// setKekenyangan(kekenyangan);
-// }
-
-// public void menulisArtikel(int lamaMenulisArtikel) {
-// // (efek: +5 mood/30 detik, -2 kesehatan/30 detik, -3 kekenyangan/30 detik)
-// if (lamaMenulisArtikel % 30 != 0) {
-// System.out.println("Durasi menulis artikel harus kelipatan 30");
-// return;
-// }
-
-// mood += (lamaMenulisArtikel / 30) * 5;
-// setMood(mood);
-// kesehatan -= (lamaMenulisArtikel / 30) * 2;
-// setKesehatan(kesehatan);
-// kekenyangan -= (lamaMenulisArtikel / 30) * 3;
-// setKekenyangan(kekenyangan);
-// }
-
-// public void bacaBuku(int lamaBaca) {
-// // (efek : +6 mood / 30 detik, -1 kesehatan/30 detik, -3 kekenyangan/30
-// detik)
-// if (lamaBaca % 30 != 0) {
-// System.out.println("Durasi baca buku harus kelipatan 30");
-// return;
-// }
-
-// mood += (lamaBaca / 30) * 6;
-// setMood(mood);
-// kesehatan -= (lamaBaca / 30) * 1;
-// setKesehatan(kesehatan);
-// kekenyangan -= (lamaBaca / 30) * 3;
-// setKekenyangan(kekenyangan);
-// }
-
-// public void bukaSimtagram(int lamaBuka) {
-// // (efek : +7 mood / 30 detik, -2 kesehatan/30 detik, -3 kekenyangan/30
-// detik)
-// if (lamaBuka % 30 != 0) {
-// System.out.println("Durasi buka simtagram harus kelipatan 30");
-// return;
-// }
-
-// mood += (lamaBuka / 30) * 7;
-// setMood(mood);
-// kesehatan -= (lamaBuka / 30) * 2;
-// setKesehatan(kesehatan);
-// kekenyangan -= (lamaBuka / 30) * 3;
-// setKekenyangan(kekenyangan);
-// }
-
-// public void bernyanyi(int lamaBernyanyi) {
-// // (efek : +5 mood / 30 detik, -2 kesehatan/30 detik, -5 kekenyangan/30
-// detik)
-// if (lamaBernyanyi % 30 != 0) {
-// System.out.println("Durasi bernyanyi harus kelipatan 30");
-// return;
-// }
-
-// mood += (lamaBernyanyi / 30) * 5;
-// setMood(mood);
-// kesehatan -= (lamaBernyanyi / 30) * 2;
-// setKesehatan(kesehatan);
-// kekenyangan -= (lamaBernyanyi / 30) * 5;
-// setKekenyangan(kekenyangan);
-// }
-
-// public void nontonSimflix(int lamaMenonton) {
-// // (efek : +11 mood/30 detik, -2 kesehatan/30 detik, -4 kekenyangan/30 detik)
-// if (lamaMenonton % 30 != 0) {
-// System.out.println("Durasi nonton simflix harus kelipatan 30");
-// return;
-// }
-
-// mood += (lamaMenonton / 30) * 11;
-// setMood(mood);
-// kesehatan -= (lamaMenonton / 30) * 2;
-// setKesehatan(kesehatan);
-// kekenyangan -= (lamaMenonton / 30) * 4;
-// setKekenyangan(kekenyangan);
-// }
-
-// public void belajar(int lamaBelajar) {
-// // (efek : -7 mood / 30 detik, -2 kesehatan/30 detik, -3 kekenyangan/30
-// detik)
-// if (lamaBelajar % 30 != 0) {
-// System.out.println("Durasi belajar harus kelipatan 30");
-// return;
-// }
-
-// mood -= (lamaBelajar / 30) * 7;
-// setMood(mood);
-// kesehatan -= (lamaBelajar / 30) * 2;
-// setKesehatan(kesehatan);
-// kekenyangan -= (lamaBelajar / 30) * 3;
-// setKekenyangan(kekenyangan);
-// }
