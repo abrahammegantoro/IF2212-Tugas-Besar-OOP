@@ -12,7 +12,7 @@ public class Rumah {
     private List<Ruangan> daftarRuangan;
 
     public Rumah(Sim sim, Point lokasi) {
-        this.namaRumah = sim.getNama();
+        this.namaRumah = "Rumah " + sim.getNama();
         this.lokasi = lokasi;
         daftarRuangan = new ArrayList<Ruangan>();
         Ruangan ruangTamu = new Ruangan("Ruang Tamu");
@@ -22,7 +22,7 @@ public class Rumah {
         // addRuangan(ruangTamu, "down", "Ruang B");
     }
 
-    public String namaRumah() {
+    public String getNamaRumah() {
         return namaRumah;
     }
 
@@ -43,16 +43,31 @@ public class Rumah {
         return null;
     }
 
-    private void printDaftarRuangan() {
+    // Ngeprint daftar ruangan
+    public void printDaftarRuangan() {
         System.out.println("Daftar ruangan yang tersedia :");
         System.out.println("-------------------------------");
         for (int i = 0; i < daftarRuangan.size(); i++) {
             System.out.println((i + 1) + ". " + daftarRuangan.get(i).getNamaRuangan());
         }
+        System.out.println("0. Exit");
         System.out.println("\n");
     }
 
-    private boolean isNamaRuanganAvailable(String namaRuangan) {
+    // Ngeprint daftar ruangan kecuali ruangan saat ini
+    public void printDaftarRuanganExceptSim(String namaRuanganSaatIni) {
+        System.out.println("Daftar ruangan yang tersedia :");
+        System.out.println("-------------------------------");
+        for (int i = 0; i < daftarRuangan.size(); i++) {
+            if (!daftarRuangan.get(i).getNamaRuangan().equals(namaRuanganSaatIni)) {
+                System.out.println((i + 1) + ". " + daftarRuangan.get(i).getNamaRuangan());
+            }
+        }
+        System.out.println("0. Exit");
+        System.out.println("\n");
+    }
+
+    public boolean isNamaRuanganAvailable(String namaRuangan) {
         for (Ruangan ruangan : daftarRuangan) {
             if (ruangan.getNamaRuangan().equals(namaRuangan)) {
                 return true;
