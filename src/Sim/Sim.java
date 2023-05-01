@@ -21,13 +21,15 @@ public class Sim {
     private int mood;
     private int kesehatan;
     private Point posisiSim;
+    // private Rumah rumahUtama;
+    // private Rumah rumahSaatIni;
+    // private Ruangan ruanganSaatIni;
     private String namaRuanganSaatIni;
     private String namaRumahSaatIni;
     private String status;
 
-    public Sim(String nama) {
+    public Sim(String nama) { // , Rumah rumahUtama
         Random random = new Random();
-
         this.nama = nama;
         this.pekerjaan = new Pekerjaan(random.nextInt(1, 6));
         this.uang = 100;
@@ -102,7 +104,14 @@ public class Sim {
     }
 
     public void setPekerjaan(Pekerjaan pekerjaan) {
+        Pekerjaan pekerjaanDefault = this.pekerjaan;
+        int hariGanti = Time.getHari();
         this.pekerjaan = pekerjaan;
+        this.uang -= pekerjaan.getGaji()/2;
+        while (hariGanti = Time.getHari()){
+            //do nothing
+        }
+        this.pekerjaan = pekerjaanDefault;
     }
 
     public void setUang(int uang) {
@@ -260,6 +269,9 @@ public class Sim {
     // Bagian Danang
     public void berkunjung(String namaRumah, int lamaBerkunjung) {
         /* Bagian Danang */
+        pindahRumah(namaRumah);
+
+        // Waktu dan Penghitungan Jarak belum
     }
 
     // Bagian Shulhan
