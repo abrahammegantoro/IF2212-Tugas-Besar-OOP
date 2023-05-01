@@ -4,7 +4,7 @@ import java.util.*;
 import src.Ruangan.Ruangan;
 import src.Sim.Sim;
 import src.World.Point;
-import src.World.Time;
+// import src.World.Time;
 
 public class Rumah {
     private String namaRumah;
@@ -17,8 +17,9 @@ public class Rumah {
         daftarRuangan = new ArrayList<Ruangan>();
         Ruangan ruangTamu = new Ruangan("Ruang Tamu");
         daftarRuangan.add(ruangTamu);
-        addRuangan(ruangTamu, "up", "Ruang A");
-        addRuangan(ruangTamu, "down", "Ruang B");
+        //driver
+        // addRuangan(ruangTamu, "up", "Ruang A");
+        // addRuangan(ruangTamu, "down", "Ruang B");
     }
 
     public String namaRumah() {
@@ -31,6 +32,15 @@ public class Rumah {
 
     public List<Ruangan> getDaftarRuangan() {
         return daftarRuangan;
+    }
+
+    public Ruangan getRuangan (String namaRuangan) {
+        for (Ruangan ruangan : daftarRuangan) {
+            if (ruangan.getNamaRuangan().equals(namaRuangan)) {
+                return ruangan;
+            }
+        }
+        return null;
     }
 
     private void printDaftarRuangan() {
@@ -60,13 +70,12 @@ public class Rumah {
         printDaftarRuangan();
         // minta pilih ruangan yang ingin diupgrade
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Masukkan nama ruangan yang ingin diupgrade (input String): ");
+        System.out.println("Masukkan nama ruangan yang ingin ditambahi ruangan di sisi atas, bawah, kiri, atau kanannya (input String): ");
         String ruanganUpgrade = scanner.nextLine();
 
         // cek apakah ruanganUpgrade ada di daftarRuangan
         if (!isNamaRuanganAvailable(ruanganUpgrade)) {
             System.out.println("Ruangan tidak ada");
-            scanner.close();
             return;
         }
 
@@ -82,7 +91,6 @@ public class Rumah {
         // Check if the ruanganToUpgrade is null before proceeding
         if (ruanganToUpgrade == null) {
             System.out.println("Ruangan tidak ditemukan");
-            scanner.close();
             return;
         }
 
@@ -101,19 +109,15 @@ public class Rumah {
         // cek apakah sudah ada ruangan di arah yang diminta
         if (arah.equals("up") && ruanganToUpgrade.getUp() != null) {
             System.out.println("Tidak bisa menambah ruangan karena sudah ada ruangan di atasnya");
-            scanner.close();
             return;
         } else if (arah.equals("down") && ruanganToUpgrade.getDown() != null) {
             System.out.println("Tidak bisa menambah ruangan karena sudah ada ruangan di bawahnya");
-            scanner.close();
             return;
         } else if (arah.equals("left") && ruanganToUpgrade.getLeft() != null) {
             System.out.println("Tidak bisa menambah ruangan karena sudah ada ruangan di kirinya");
-            scanner.close();
             return;
         } else if (arah.equals("right") && ruanganToUpgrade.getRight() != null) {
             System.out.println("Tidak bisa menambah ruangan karena sudah ada ruangan di kanannya");
-            scanner.close();
             return;
         }
 
@@ -129,7 +133,7 @@ public class Rumah {
             namaRuanganBaru = scanner.nextLine();
         }
 
-        scanner.close();
+        // scanner.close();
         sim.setUang(sim.getUang() - 1500);
         // Thread upgradeThread = new Thread(new Runnable() {
         // public void run() {
@@ -182,6 +186,11 @@ public class Rumah {
         Sim sim = new Sim("Budi");
         sim.setUang(999999);
         Rumah rumah = new Rumah(sim, new Point(0, 0));
+
+        rumah.printDaftarRuangan();
+        System.out.println("\n");
+        rumah.upgradeRumah(sim);
+        System.out.println("\n");
         rumah.printDaftarRuangan();
         System.out.println("\n");
         rumah.upgradeRumah(sim);
