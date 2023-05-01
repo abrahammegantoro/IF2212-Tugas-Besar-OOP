@@ -287,38 +287,38 @@ public class Ruangan {
         }
     }
 
-    // public void moveFurniture (Furniture furniture, Point point) {
-    //     List<Point> listPoint = daftarFurniture.get(furniture);
-    //     if (listPoint != null) {
-    //         int panjang = furniture.getPanjang();
-    //         int lebar = furniture.getLebar();
-    //         boolean isAvailable = true;
-    //         for (int i = 0; i < panjang; i++) {
-    //             for (int j = 0; j < lebar; j++) {
-    //                 if (gridRuangan[point.getX() + i][point.getY() + j] != null) {
-    //                     isAvailable = false;
-    //                 }
-    //             }
-    //         }
+    public void moveFurniture (Furniture furniture, Point point) {
+        List<Point> listPoint = daftarFurniture.get(furniture);
+        if (listPoint != null) {
+            int panjang = furniture.getPanjang();
+            int lebar = furniture.getLebar();
+            boolean isAvailable = true;
+            for (int i = 0; i < panjang; i++) {
+                for (int j = 0; j < lebar; j++) {
+                    if (gridRuangan[point.getX() + i][point.getY() + j] != null) {
+                        isAvailable = false;
+                    }
+                }
+            }
 
-    //         if (isAvailable) {
-    //             for (Point p : listPoint) {
-    //                 gridRuangan[p.getX()][p.getY()] = null;
-    //             }
-    //             for (int i = 0; i < panjang; i++) {
-    //                 for (int j = 0; j < lebar; j++) {
-    //                     gridRuangan[point.getX() + i][point.getY() + j] = furniture;
-    //                     listPoint.add(new Point(point.getX() + i, point.getY() + j));
-    //                 }
-    //             }
-    //             daftarFurniture.put(furniture, listPoint);
-    //         } else {
-    //             System.out.println("Tidak bisa memindahkan furniture ke koordinat tersebut.");
-    //         }
-    //     } else {
-    //         System.out.println("Tidak ada furniture dengan nama tersebut.");
-    //     }
-    // }
+            if (isAvailable) {
+                for (Point p : listPoint) {
+                    gridRuangan[p.getX()][p.getY()] = null;
+                }
+                for (int i = 0; i < panjang; i++) {
+                    for (int j = 0; j < lebar; j++) {
+                        gridRuangan[point.getX() + i][point.getY() + j] = furniture;
+                        listPoint.add(new Point(point.getX() + i, point.getY() + j));
+                    }
+                }
+                daftarFurniture.put(furniture, listPoint);
+            } else {
+                System.out.println("Tidak bisa memindahkan furniture ke koordinat tersebut.");
+            }
+        } else {
+            System.out.println("Tidak ada furniture dengan nama tersebut.");
+        }
+    }
     
     private List<Point> getPositionsOfFurniture(Furniture furniture) {
         List<Point> positions = new ArrayList<>();
@@ -477,5 +477,28 @@ public class Ruangan {
         ruangan.printRuangan(); ruangan.printSim();
         System.out.println("Sesudah dipindah");
         System.out.println(sim.getPosisiSim().getX() + ", " + sim.getPosisiSim().getY());
+
+        System.out.println("Sebelum FURNITURE dipindah");
+        ruangan.printRuangan();
+
+        try {
+            ruangan.moveFurniture(mejaKursi, new Point(4, 4));
+        } catch (Exception e) {
+            System.out.println("Penempatan furniture berada di luar ukuran ruangan atau ada furniture lain yang menghalanginya, error: " + e.getMessage());
+        }
+
+        try {
+            ruangan.moveFurniture(mejaKursi, new Point(3, 3));
+        } catch (Exception e) {
+            System.out.println("Penempatan furniture berada di luar ukuran ruangan atau ada furniture lain yang menghalanginya, error: " + e.getMessage());
+        }
+
+        System.out.println("Sesudah FURNITURE dipindah");
+        ruangan.printRuangan();
+
+        System.out.println("\nNambahin MejaKursi lagi : ");
+        ruangan.addFurniture(new MejaKursi(), new Point(0, 3));
+        ruangan.printRuangan();
+
     }
 }
