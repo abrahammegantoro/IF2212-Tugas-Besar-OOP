@@ -27,7 +27,7 @@ public class Pekerjaan {
         this.timesWorked = 0;
     }
 
-    public String getPekerjaan() {
+    public String getNamaPekerjaan() {
         return namaPekerjaan;
     }
 

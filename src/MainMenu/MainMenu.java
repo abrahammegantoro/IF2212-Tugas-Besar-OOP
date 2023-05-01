@@ -38,7 +38,7 @@ public class MainMenu {
     }
 
     public void viewCurrentLocation(Sim sim){
-        System.out.println("Sim sedang berada di rumah " + sim.getNamaRumahSaatIni() + ", pada ruangan " + sim.getNamaRuanganSaatIni());
+        System.out.println("Sim sedang berada di rumah " + sim.getRumahSaatIni().getNamaRumah() + ", pada ruangan " + sim.getRuanganSaatIni().getNamaRuangan());
     }
 
     public void help(){
@@ -92,7 +92,7 @@ public class MainMenu {
     }
 
     public void exit(){
-        System.out.println("Terimakasih telah memainkan Simplicity");
+        System.out.println("Terima kasih telah memainkan Simpli-city");
         System.exit(0);
     }
 }
