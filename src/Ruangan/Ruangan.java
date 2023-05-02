@@ -178,14 +178,29 @@ public class Ruangan {
                     System.out.print(sim.getNama().charAt(0) + " ");
                 } else if (obj instanceof Furniture) {
                     Furniture furniture = (Furniture) obj;
-                    System.out.print(furniture.getNama().charAt(0) + " ");
+                    if (furniture.getNama().equals("Kasur King Size")) {
+                        System.out.print("KBD ");
+                    } else if (furniture.getNama().equals("Kasur Queen Size")) {
+                        System.out.print("QBD ");
+                    } else if (furniture.getNama().equals("Kasur Single")) {
+                        System.out.print("SBD ");
+                    } else if (furniture.getNama().equals("Kompor Listrik")) {
+                        System.out.print("EST ");
+                    }  else if (furniture.getNama().equals("Kompor Gas")) {
+                        System.out.print("GST ");
+                    } else if (furniture.getNama().equals("Meja dan Kursi")) {
+                        System.out.print("TNC ");
+                    } else if (furniture.getNama().equals("Jam")) {
+                        System.out.print("CLK ");
+                    } else if (furniture.getNama().equals("Toilet")) {
+                        System.out.print("TOI ");
+                    } 
                 } else {
-                    System.out.print("- ");
+                    System.out.print("--- ");
                 }
             }
             System.out.println();
         }
-    
         System.out.println("-------------------------");
     }
 
@@ -194,10 +209,10 @@ public class Ruangan {
         System.out.println("Sim Positions:");
         System.out.println("-------------------------");
     
-        char[][] ruangan = new char[6][6];
+        String[][] ruangan = new String[6][6];
     
-        for (char[] row : ruangan) {
-            Arrays.fill(row, '-');
+        for (String[] row : ruangan) {
+            Arrays.fill(row, "---");
         }
     
         for (Map.Entry<Sim, Point> entry : daftarSim.entrySet()) {
@@ -205,11 +220,15 @@ public class Ruangan {
             Point simPosition = entry.getValue();
             int row = simPosition.getX();
             int col = simPosition.getY();
-            ruangan[row][col] = sim.getNama().charAt(0);
+            String simName = sim.getNama();
+            if (simName.length() > 3) {
+                simName = simName.substring(0, 3);
+            }
+            ruangan[row][col] = simName.toUpperCase();
         }
     
-        for (char[] row : ruangan) {
-            for (char cell : row) {
+        for (String[] row : ruangan) {
+            for (String cell : row) {
                 System.out.print(cell + " ");
             }
             System.out.println();
@@ -217,7 +236,6 @@ public class Ruangan {
     
         System.out.println("-------------------------");
     }
-    
 
     public void putSim(Sim sim, Point point) {
         daftarSim.put(sim, point);
