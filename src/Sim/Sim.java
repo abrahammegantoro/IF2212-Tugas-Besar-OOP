@@ -8,7 +8,13 @@ import src.World.Time;
 import src.World.World;
 // import src.Item.Edible;
 import src.Item.Item;
+import src.Item.BahanBaku.BahanBaku;
 import src.Item.Furniture.*;
+import src.Item.Furniture.Bed.KingBed;
+import src.Item.Furniture.Bed.QueenBed;
+import src.Item.Furniture.Bed.SingleBed;
+import src.Item.Furniture.Stove.EStove;
+import src.Item.Furniture.Stove.GasStove;
 import src.World.Point;
 import src.Item.Buyable;
 
@@ -392,26 +398,112 @@ public class Sim {
         System.out.println("Berhasil pindah ruangan. Sekarang Anda berada di " + getRuanganSaatIni().getNamaRuangan());
     }
 
-    // Aksi yang jalan di belakang layar, tidak memengaruhi jalannya program lainnya
-    public void beliBarang(Item item) {
+    public void store() {
+        // Print the header row
+        System.out.printf("%-5s| %-18s| %-6s%n", "No.", "Item", "Price");
+        System.out.println("____________________");
 
-        if (item instanceof Buyable) {
-            Buyable barang = (Buyable) item;
-            if (uang < barang.getHarga()) {
-                System.out.println("Anda tidak memiliki uang yang cukup untuk membeli barang ini");
-            } else {
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // int deliveryTime = barang.getDeliveryTime();
-                        int deliveryTime = 20;
-                        // System.out.println("Barang akan sampai dalam " + deliveryTime + " detik");
-                        Time.getInstance().setTimeMapBeliBarang(item, deliveryTime);
+        // Print the data row
+        System.out.printf("%-5d| %-18s| %-6d%n", 1, "Kasur Single", 50);
+        System.out.printf("%-5d| %-18s| %-6d%n", 2, "Kasur Queen Size", 100);
+        System.out.printf("%-5d| %-18s| %-6d%n", 3, "Kasur King Size", 150);
+        System.out.printf("%-5d| %-18s| %-6d%n", 4, "Toilet", 50);
+        System.out.printf("%-5d| %-18s| %-6d%n", 5, "Kompor Gas", 100);
+        System.out.printf("%-5d| %-18s| %-6d%n", 6, "Kompor Listrik", 200);
+        System.out.printf("%-5d| %-18s| %-6d%n", 7, "Meja dan Kursi", 50);
+        System.out.printf("%-5d| %-18s| %-6d%n", 8, "Jam", 10);
+        System.out.printf("%-5d| %-18s| %-6d%n", 9, "TV", 150);
+        System.out.printf("%-5d| %-18s| %-6d%n", 10, "Komputer", 100);
+        System.out.printf("%-5d| %-18s| %-6d%n", 11, "Sajadah", 10);
+        System.out.printf("%-5d| %-18s| %-6d%n", 12, "Piano", 100);
+        System.out.printf("%-5d| %-18s| %-6d%n", 13, "Shower", 50);
+        System.out.printf("%-5d| %-18s| %-6d%n", 14, "Teleskop", 100);
+        System.out.printf("%-5d| %-18s| %-6d%n", 15, "Rak Buku", 100);
+        System.out.printf("%-5d| %-18s| %-6d%n", 16, "Nasi", 5);
+        System.out.printf("%-5d| %-18s| %-6d%n", 17, "Kentang", 3);
+        System.out.printf("%-5d| %-18s| %-6d%n", 18, "Ayam", 10);
+        System.out.printf("%-5d| %-18s| %-6d%n", 19, "Sapi", 12);
+        System.out.printf("%-5d| %-18s| %-6d%n", 20, "Wortel", 3);
+        System.out.printf("%-5d| %-18s| %-6d%n", 21, "Bayam", 3);
+        System.out.printf("%-5d| %-18s| %-6d%n", 22, "Kacang", 2);
+        System.out.printf("%-5d| %-18s| %-6d%n", 23, "Susu", 2);
+    }
 
-                    }
-                });
-                t.start();
-            }
+    public void beliBarang() {
+        Item item = null;
+        store();
+
+        System.out.println("\nUang Anda : " + getUang());
+        System.out.println("\nPilih nomor item yang ingin dibeli : ");
+        Scanner input = new Scanner(System.in);
+        int pilihan = input.nextInt();
+        while (pilihan < 1 || pilihan > 23) {
+            System.out.println("Pilihan tidak valid");
+            System.out.println("Pilih nomor item yang ingin dibeli : ");
+            pilihan = input.nextInt();
+        }
+
+        if (pilihan == 1) {
+            item = new SingleBed();
+        } else if (pilihan == 2) {
+            item = new QueenBed();
+        } else if (pilihan == 3) {
+            item = new KingBed();
+        } else if (pilihan == 4) {
+            item = new Toilet();
+        } else if (pilihan == 5) {
+            item = new GasStove();
+        } else if (pilihan == 6) {
+            item = new EStove();
+        } else if (pilihan == 7) {
+            item = new MejaKursi();
+        } else if (pilihan == 8) {
+            item = new Clock();
+        } else if (pilihan == 9) {
+            item = new TV();
+        } else if (pilihan == 10) {
+            item = new Komputer();
+        } else if (pilihan == 11) {
+            item = new Sajadah();
+        } else if (pilihan == 12) {
+            item = new Piano();
+        } else if (pilihan == 13) {
+            item = new Shower();
+        } else if (pilihan == 14) {
+            item = new Teleskop();
+        } else if (pilihan == 15) {
+            item = new RakBuku();
+        } else if (pilihan == 16) {
+            item = new BahanBaku("Nasi", 5, 5);
+        } else if (pilihan == 17) {
+            item = new BahanBaku("Kentang", 3, 4);
+        } else if (pilihan == 18) {
+            item = new BahanBaku("Ayam", 10, 8);
+        } else if (pilihan == 19) {
+            item = new BahanBaku("Sapi", 12, 15);
+        } else if (pilihan == 20) {
+            item = new BahanBaku("Wortel", 3, 2);
+        } else if (pilihan == 21) {
+            item = new BahanBaku("Bayam", 3, 2);
+        } else if (pilihan == 22) {
+            item = new BahanBaku("Kacang", 2, 2);
+        } else if (pilihan == 23) {
+            item = new BahanBaku("Susu", 2, 1);
+        } 
+        final Item itemFinal = item;
+        Buyable barang = (Buyable) item;
+
+        if (uang < barang.getHarga()) {
+            System.out.println("Anda tidak memiliki uang yang cukup untuk membeli barang ini");
+        } else {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int deliveryTime = barang.getDeliveryTime();
+                    Time.getInstance().setTimeMapBeliBarang(itemFinal, deliveryTime);
+                }
+            });
+            t.start();
         }
     }
 
@@ -442,6 +534,82 @@ public class Sim {
                 key.addRuangan(key.getRuanganToUpgrade(), key.getArahFinal(), key.getNamaRuanganBaru());
                 Time.getInstance().removeTimeMapUpgradeRumah(key);
             }
+        }
+    }
+
+    public void editRoom() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Menu :");
+        System.out.println("1. Beli Barang");
+        System.out.println("2. Pindah Barang");
+        System.out.println("Pilih menu :");
+        int choice = scanner.nextInt();
+
+        //terus minta inputan sampai benar bahkan jika memasukkan inputan char/string
+        while (choice < 1 || choice > 2) {
+            System.out.println("Inputan salah. Silakan masukkan angka antara 1 dan 2.");
+            System.out.print("Your choice: ");
+            choice = scanner.nextInt();
+        }
+
+        switch (choice) {
+            case 1:
+                beliBarang();
+                break;
+            case 2:
+                // Cek inventory yang ingin  dipasang, Cek Furniture apa aja di inventory
+                inventory.showFurnitureInventory();
+                System.out.print("Pilih furniture yang ingin dipasang: ");
+
+                Furniture furniture = null;
+                String pilih = scanner.next();
+                while (furniture == null) {
+                    if (pilih.equals("Jam")) {
+                        furniture = new Clock();
+                    } else if (pilih.equals("TV")) {
+                        furniture = new TV();
+                    } else if (pilih.equals("Komputer")) {
+                        furniture = new Komputer();
+                    } else if (pilih.equals("Piano")) {
+                        furniture = new Piano();
+                    } else if (pilih.equals("Meja dan Kursi")) {
+                        furniture = new MejaKursi();
+                    } else if (pilih.equals("Sajadah")) {
+                        furniture = new Sajadah();
+                    } else if (pilih.equals("Teleskop")) {
+                        furniture = new Teleskop();
+                    } else if (pilih.equals("Rak Buku")) {
+                        furniture = new RakBuku();
+                    } else if (pilih.equals("Toilet")) {
+                        furniture = new Toilet();
+                    } else if (pilih.equals("Kompor Gas")) {
+                        furniture = new GasStove();
+                    } else if (pilih.equals("Kompor Listrik")) {
+                        furniture = new EStove();
+                    } else if (pilih.equals("Shower")) {
+                        furniture = new Shower();
+                    } else if (pilih.equals("Kasur Single")) {
+                        furniture = new SingleBed();
+                    } else if (pilih.equals("Kasur Queen Size")) {
+                        furniture = new QueenBed();
+                    } else if (pilih.equals("Kasur King Size")) {
+                        furniture = new KingBed();
+                    } else {
+                        System.out.println("Inputan salah. Silakan masukkan nama furniture yang ingin dipasang.");
+                        System.out.print("Pilih furniture yang ingin dipasang: ");
+                        pilih = scanner.next();
+                    }
+                }
+
+                // Input point
+                System.out.print("Masukkan koordinat x: ");
+                int x = scanner.nextInt();
+                System.out.print("Masukkan koordinat y: ");
+                int y = scanner.nextInt();
+
+                Point point = new Point(x, y);
+                ruanganSaatIni.addFurniture(furniture, point);
+                break;
         }
     }
 
@@ -586,7 +754,7 @@ public class Sim {
         System.out.printf("Kesehatan %d\n", sim1.getKesehatan());
         System.out.printf("Uang %d\n", sim1.getUang());
 
-        sim1.beliBarang(new Toilet());
+        sim1.beliBarang();
         System.out.println(Time.getInstance().getCurrentTime());
         System.out.println(Time.getInstance().getTimeRemaining());
         Time.getInstance().getActivityTimeRemaining();

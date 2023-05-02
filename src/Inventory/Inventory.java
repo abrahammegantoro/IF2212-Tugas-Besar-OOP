@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import src.Item.Item;
+import src.Item.Furniture.Furniture;
 import src.Item.Masakan.Masakan; // buat driver
 
 //GW BIKIN GENERICS BIAR MEMENUHI SYARAT TUGAS
@@ -72,6 +73,20 @@ public class Inventory<T extends Item> { // T adalah tipe data yang akan digunak
             Item item = (Item) entry.getKey();
             int amount = entry.getValue();
             System.out.printf("%-20s\t%d\n", item.getNama(), amount);
+        }
+    }
+
+    public void showFurnitureInventory() {
+        System.out.println("Inventory: ");
+        System.out.println("Furniture\t\tAmount");
+        System.out.println("---------------------------------");
+
+        for (Map.Entry<T, Integer> entry : items.entrySet()) {
+            if (entry.getKey() instanceof Furniture) {
+                Item item = (Item) entry.getKey();
+                int amount = entry.getValue();
+                System.out.printf("%-20s\t%d\n", item.getNama(), amount);
+            }
         }
     }
 

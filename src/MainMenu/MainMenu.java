@@ -139,7 +139,7 @@ public class MainMenu {
                 currentSim.editRoom();
                 break;
             case 9:
-                currentSim.viewListObject();
+                currentSim.getRuanganSaatIni().printRuangan();
                 break;
             case 10:
                 viewSimInfo(); // jgn lupa rapiin, bikinnya di Sim.java

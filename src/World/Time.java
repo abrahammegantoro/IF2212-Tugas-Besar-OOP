@@ -1,15 +1,9 @@
 package src.World;
 
-// import src.Sim.Sim;
-// import java.util.ArrayList;
-// import java.util.List;
 import java.util.Map;
 
-import src.Inventory.Inventory;
-import src.Item.Buyable;
 import src.Item.Item;
 import src.Rumah.Rumah;
-import src.Sim.Sim;
 
 import java.util.HashMap;
 
