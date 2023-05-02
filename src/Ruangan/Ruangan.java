@@ -499,6 +499,5 @@ public class Ruangan {
         System.out.println("\nNambahin MejaKursi lagi : ");
         ruangan.addFurniture(new MejaKursi(), new Point(0, 3));
         ruangan.printRuangan();
-
     }
 }
