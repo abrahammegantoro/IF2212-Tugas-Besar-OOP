@@ -178,14 +178,29 @@ public class Ruangan {
                     System.out.print(sim.getNama().charAt(0) + " ");
                 } else if (obj instanceof Furniture) {
                     Furniture furniture = (Furniture) obj;
-                    System.out.print(furniture.getNama().charAt(0) + " ");
+                    if (furniture.getNama().equals("Kasur King Size")) {
+                        System.out.print("KBD ");
+                    } else if (furniture.getNama().equals("Kasur Queen Size")) {
+                        System.out.print("QBD ");
+                    } else if (furniture.getNama().equals("Kasur Single")) {
+                        System.out.print("SBD ");
+                    } else if (furniture.getNama().equals("Kompor Listrik")) {
+                        System.out.print("EST ");
+                    }  else if (furniture.getNama().equals("Kompor Gas")) {
+                        System.out.print("GST ");
+                    } else if (furniture.getNama().equals("Meja dan Kursi")) {
+                        System.out.print("TNC ");
+                    } else if (furniture.getNama().equals("Jam")) {
+                        System.out.print("CLK ");
+                    } else if (furniture.getNama().equals("Toilet")) {
+                        System.out.print("TOI ");
+                    } 
                 } else {
-                    System.out.print("- ");
+                    System.out.print("--- ");
                 }
             }
             System.out.println();
         }
-    
         System.out.println("-------------------------");
     }
 
@@ -194,10 +209,10 @@ public class Ruangan {
         System.out.println("Sim Positions:");
         System.out.println("-------------------------");
     
-        char[][] ruangan = new char[6][6];
+        String[][] ruangan = new String[6][6];
     
-        for (char[] row : ruangan) {
-            Arrays.fill(row, '-');
+        for (String[] row : ruangan) {
+            Arrays.fill(row, "---");
         }
     
         for (Map.Entry<Sim, Point> entry : daftarSim.entrySet()) {
@@ -205,11 +220,15 @@ public class Ruangan {
             Point simPosition = entry.getValue();
             int row = simPosition.getX();
             int col = simPosition.getY();
-            ruangan[row][col] = sim.getNama().charAt(0);
+            String simName = sim.getNama();
+            if (simName.length() > 3) {
+                simName = simName.substring(0, 3);
+            }
+            ruangan[row][col] = simName.toUpperCase();
         }
     
-        for (char[] row : ruangan) {
-            for (char cell : row) {
+        for (String[] row : ruangan) {
+            for (String cell : row) {
                 System.out.print(cell + " ");
             }
             System.out.println();
@@ -217,7 +236,6 @@ public class Ruangan {
     
         System.out.println("-------------------------");
     }
-    
 
     public void putSim(Sim sim, Point point) {
         daftarSim.put(sim, point);
@@ -287,6 +305,39 @@ public class Ruangan {
         }
     }
 
+    public void moveFurniture (Furniture furniture, Point point) {
+        List<Point> listPoint = daftarFurniture.get(furniture);
+        if (listPoint != null) {
+            int panjang = furniture.getPanjang();
+            int lebar = furniture.getLebar();
+            boolean isAvailable = true;
+            for (int i = 0; i < panjang; i++) {
+                for (int j = 0; j < lebar; j++) {
+                    if (gridRuangan[point.getX() + i][point.getY() + j] != null) {
+                        isAvailable = false;
+                    }
+                }
+            }
+
+            if (isAvailable) {
+                for (Point p : listPoint) {
+                    gridRuangan[p.getX()][p.getY()] = null;
+                }
+                for (int i = 0; i < panjang; i++) {
+                    for (int j = 0; j < lebar; j++) {
+                        gridRuangan[point.getX() + i][point.getY() + j] = furniture;
+                        listPoint.add(new Point(point.getX() + i, point.getY() + j));
+                    }
+                }
+                daftarFurniture.put(furniture, listPoint);
+            } else {
+                System.out.println("Tidak bisa memindahkan furniture ke koordinat tersebut.");
+            }
+        } else {
+            System.out.println("Tidak ada furniture dengan nama tersebut.");
+        }
+    }
+    
     private List<Point> getPositionsOfFurniture(Furniture furniture) {
         List<Point> positions = new ArrayList<>();
         for (Map.Entry<Furniture, List<Point>> entry : daftarFurniture.entrySet()) {
@@ -361,12 +412,12 @@ public class Ruangan {
                 sim.setPosisiSim(targetPosition);
 
                 // Print success message
-                System.out.println("Sim successfully moved to the furniture.");
+                System.out.println("Sim berhasil dipindahkan ke " + furniture.getNama() + " pada titik " + targetPosition.getX() + ", " + targetPosition.getY() + ".");
             } else {
-                System.out.println("No available positions on the furniture.");
+                System.out.println("Tidak ada posisi yang tersedia pada furnitur.");
             }
         } else {
-            System.out.println("The specified furniture does not exist in the room.");
+            System.out.println("Furnitur tidak ada di dalam ruangan.");
         }
     }
 
@@ -421,15 +472,15 @@ public class Ruangan {
         ruangan.addFurniture(mejaKursi1, new Point(3, 0));
         ruangan.addFurniture(toilet, new Point(0, 0));
 
-        Sim sim = new Sim("Sim 1");
+        Sim sim = new Sim("Sim1");
         ruangan.putSim(sim, new Point(5, 5));
-        System.out.println("Available furniture:");
+        System.out.println("Furniture yang tersedia:");
         ruangan.printDaftarFurnitureName();
 
         Furniture selectedFurniture = mejaKursi1;
         List<Point> furniturePositions = ruangan.getPositionsOfFurniture(selectedFurniture);
 
-        System.out.println("Available positions on the furniture:");
+        System.out.println("Posisi yang tersedia pada furnitur:");
         for (int i = 0; i < furniturePositions.size(); i++) {
             System.out.println(
                     (i + 1) + ". " + furniturePositions.get(i).getX() + ", " + furniturePositions.get(i).getY());
@@ -444,5 +495,27 @@ public class Ruangan {
         ruangan.printRuangan(); ruangan.printSim();
         System.out.println("Sesudah dipindah");
         System.out.println(sim.getPosisiSim().getX() + ", " + sim.getPosisiSim().getY());
+
+        System.out.println("Sebelum FURNITURE dipindah");
+        ruangan.printRuangan();
+
+        try {
+            ruangan.moveFurniture(mejaKursi, new Point(4, 4));
+        } catch (Exception e) {
+            System.out.println("Penempatan furniture berada di luar ukuran ruangan atau ada furniture lain yang menghalanginya, error: " + e.getMessage());
+        }
+
+        try {
+            ruangan.moveFurniture(mejaKursi, new Point(3, 3));
+        } catch (Exception e) {
+            System.out.println("Penempatan furniture berada di luar ukuran ruangan atau ada furniture lain yang menghalanginya, error: " + e.getMessage());
+        }
+
+        System.out.println("Sesudah FURNITURE dipindah");
+        ruangan.printRuangan();
+
+        System.out.println("\nNambahin MejaKursi lagi : ");
+        ruangan.addFurniture(new MejaKursi(), new Point(0, 3));
+        ruangan.printRuangan();
     }
 }

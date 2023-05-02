@@ -1,6 +1,9 @@
 package src;
+import java.util.*;
+import src.Sim.Sim;
 
 public class Main {
+    ArrayList<Sim> listSim = new ArrayList<Sim>();
     // public static long timeNow = 0;
 
     // public static void runTheTime() {
