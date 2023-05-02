@@ -5,10 +5,14 @@ import src.Ruangan.Ruangan;
 import src.Sim.Sim;
 import src.World.Point;
 // import src.World.Time;
+import src.World.Time;
 
 public class Rumah {
     private String namaRumah;
     private Point lokasi;
+    private Ruangan ruanganToUpgrade;
+    private String arahFinal;
+    private String namaRuanganBaru;
     private List<Ruangan> daftarRuangan;
 
     public Rumah(Sim sim, Point lokasi) {
@@ -74,6 +78,30 @@ public class Rumah {
             }
         }
         return false;
+    }
+
+    public Ruangan getRuanganToUpgrade() {
+        return ruanganToUpgrade;
+    }
+
+    public String getArahFinal() {
+        return arahFinal;
+    }
+
+    public String getNamaRuanganBaru() {
+        return namaRuanganBaru;
+    }
+
+    public void setRuanganToUpgrade(Ruangan ruangan) {
+        this.ruanganToUpgrade = ruangan;
+    }
+
+    public void setArahFinal(String arah) {
+        this.arahFinal = arah;
+    }
+
+    public void setNamaRuanganBaru(String ruangan) {
+        this.namaRuanganBaru = ruangan;
     }
 
     public void upgradeRumah(Sim sim) {
@@ -149,7 +177,7 @@ public class Rumah {
         }
 
         // scanner.close();
-        sim.setUang(sim.getUang() - 1500);
+        
         // Thread upgradeThread = new Thread(new Runnable() {
         // public void run() {
         // try {
@@ -167,6 +195,11 @@ public class Rumah {
 
         // upgradeThread.start();
         System.out.println("Pembangunan ruang " + namaRuanganBaru + " di rumah " + sim.getNama() + " dimulai");
+        sim.setUang(sim.getUang() - 1500);
+        Time.getInstance().setTimeMapUpgradeRumah(sim.getRumahUtama(), 18*60*1000);
+        setRuanganToUpgrade(ruanganToUpgrade);
+        setArahFinal(arahFinal);
+        setNamaRuanganBaru(namaRuanganBaru);
         // Time.getInstance().setTimeMap("Rumah " + sim.getNama(), 1);
 
         // if (Time.getInstance().getTimeMap().containsKey("Rumah " + sim.getNama())
@@ -175,8 +208,8 @@ public class Rumah {
         //     System.out.printf("%s berhasil ditambahkan ke rumah %s%n", namaRuanganBaru, namaRumah);
         //     Time.getInstance().getTimeMap().remove("Rumah " + sim.getNama());
         // }
-        addRuangan(ruanganToUpgrade, arahFinal, namaRuanganBaru);
-        System.out.printf("%s berhasil ditambahkan ke rumah %s%n", namaRuanganBaru, namaRumah);
+        // addRuangan(ruanganToUpgrade, arahFinal, namaRuanganBaru);
+        
     }
 
     public void addRuangan(Ruangan ruangan, String arah, String namaRuangan) {

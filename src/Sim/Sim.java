@@ -12,6 +12,7 @@ import src.Item.Furniture.*;
 import src.World.Point;
 import src.Item.Buyable;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -41,7 +42,8 @@ public class Sim {
         this.posisiSim = new Point(0, 0);
         this.status = "None";
         // Atribut rumahUtama, rumahSaatIni, dan ruanganSaatIni belum diinisialisasi
-        // Akan diinisialisasi di World.java setelah melakukan addRumah(Sim sim, Point location)
+        // Akan diinisialisasi di World.java setelah melakukan addRumah(Sim sim, Point
+        // location)
     }
 
     public String getNama() {
@@ -114,7 +116,7 @@ public class Sim {
         // this.pekerjaan = pekerjaan;
         // this.uang -= pekerjaan.getGaji() / 2;
         // while (hariGanti = Time.getHari()) {
-        //     // do nothing
+        // // do nothing
         // }
         // this.pekerjaan = pekerjaanDefault;
     }
@@ -195,7 +197,7 @@ public class Sim {
         System.out.print("Durasi Kerja :  ");
         int durasi = input.nextInt();
 
-        while (durasi % 30 != 0) {
+        while (durasi % 10 != 0) {
             System.out.println("Durasi kerja harus kelipatan 120");
             System.out.print("Durasi Kerja :  ");
             durasi = input.nextInt();
@@ -210,6 +212,8 @@ public class Sim {
                     try {
                         Thread.sleep(1000);
                         Time.getInstance().incrementTime();
+                        decrementBeliBarangTime();
+                        decrementUpgradeRumahTime();
                         counter++;
                     } catch (InterruptedException e) {
                         System.out.println("Thread interrupted");
@@ -256,6 +260,8 @@ public class Sim {
                     try {
                         Thread.sleep(1000);
                         Time.getInstance().incrementTime();
+                        decrementBeliBarangTime();
+                        decrementUpgradeRumahTime();
                         counter++;
                     } catch (InterruptedException e) {
                         System.out.println("Thread interrupted");
@@ -315,6 +321,8 @@ public class Sim {
                     try {
                         Thread.sleep(1000);
                         Time.getInstance().incrementTime();
+                        decrementBeliBarangTime();
+                        decrementUpgradeRumahTime();
                         counter++;
                     } catch (InterruptedException e) {
                         System.out.println("Thread interrupted");
@@ -332,8 +340,12 @@ public class Sim {
             setRumahSaatIni(world.getRumah(pilihan));
             setRuanganSaatIni(world.getRumah(pilihan).getRuangan("Ruang Tamu"));
 
-            if (getRumahSaatIni().getNamaRumah() == getRumahUtama().getNamaRumah()) System.out.println("Berhasil pindah rumah. Sekarang Anda berada di " + getRumahSaatIni().getNamaRumah() + ", yaitu rumah Anda sendiri.");
-            else System.out.println("Berhasil pindah rumah. Sekarang Anda berada di " + getRumahSaatIni().getNamaRumah());
+            if (getRumahSaatIni().getNamaRumah() == getRumahUtama().getNamaRumah())
+                System.out.println("Berhasil pindah rumah. Sekarang Anda berada di " + getRumahSaatIni().getNamaRumah()
+                        + ", yaitu rumah Anda sendiri.");
+            else
+                System.out
+                        .println("Berhasil pindah rumah. Sekarang Anda berada di " + getRumahSaatIni().getNamaRumah());
             setStatus("None");
         } catch (InterruptedException e) {
             System.out.println("Thread interrupted");
@@ -378,7 +390,6 @@ public class Sim {
         System.out.println("Berhasil pindah ruangan. Sekarang Anda berada di " + getRuanganSaatIni().getNamaRuangan());
     }
 
-    // Bagian Shulhan
     // Aksi yang jalan di belakang layar, tidak memengaruhi jalannya program lainnya
     public void beliBarang(Item item) {
 
@@ -390,111 +401,112 @@ public class Sim {
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        int deliveryTime = barang.getDeliveryTime();
-                        System.out.println("Barang akan sampai dalam " + deliveryTime + " detik");
-                        Time.getInstance().setTimeMap(item.getNama(), deliveryTime);
+                        // int deliveryTime = barang.getDeliveryTime();
+                        int deliveryTime = 20;
+                        // System.out.println("Barang akan sampai dalam " + deliveryTime + " detik");
+                        Time.getInstance().setTimeMapBeliBarang(item, deliveryTime);
 
                     }
                 });
                 t.start();
-
-                System.out.println("Barang sampai");
-                uang -= barang.getHarga();
-                inventory.addItem(item, 1);
-                Time.getInstance().getTimeMap().remove(item.getNama());
-
-                // jika thread sepanjang delivery time, barang sampai
-
-                // while (!status.equals("None") && deliveryTime > 0 ) {
-                // try {
-                // Thread.sleep(1000);
-                // Time.getInstance().incrementTime();
-                // System.out.println("Barang akan sampai dalam " + deliveryTime + " detik");
-                // deliveryTime--;
-                // } catch (InterruptedException e) {
-                // System.out.println("Thread interrupted");
-                // }
-                // }
-
-                // Time.getInstance().setTimeMap(item.getNama(), barang.getDeliveryTime());
-                // if (Time.getInstance().getTimeMap().containsKey(item.getNama())
-                // && Time.getInstance().getTimeMap().get(item.getNama()) == 0) {
-                // System.out.println("Barang sampai");
-                // uang -= barang.getHarga();
-                // inventory.addItem(item, 1);
-                // Time.getInstance().getTimeMap().remove(item.getNama());
-                // }
             }
         }
+    }
 
-        // Note : delivery time masih belum diurus
+    public synchronized void decrementBeliBarangTime() {
+        for (Map.Entry<Item, Integer> entry : Time.getInstance().getTimeMapBeliBarang().entrySet()) {
+            Item key = entry.getKey();
+            Integer value = entry.getValue() - 1;
+            Time.getInstance().setTimeMapBeliBarang(key, value);
+            if (value == 0) {
+                System.out.println("Barang sampai");
+                Buyable barang = (Buyable) key;
+                setUang(getUang() - barang.getHarga());
+                inventory.addItem(key, 1);
+                Time.getInstance().removeTimeMapBeliBarang(key);
+            }
+        }
+    }
+
+    public synchronized void decrementUpgradeRumahTime() {
+        for (Map.Entry<Rumah, Integer> entry : Time.getInstance().getTimeMapUpgradeRumah().entrySet()) {
+            Rumah key = entry.getKey();
+            Integer value = entry.getValue() - 1;
+            Time.getInstance().setTimeMapUpgradeRumah(key, value);
+            if (value == 0) {
+                System.out.printf("%s berhasil ditambahkan ke rumah %s%n", key.getNamaRuanganBaru(),
+                        key.getNamaRumah());
+                System.out.println("Rumah berhasil diupgrade");
+                key.addRuangan(key.getRuanganToUpgrade(), key.getArahFinal(), key.getNamaRuanganBaru());
+                Time.getInstance().removeTimeMapUpgradeRumah(key);
+            }
+        }
     }
 
     public static void main(String[] args) {
+        // Sim sim1 = new Sim("Gibran");
+        // Sim sim2 = new Sim("Samudra");
+        // World world = World.getInstance();
+        // Item item = new MejaKursi();
+        // System.out.println("Nama sim1: " + sim1.getNama());
+        // System.out.println("Pekerjaan sim1: " + sim1.getPekerjaan().getNamaPekerjaan());
+        // System.out.println("Uang sim1: " + sim1.getUang());
+        // System.out.println("Alamat inventory sim1: " + sim1.getInventory());
+        // sim1.viewInventory();
+        // sim1.addItemToInventory(item, 1);
+        // sim1.viewInventory();
+        // System.out.println("Apakah ada toilet di inventory sim1? " + sim1.isItemInInventory(new Toilet()));
+        // System.out
+        //         .println("Apakah ada " + item.getNama() + " di dalam inventory sim1? " + sim1.isItemInInventory(item));
+        // System.out.println("Kekenyangan : " + sim1.getKekenyangan());
+        // System.out.printf("Mood %d\n", sim1.getMood());
+        // System.out.printf("Kesehatan %d\n", sim1.getKesehatan());
+
+        // System.out.println("\nNama sim2: " + sim2.getNama());
+        // System.out.println("Pekerjaan sim2: " + sim2.getPekerjaan().getNamaPekerjaan());
+        // System.out.println("Uang sim2: " + sim2.getUang());
+        // System.out.println("Alamat inventory sim2: " + sim2.getInventory());
+        // sim2.viewInventory();
+        // System.out.println("Apakah ada toilet di inventory sim2? " + sim1.isItemInInventory(new Toilet()));
+        // System.out
+        //         .println("Apakah ada " + item.getNama() + " di dalam inventory sim2? " + sim1.isItemInInventory(item));
+
+        // System.out.println("Sebelum ditambahkan ke world :");
+        // try {
+        //     System.out.println("Posisi sim : " + sim1.getPosisiSim());
+        //     System.out.println("Rumah saat ini : " + sim1.getRumahSaatIni().getNamaRumah());
+        //     System.out.println("Ruangan saat ini : " + sim1.getRuanganSaatIni().getNamaRuangan());
+        //     System.out.println("Daftar ruangan di rumah saat ini : ");
+        //     sim1.getRumahSaatIni().printDaftarRuangan();
+        // } catch (NullPointerException e) {
+        //     System.out.println("Sim belum memiliki rumah");
+        // }
+
+        // world.addRumah(sim1);
+        // world.addRumah(sim2, new Point(13, 2));
+
+        // System.out.println("Setelah ditambahkan ke world :");
+        // System.out.println("Posisi rumah sim1 : " + sim1.getRumahSaatIni().getLokasi().getX() + ", "
+        //         + sim1.getRumahSaatIni().getLokasi().getY());
+        // System.out.println("Rumah saat ini: " + sim1.getRumahSaatIni().getNamaRumah());
+        // System.out.println("Ruangan saat ini : " + sim1.getRuanganSaatIni().getNamaRuangan());
+        // System.out.println("Daftar ruangan di rumah saat ini : ");
+        // sim1.getRumahSaatIni().printDaftarRuangan();
+        // System.out.println(sim1.getStatus());
+
+        // System.out.println("\nPosisi rumah sim2 : " + sim2.getRumahSaatIni().getLokasi().getX() + ", "
+        //         + sim2.getRumahSaatIni().getLokasi().getY());
+        // System.out.println("Rumah saat ini: " + sim2.getRumahSaatIni().getNamaRumah());
+        // System.out.println("Ruangan saat ini : " + sim2.getRuanganSaatIni().getNamaRuangan());
+        // System.out.println("Daftar ruangan di rumah saat ini : ");
+        // sim2.getRumahSaatIni().printDaftarRuangan();
+        // System.out.println(sim2.getStatus());
+
+        // sim1.berkunjung();
+
+        // System.out.println("\nPosisi rumah sim1 saat ini : " + sim1.getRumahSaatIni().getLokasi().getX() + ", "
+        //         + sim1.getRumahSaatIni().getLokasi().getY());
         Sim sim1 = new Sim("Gibran");
-        Sim sim2 = new Sim("Samudra");
-        World world = World.getInstance();
-        Item item = new MejaKursi();
-        System.out.println("Nama sim1: " + sim1.getNama());
-        System.out.println("Pekerjaan sim1: " + sim1.getPekerjaan().getNamaPekerjaan());
-        System.out.println("Uang sim1: " + sim1.getUang());
-        System.out.println("Alamat inventory sim1: " + sim1.getInventory());
-        sim1.viewInventory();
-        sim1.addItemToInventory(item, 1);
-        sim1.viewInventory();
-        System.out.println("Apakah ada toilet di inventory sim1? " + sim1.isItemInInventory(new Toilet()));
-        System.out.println("Apakah ada " + item.getNama() + " di dalam inventory sim1? " + sim1.isItemInInventory(item));
-        System.out.println("Kekenyangan : " + sim1.getKekenyangan());
-        System.out.printf("Mood %d\n", sim1.getMood());
-        System.out.printf("Kesehatan %d\n", sim1.getKesehatan());
-
-        System.out.println("\nNama sim2: " + sim2.getNama());
-        System.out.println("Pekerjaan sim2: " + sim2.getPekerjaan().getNamaPekerjaan());
-        System.out.println("Uang sim2: " + sim2.getUang());
-        System.out.println("Alamat inventory sim2: " + sim2.getInventory());
-        sim2.viewInventory();
-        System.out.println("Apakah ada toilet di inventory sim2? " + sim1.isItemInInventory(new Toilet()));
-        System.out.println("Apakah ada " + item.getNama() + " di dalam inventory sim2? " + sim1.isItemInInventory(item));
-        
-        System.out.println("Sebelum ditambahkan ke world :");
-        try {
-            System.out.println("Posisi sim : "  + sim1.getPosisiSim());
-            System.out.println("Rumah saat ini : " + sim1.getRumahSaatIni().getNamaRumah());
-            System.out.println("Ruangan saat ini : " + sim1.getRuanganSaatIni().getNamaRuangan());
-            System.out.println("Daftar ruangan di rumah saat ini : ");
-            sim1.getRumahSaatIni().printDaftarRuangan();
-        } catch (NullPointerException e) {
-            System.out.println("Sim belum memiliki rumah");
-        }
-
-        world.addRumah(sim1);
-        world.addRumah(sim2, new Point(13,2));
-
-        System.out.println("Setelah ditambahkan ke world :");
-        System.out.println("Posisi rumah sim1 : "  + sim1.getRumahSaatIni().getLokasi().getX() + ", " + sim1.getRumahSaatIni().getLokasi().getY());
-        System.out.println("Rumah saat ini: " + sim1.getRumahSaatIni().getNamaRumah());
-        System.out.println("Ruangan saat ini : " + sim1.getRuanganSaatIni().getNamaRuangan());
-        System.out.println("Daftar ruangan di rumah saat ini : ");
-        sim1.getRumahSaatIni().printDaftarRuangan();
-        System.out.println(sim1.getStatus());
-
-        System.out.println("\nPosisi rumah sim2 : "  + sim2.getRumahSaatIni().getLokasi().getX() + ", " + sim2.getRumahSaatIni().getLokasi().getY());
-        System.out.println("Rumah saat ini: " + sim2.getRumahSaatIni().getNamaRumah());
-        System.out.println("Ruangan saat ini : " + sim2.getRuanganSaatIni().getNamaRuangan());
-        System.out.println("Daftar ruangan di rumah saat ini : ");
-        sim2.getRumahSaatIni().printDaftarRuangan();
-        System.out.println(sim2.getStatus());
-
-        sim1.berkunjung();
-
-        System.out.println("\nPosisi rumah sim1 saat ini : "  + sim1.getRumahSaatIni().getLokasi().getX() + ", " + sim1.getRumahSaatIni().getLokasi().getY());
-
-
-
-
-
-
-
         sim1.setNama("Gibran Jakarta");
         sim1.setPekerjaan(new Pekerjaan("Koki"));
         sim1.setUang(100);
@@ -513,10 +525,40 @@ public class Sim {
         System.out.println(Time.getInstance().getCurrentTime());
         System.out.println(Time.getInstance().getTimeRemaining());
         Time.getInstance().getActivityTimeRemaining();
-
+        sim1.getInventory().showInventory();
+        
         sim1.kerja();
         System.out.println(Time.getInstance().getTimeRemaining());
         Time.getInstance().getActivityTimeRemaining();
         System.out.println(sim1.getPosisiSim());
+        sim1.getInventory().showInventory();
+
+        sim1.olahraga();
+        System.out.println(Time.getInstance().getTimeRemaining());
+        sim1.getInventory().showInventory();
     }
 }
+
+// Time.getInstance().getTimeMap().remove(item.getNama());
+
+// jika thread sepanjang delivery time, barang sampai
+
+// while (!status.equals("None") && deliveryTime > 0 ) {
+// try {
+// Thread.sleep(1000);
+// Time.getInstance().incrementTime();
+// System.out.println("Barang akan sampai dalam " + deliveryTime + " detik");
+// deliveryTime--;
+// } catch (InterruptedException e) {
+// System.out.println("Thread interrupted");
+// }
+// }
+
+// Time.getInstance().setTimeMap(item, barang.getDeliveryTime());
+// if (Time.getInstance().getTimeMap().containsKey(item.getNama())
+// && Time.getInstance().getTimeMap().get(item.getNama()) == 0) {
+// System.out.println("Barang sampai");
+// uang -= barang.getHarga();
+// inventory.addItem(item, 1);
+// Time.getInstance().getTimeMap().remove(item.getNama());
+// }

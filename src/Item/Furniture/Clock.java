@@ -9,6 +9,7 @@ public class Clock extends Furniture {
 
     public void lihatWaktu(){
         System.out.println(Time.getInstance().getTimeRemaining());
+        Time.getInstance().getActivityTimeRemaining();
     }
 
 }

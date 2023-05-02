@@ -4,16 +4,25 @@ package src.World;
 // import java.util.ArrayList;
 // import java.util.List;
 import java.util.Map;
+
+import src.Inventory.Inventory;
+import src.Item.Buyable;
+import src.Item.Item;
+import src.Rumah.Rumah;
+import src.Sim.Sim;
+
 import java.util.HashMap;
 
 public class Time {
     private static Time instance;
     private int currentTime;
-    private Map<String, Integer> timeMap;
+    private Map<Item, Integer> timeMapBeliBarang;
+    private Map<Rumah, Integer> timeMapUpgradeRumah;
 
     private Time() {
         currentTime = 0;
-        timeMap = new HashMap<>();
+        timeMapBeliBarang = new HashMap<>();
+        timeMapUpgradeRumah = new HashMap<>();
     }
 
     public static Time getInstance() {
@@ -23,12 +32,28 @@ public class Time {
         return instance;
     }
 
-    public void setTimeMap(String key, int value) {
-        timeMap.put(key, value);
+    public void setTimeMapBeliBarang(Item key, int value) {
+        timeMapBeliBarang.put(key, value);
     }
 
-    public Map<String, Integer> getTimeMap() {
-        return timeMap;
+    public void setTimeMapUpgradeRumah(Rumah key, int value) {
+        timeMapUpgradeRumah.put(key, value);
+    }
+
+    public void removeTimeMapBeliBarang(Item key) {
+        timeMapBeliBarang.remove(key);
+    }
+
+    public void removeTimeMapUpgradeRumah(Rumah key) {
+        timeMapUpgradeRumah.remove(key);
+    }
+
+    public Map<Item, Integer> getTimeMapBeliBarang() {
+        return timeMapBeliBarang;
+    }
+
+    public Map<Rumah, Integer> getTimeMapUpgradeRumah() {
+        return timeMapUpgradeRumah;
     }
 
     public synchronized int getCurrentTime() {
@@ -40,8 +65,13 @@ public class Time {
     }
 
     public synchronized void getActivityTimeRemaining() {
-        for (Map.Entry<String, Integer> entry : timeMap.entrySet()) {
-            String key = entry.getKey();
+        for (Map.Entry<Item, Integer> entry : timeMapBeliBarang.entrySet()) {
+            Item key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println(key + " : " + value);
+        }
+        for (Map.Entry<Rumah, Integer> entry : timeMapUpgradeRumah.entrySet()) {
+            Rumah key = entry.getKey();
             Integer value = entry.getValue();
             System.out.println(key + " : " + value);
         }
@@ -49,11 +79,6 @@ public class Time {
 
     public synchronized void incrementTime() {
         currentTime++;
-        for (Map.Entry<String, Integer> entry : timeMap.entrySet()) {
-            String key = entry.getKey();
-            Integer value = entry.getValue() - 1;
-            timeMap.put(key, value);
-        }
     }
 
     // public synchronized void consumeTime(int duration) {
