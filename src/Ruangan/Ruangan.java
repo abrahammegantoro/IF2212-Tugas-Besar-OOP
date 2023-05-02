@@ -194,7 +194,8 @@ public class Ruangan {
                         System.out.print("CLK ");
                     } else if (furniture.getNama().equals("Toilet")) {
                         System.out.print("TOI ");
-                    } 
+                    } else if (furniture.getNama().equals("Toilet")) {
+                        System.out.print("TOI ");
                 } else {
                     System.out.print("--- ");
                 }
@@ -439,6 +440,33 @@ public class Ruangan {
         }
 
         return nearestPosition;
+    }
+
+    public void editRoom() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Pilih menu :");
+        System.out.println("1. Beli Barang");
+        System.out.println("2. Pindah Barang");
+        System.out.print("Your choice: ");
+        int choice = scanner.nextInt();
+
+        //terus minta inputan sampai benar bahkan jika memasukkan inputan char/string
+        while (choice < 1 || choice > 2) {
+            System.out.println("Inputan salah. Silakan masukkan angka antara 1 dan 2.");
+            System.out.print("Your choice: ");
+            choice = scanner.nextInt();
+        }
+
+        switch (choice) {
+            case 1:
+                beliBarang();
+                break;
+            case 2:
+                // Cek inventory yang ingin  dipasang
+                // Cek apakah ada di inventory
+                pasangBarang();
+                break;
+        }
     }
 
     // YANG BISA MILIH SENDIRI TITIKNYA
