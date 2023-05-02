@@ -72,6 +72,20 @@ public class World {
         }
     }
 
+    public void addRumah(Sim sim, Point location) {
+        if (isCoordinateAvailable(location)) {
+            Rumah rumahBaru = new Rumah(sim, location);
+            this.daftarRumah.add(rumahBaru);
+            gridRumah[(int) location.getX()][(int) location.getY()] = rumahBaru;
+            sim.setRumahUtama(rumahBaru);
+            sim.setRumahSaatIni(rumahBaru);
+            sim.setRuanganSaatIni(rumahBaru.getRuangan("Ruang Tamu"));
+            System.out.println("Rumah " + sim.getNama() + " berhasil dibuat.");
+        } else {
+            System.out.println("Koordinat sudah terisi oleh rumah lain.");
+        }
+    }
+    
     public Rumah getRumah(String namaRumah) {
         for (Rumah rumah : daftarRumah) {
             if (rumah.getNamaRumah().equals(namaRumah)) {
@@ -93,20 +107,6 @@ public class World {
         }
         System.out.println("0. Exit");
         System.out.println("\n");
-    }
-
-    public void addRumah(Sim sim, Point location) {
-        if (isCoordinateAvailable(location)) {
-            Rumah rumahBaru = new Rumah(sim, location);
-            this.daftarRumah.add(rumahBaru);
-            gridRumah[(int) location.getX()][(int) location.getY()] = rumahBaru;
-            sim.setRumahUtama(rumahBaru);
-            sim.setRumahSaatIni(rumahBaru);
-            sim.setRuanganSaatIni(rumahBaru.getRuangan("Ruang Tamu"));
-            System.out.println("Rumah " + sim.getNama() + " berhasil dibuat.");
-        } else {
-            System.out.println("Koordinat sudah terisi oleh rumah lain.");
-        }
     }
 
     public boolean isCoordinateAvailable(Point location) {

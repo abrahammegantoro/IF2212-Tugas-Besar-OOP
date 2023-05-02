@@ -1,9 +1,11 @@
 package src;
 import java.util.*;
+
+import src.MainMenu.MainMenu;
 import src.Sim.Sim;
 
 public class Main {
-    ArrayList<Sim> listSim = new ArrayList<Sim>();
+    // ArrayList<Sim> listSim = new ArrayList<Sim>();
     // public static long timeNow = 0;
 
     // public static void runTheTime() {
@@ -22,4 +24,7 @@ public class Main {
     //     };
     //     temp.start();
     // }
+    public static void main(String[] args) {
+        MainMenu.showGameMenu();
+    }
 }
