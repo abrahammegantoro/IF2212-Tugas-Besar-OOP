@@ -123,10 +123,12 @@ public class Ruangan {
         System.out.printf("%-7s%-15s\n", "No.", "Name");
         System.out.println("-------------------------");
 
+
         int count = 1;
         for (Furniture furniture : daftarFurniture.keySet()) {
             List<Point> furniturePositions = daftarFurniture.get(furniture);
             String furnitureName;
+
 
             if (!furniturePositions.isEmpty()) {
                 Point smallestPosition = furniturePositions.get(0);
@@ -193,29 +195,31 @@ public class Ruangan {
                     } else if (furniture.getNama().equals("Meja dan Kursi")) {
                         System.out.print("TNC ");
                     } else if (furniture.getNama().equals("Jam")) {
-                        System.out.print("CLK ");
+                        System.out.print("JAM ");
                     } else if (furniture.getNama().equals("Toilet")) {
                         System.out.print("TOI ");
-                    } else if (furniture.getNama().equals("Piano")) {
-                        System.out.print("PNO ");
-                    } else if (furniture.getNama().equals("Sajadah")) {
-                        System.out.print("SJD ");
-                    } else if (furniture.getNama().equals("Teleskop")) {
-                        System.out.print("TSP ");
-                    } else if (furniture.getNama().equals("Rak Buku")) {
-                        System.out.print("RBK ");
                     } else if (furniture.getNama().equals("Komputer")) {
                         System.out.print("KOM ");
+                    } else if (furniture.getNama().equals("Piano")) {
+                        System.out.print("PIA ");
+                    } else if (furniture.getNama().equals("Rak Buku")) {
+                        System.out.print("RAK ");
+                    } else if (furniture.getNama().equals("Sajadah")) {
+                        System.out.print("SJD ");
                     } else if (furniture.getNama().equals("Shower")) {
-                        System.out.print("SWR ");
-                    } else {
-                        System.out.print("--- ");
+                        System.out.print("SHW ");
+                    } else if (furniture.getNama().equals("Teleskop")) {
+                        System.out.print("TKP ");
+                    } else if (furniture.getNama().equals("TV")) {
+                        System.out.print("TLV ");
                     }
+                } else {
+                    System.out.print("--- ");
                 }
-                System.out.println();
             }
-            System.out.println("-------------------------");
+            System.out.println();
         }
+        System.out.println("-------------------------");
     }
 
     // visualisasi sim pada ruangan
@@ -442,6 +446,23 @@ public class Ruangan {
         }
     }
 
+    public boolean isSimOnFurniture(Sim sim, Class<? extends Furniture> furnitureClass) {
+        for (Map.Entry<Sim, Point> simEntry : daftarSim.entrySet()) {
+            if (simEntry.getKey().equals(sim)) {
+                for (Map.Entry<Furniture, List<Point>> furnitureEntry : daftarFurniture.entrySet()) {
+                    if (furnitureClass.isInstance(furnitureEntry.getKey())) {
+                        for (Point point : furnitureEntry.getValue()) {
+                            if (point.equals(simEntry.getValue())) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     // // YANG DIPILIHIN TERDEKAT
     public Point selectPositionOnFurniture(Furniture furniture) {
         List<Point> furniturePositions = getPositionsOfFurniture(furniture);
@@ -527,7 +548,9 @@ public class Ruangan {
             ruangan.moveFurniture(mejaKursi, new Point(4, 4));
         } catch (Exception e) {
             System.out.println(
+                    
                     "Penempatan furniture berada di luar ukuran ruangan atau ada furniture lain yang menghalanginya, error: "
+                           
                             + e.getMessage());
         }
 

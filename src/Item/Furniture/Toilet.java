@@ -7,7 +7,7 @@ public class Toilet extends Furniture{
         super("Toilet", 1, 1, 50);
     }
 
-    public void buangAir(Sim sim) {
+    public static void buangAir(Sim sim) {
         Thread buangAirThread = new Thread(new Runnable() {
             @Override
             public void run() {

@@ -8,7 +8,7 @@ public class Shower extends Furniture{
         super("Shower", 1, 1, 50);
     }
     
-    public void mandi(Sim sim){
+    public static void mandi(Sim sim){
         Thread mandiThread = new Thread(new Runnable() {
             @Override
             public void run() {

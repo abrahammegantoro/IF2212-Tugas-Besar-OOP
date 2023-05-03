@@ -15,7 +15,7 @@ public class MejaKursi extends Furniture {
         super("Meja dan Kursi", 3, 3, 50);
     }
 
-    public void makan(Sim sim) {
+    public static void makan(Sim sim) {
         showMakanan(sim.getInventory());
 
         Scanner input = new Scanner(System.in);
@@ -59,7 +59,7 @@ public class MejaKursi extends Furniture {
         // note : waktu makan belum diurus
     }
 
-    public void showMakanan(Inventory<Item> inventory) {
+    public static void showMakanan(Inventory<Item> inventory) {
         System.out.println("Inventory: ");
         System.out.println("Makanan\t\tAmount");
         System.out.println("---------------------------------");
