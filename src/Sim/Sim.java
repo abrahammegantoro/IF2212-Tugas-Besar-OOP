@@ -203,7 +203,7 @@ public class Sim {
         System.out.print("Durasi Kerja :  ");
         int durasi = input.nextInt();
 
-        while (durasi % 1 != 0) {
+        while (durasi % 120 != 0) {
             System.out.println("Durasi kerja harus kelipatan 120");
             System.out.print("Durasi Kerja :  ");
             durasi = input.nextInt();
@@ -212,8 +212,8 @@ public class Sim {
         setStatus("Kerja");
         Thread kerjaThread = new Thread(new Runnable() {
             public void run() {
-                // Time.getInstance().consumeTime(durasiAkhir);
                 int counter = 0;
+                System.out.println(durasiAkhir);
                 while (counter < durasiAkhir) {
                     try {
                         Thread.sleep(1000);
@@ -225,18 +225,19 @@ public class Sim {
                         System.out.println("Thread interrupted");
                     }
                 }
+                kekenyangan -= ((durasiAkhir / 30) * 10);
+                mood -= ((durasiAkhir / 30) * 10);
+                uang += ((durasiAkhir / 240) * pekerjaan.getGaji());
+                System.out.println(kekenyangan);
+
+                pekerjaan.addTimesWorked(durasiAkhir);
+                setStatus("None");
             }
         });
         kerjaThread.start();
 
         try {
             kerjaThread.join();
-            setKekenyangan(kekenyangan - ((durasiAkhir / 30) * 10));
-            setMood(mood - ((durasiAkhir / 30) * 10));
-            setUang(uang + ((durasiAkhir / 240) * pekerjaan.getGaji()));
-
-            pekerjaan.addTimesWorked(durasi);
-            setStatus("None");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -249,7 +250,7 @@ public class Sim {
         System.out.print("Durasi Olahraga :  ");
         int durasi = input.nextInt();
 
-        while (durasi % 5 != 0) {
+        while (durasi % 20 != 0) {
             System.out.println("Durasi olahraga harus kelipatan 20");
             System.out.print("Durasi Olahraga :  ");
             durasi = input.nextInt();
@@ -273,6 +274,10 @@ public class Sim {
                         System.out.println("Thread interrupted");
                     }
                 }
+                kesehatan += ((durasiFinal / 20) * 5);
+                mood += ((durasiFinal / 20) * 10);
+                kekenyangan -= ((durasiFinal / 20) * 5);
+                setStatus("None");
             }
         });
 
@@ -280,10 +285,6 @@ public class Sim {
 
         try {
             olahragaThread.join();
-            setKesehatan(kesehatan + ((durasiFinal / 20) * 5));
-            setMood(mood + ((durasiFinal / 20) * 10));
-            setKekenyangan(kekenyangan - ((durasiFinal / 20) * 5));
-            setStatus("None");
         } catch (InterruptedException e) {
             System.out.println("Thread interrupted");
         }

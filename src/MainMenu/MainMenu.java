@@ -14,9 +14,9 @@ public class MainMenu {
  
     public static void start(){
         addSim();
-
+        isGameStarted = true;
         while (isGameStarted) {
-            
+            showInGameMenu();
         }
     }
 
@@ -113,7 +113,7 @@ public class MainMenu {
                 currentSim.olahraga();
                 break;
             case 3:
-                currentSim.moveToObject();
+                // currentSim.moveToObject();
                 break;
             case 4:
                 currentSim.berkunjung();
@@ -201,11 +201,9 @@ public class MainMenu {
             System.out.print("y : ");
             int y = in.nextInt();
             world.addRumah(sim, new Point(x, y));
-            System.out.println("Rumah sim berhasil dibuat.");
         }
         else {
             world.addRumah(sim);
-            System.out.println("Rumah sim berhasil dibuat.");
         }
     }
 
@@ -288,5 +286,9 @@ public class MainMenu {
     public static void exit(){
         System.out.println("Terima kasih telah memainkan Simpli-city");
         System.exit(0);
+    }
+
+    public static void main(String[] args) {
+        showGameMenu();
     }
 }
