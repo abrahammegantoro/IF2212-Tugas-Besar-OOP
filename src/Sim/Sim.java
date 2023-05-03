@@ -404,33 +404,36 @@ public class Sim {
 
     public void store() {
         // Print the header row
-        System.out.printf("%-5s| %-18s| %-6s%n", "No.", "Item", "Price");
-        System.out.println("____________________");
+        System.out.println("-----------------------------------");
+        System.out.printf("| %-4s| %-18s| %-6s|%n", "No.", "Item", "Price");
+        System.out.println("-----------------------------------");
+
 
         // Print the data row
-        System.out.printf("%-5d| %-18s| %-6d%n", 1, "Kasur Single", 50);
-        System.out.printf("%-5d| %-18s| %-6d%n", 2, "Kasur Queen Size", 100);
-        System.out.printf("%-5d| %-18s| %-6d%n", 3, "Kasur King Size", 150);
-        System.out.printf("%-5d| %-18s| %-6d%n", 4, "Toilet", 50);
-        System.out.printf("%-5d| %-18s| %-6d%n", 5, "Kompor Gas", 100);
-        System.out.printf("%-5d| %-18s| %-6d%n", 6, "Kompor Listrik", 200);
-        System.out.printf("%-5d| %-18s| %-6d%n", 7, "Meja dan Kursi", 50);
-        System.out.printf("%-5d| %-18s| %-6d%n", 8, "Jam", 10);
-        System.out.printf("%-5d| %-18s| %-6d%n", 9, "TV", 150);
-        System.out.printf("%-5d| %-18s| %-6d%n", 10, "Komputer", 100);
-        System.out.printf("%-5d| %-18s| %-6d%n", 11, "Sajadah", 10);
-        System.out.printf("%-5d| %-18s| %-6d%n", 12, "Piano", 100);
-        System.out.printf("%-5d| %-18s| %-6d%n", 13, "Shower", 50);
-        System.out.printf("%-5d| %-18s| %-6d%n", 14, "Teleskop", 100);
-        System.out.printf("%-5d| %-18s| %-6d%n", 15, "Rak Buku", 100);
-        System.out.printf("%-5d| %-18s| %-6d%n", 16, "Nasi", 5);
-        System.out.printf("%-5d| %-18s| %-6d%n", 17, "Kentang", 3);
-        System.out.printf("%-5d| %-18s| %-6d%n", 18, "Ayam", 10);
-        System.out.printf("%-5d| %-18s| %-6d%n", 19, "Sapi", 12);
-        System.out.printf("%-5d| %-18s| %-6d%n", 20, "Wortel", 3);
-        System.out.printf("%-5d| %-18s| %-6d%n", 21, "Bayam", 3);
-        System.out.printf("%-5d| %-18s| %-6d%n", 22, "Kacang", 2);
-        System.out.printf("%-5d| %-18s| %-6d%n", 23, "Susu", 2);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 1, "Kasur Single", 50);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 2, "Kasur Queen Size", 100);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 3, "Kasur King Size", 150);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 4, "Toilet", 50);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 5, "Kompor Gas", 100);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 6, "Kompor Listrik", 200);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 7, "Meja dan Kursi", 50);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 8, "Jam", 10);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 9, "TV", 150);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 10, "Komputer", 100);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 11, "Sajadah", 10);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 12, "Piano", 100);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 13, "Shower", 50);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 14, "Teleskop", 100);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 15, "Rak Buku", 100);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 16, "Nasi", 5);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 17, "Kentang", 3);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 18, "Ayam", 10);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 19, "Sapi", 12);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 20, "Wortel", 3);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 21, "Bayam", 3);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 22, "Kacang", 2);
+        System.out.printf("| %-4d| %-18s| %-6d|%n", 23, "Susu", 2);
+        System.out.println("-----------------------------------");
     }
 
     public void beliBarang() {
