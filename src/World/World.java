@@ -32,6 +32,23 @@ public class World {
     //     return daftarSim;
     // }
 
+    public void printWorld() {
+        System.out.println("World :");
+        System.out.println("-------");
+        for (int i = 0; i < 64; i++) {
+            System.out.print("|");
+            for (int j = 0; j < 64; j++) {
+                if (gridRumah[i][j] == null) {
+                    System.out.print("- ");
+                } else {
+                    System.out.print("R ");
+                }
+            }
+            System.out.println("|");
+        }
+        System.out.println("-------");
+    }
+
     public List<Rumah> getDaftarRumah() {
         return daftarRumah;
     }
@@ -55,28 +72,6 @@ public class World {
         }
     }
 
-    public Rumah getRumah(String namaRumah) {
-        for (Rumah rumah : daftarRumah) {
-            if (rumah.getNamaRumah().equals(namaRumah)) {
-                return rumah;
-            }
-        }
-        return null;
-    }
-
-    public void printDaftarRumahExceptSim(String namaRumahSaatIni) {
-        System.out.println("Daftar rumah yang dapat dikunjungi :");
-        System.out.println("-------------------------------");
-        for (int i = 0; i < daftarRumah.size(); i++) {
-            if (!daftarRumah.get(i).getNamaRumah().equals(namaRumahSaatIni)) {
-                System.out.println((i + 1) + ". " + daftarRumah.get(i).getNamaRumah());
-            }
-        }
-        System.out.println("0. Exit");
-        System.out.println("\n");
-    }
-    
-
     public void addRumah(Sim sim, Point location) {
         if (isCoordinateAvailable(location)) {
             Rumah rumahBaru = new Rumah(sim, location);
@@ -89,6 +84,29 @@ public class World {
         } else {
             System.out.println("Koordinat sudah terisi oleh rumah lain.");
         }
+    }
+    
+    public Rumah getRumah(String namaRumah) {
+        for (Rumah rumah : daftarRumah) {
+            if (rumah.getNamaRumah().equals(namaRumah)) {
+                return rumah;
+            }
+        }
+        return null;
+    }
+
+    public void printDaftarRumahExceptSim(String namaRumahSaatIni) {
+        System.out.println("Daftar rumah yang dapat dikunjungi:");
+        System.out.println("-------------------------------");
+        int counter = 1;
+        for (int i = 0; i < daftarRumah.size(); i++) {
+            if (!daftarRumah.get(i).getNamaRumah().equals(namaRumahSaatIni)) {
+                System.out.println(counter + ". " + daftarRumah.get(i).getNamaRumah());
+                counter++;
+            }
+        }
+        System.out.println("0. Exit");
+        System.out.println("\n");
     }
 
     public boolean isCoordinateAvailable(Point location) {

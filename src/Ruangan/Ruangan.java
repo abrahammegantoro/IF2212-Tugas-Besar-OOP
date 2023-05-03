@@ -71,153 +71,185 @@ public class Ruangan {
 
     // UNTUK SEMUA TITIK
     // public void printDaftarFurnitureName() {
-    //     List<String> furnitureNames = new ArrayList<>();
-    //     for (Map.Entry<Furniture, List<Point>> entry : daftarFurniture.entrySet()) {
-    //         Furniture furniture = entry.getKey();
-    //         List<Point> furniturePositions = entry.getValue();
-    //         String furnitureName = furniture.getNama();
-    
-    //         if (!furniturePositions.isEmpty()) {
-    //             StringBuilder sb = new StringBuilder();
-    //             sb.append(furnitureName).append(" (");
-    //             for (int i = 0; i < furniturePositions.size(); i++) {
-    //                 Point position = furniturePositions.get(i);
-    //                 sb.append("(").append(position.getX()).append(", ").append(position.getY()).append(")");
-    //                 if (i < furniturePositions.size() - 1) {
-    //                     sb.append(", ");
-    //                 }
-    //             }
-    //             sb.append(")");
-    //             furnitureName = sb.toString();
-    //         }
-    
-    //         furnitureNames.add(furnitureName);
-    //     }
-    //     System.out.println("Furniture Names:");
-    //     System.out.println("-------------------------");
-    //     System.out.printf("%-7s%-15s\n", "No.", "Name");
-    //     System.out.println("-------------------------");
-    
-    //     Map<String, Integer> nameCountMap = new HashMap<>();
-    //     for (int i = 0; i < furnitureNames.size(); i++) {
-    //         String furnitureName = furnitureNames.get(i);
-    //         if (nameCountMap.containsKey(furnitureName)) {
-    //             int count = nameCountMap.get(furnitureName);
-    //             count++;
-    //             nameCountMap.put(furnitureName, count);
-    //             furnitureName += " " + count;
-    //         } else {
-    //             nameCountMap.put(furnitureName, 1);
-    //         }
-    //         System.out.printf("%-7d%-15s\n", (i + 1), furnitureName);
-    //     }
-    
-    //     System.out.println("-------------------------");
+    // List<String> furnitureNames = new ArrayList<>();
+    // for (Map.Entry<Furniture, List<Point>> entry : daftarFurniture.entrySet()) {
+    // Furniture furniture = entry.getKey();
+    // List<Point> furniturePositions = entry.getValue();
+    // String furnitureName = furniture.getNama();
+
+    // if (!furniturePositions.isEmpty()) {
+    // StringBuilder sb = new StringBuilder();
+    // sb.append(furnitureName).append(" (");
+    // for (int i = 0; i < furniturePositions.size(); i++) {
+    // Point position = furniturePositions.get(i);
+    // sb.append("(").append(position.getX()).append(",
+    // ").append(position.getY()).append(")");
+    // if (i < furniturePositions.size() - 1) {
+    // sb.append(", ");
+    // }
+    // }
+    // sb.append(")");
+    // furnitureName = sb.toString();
     // }
 
-    //UNTUK TITIK TERKECIL
+    // furnitureNames.add(furnitureName);
+    // }
+    // System.out.println("Furniture Names:");
+    // System.out.println("-------------------------");
+    // System.out.printf("%-7s%-15s\n", "No.", "Name");
+    // System.out.println("-------------------------");
+
+    // Map<String, Integer> nameCountMap = new HashMap<>();
+    // for (int i = 0; i < furnitureNames.size(); i++) {
+    // String furnitureName = furnitureNames.get(i);
+    // if (nameCountMap.containsKey(furnitureName)) {
+    // int count = nameCountMap.get(furnitureName);
+    // count++;
+    // nameCountMap.put(furnitureName, count);
+    // furnitureName += " " + count;
+    // } else {
+    // nameCountMap.put(furnitureName, 1);
+    // }
+    // System.out.printf("%-7d%-15s\n", (i + 1), furnitureName);
+    // }
+
+    // System.out.println("-------------------------");
+    // }
+
+    // UNTUK TITIK TERKECIL
     public void printDaftarFurnitureName() {
         System.out.println("Furniture Names:");
         System.out.println("-------------------------");
         System.out.printf("%-7s%-15s\n", "No.", "Name");
         System.out.println("-------------------------");
-    
+
         int count = 1;
         for (Furniture furniture : daftarFurniture.keySet()) {
             List<Point> furniturePositions = daftarFurniture.get(furniture);
             String furnitureName;
-    
+
             if (!furniturePositions.isEmpty()) {
                 Point smallestPosition = furniturePositions.get(0);
                 for (Point position : furniturePositions) {
                     if (position.getX() < smallestPosition.getX() ||
-                        (position.getX() == smallestPosition.getX() && position.getY() < smallestPosition.getY())) {
+                            (position.getX() == smallestPosition.getX() && position.getY() < smallestPosition.getY())) {
                         smallestPosition = position;
                     }
                 }
-                furnitureName = furniture.getNama() + " (" + smallestPosition.getX() + ", " + smallestPosition.getY() + ")";
+                furnitureName = furniture.getNama() + " (" + smallestPosition.getX() + ", " + smallestPosition.getY()
+                        + ")";
             } else {
                 furnitureName = furniture.getNama();
             }
-    
+
             System.out.printf("%-7d%-15s\n", count, furnitureName);
             count++;
         }
-    
+
         System.out.println("-------------------------");
     }
-    
-    //visualisasikan ruangan dengan furniture
+
+    // visualisasikan ruangan dengan furniture
     // public void printRuangan() {
-    //     System.out.println(namaRuangan);
-    //     System.out.println("--------------------------------------------------");
-    //     for (int i = 0; i < gridRuangan.length; i++) {
-    //         for (int j = 0; j < gridRuangan[i].length; j++) {
-    //             if (gridRuangan[i][j] == null) {
-    //                 System.out.print("-");
-    //             } else {
-    //                 System.out.print(gridRuangan[i][j].getNama().charAt(0) + " ");
-    //             }
-    //         }
-    //         System.out.println();
-    //     }
-    //     System.out.println("--------------------------------------------------");
+    // System.out.println(namaRuangan);
+    // System.out.println("--------------------------------------------------");
+    // for (int i = 0; i < gridRuangan.length; i++) {
+    // for (int j = 0; j < gridRuangan[i].length; j++) {
+    // if (gridRuangan[i][j] == null) {
+    // System.out.print("-");
+    // } else {
+    // System.out.print(gridRuangan[i][j].getNama().charAt(0) + " ");
+    // }
+    // }
+    // System.out.println();
+    // }
+    // System.out.println("--------------------------------------------------");
     // }
 
     // visualisasi furniture pada ruangan
     public void printRuangan() {
         System.out.println(namaRuangan);
         System.out.println("-------------------------");
-    
+
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 6; col++) {
                 Object obj = gridRuangan[row][col];
-    
+
                 if (obj instanceof Sim) {
                     Sim sim = (Sim) obj;
                     System.out.print(sim.getNama().charAt(0) + " ");
                 } else if (obj instanceof Furniture) {
                     Furniture furniture = (Furniture) obj;
-                    System.out.print(furniture.getNama().charAt(0) + " ");
-                } else {
-                    System.out.print("- ");
+                    if (furniture.getNama().equals("Kasur King Size")) {
+                        System.out.print("KBD ");
+                    } else if (furniture.getNama().equals("Kasur Queen Size")) {
+                        System.out.print("QBD ");
+                    } else if (furniture.getNama().equals("Kasur Single")) {
+                        System.out.print("SBD ");
+                    } else if (furniture.getNama().equals("Kompor Listrik")) {
+                        System.out.print("EST ");
+                    } else if (furniture.getNama().equals("Kompor Gas")) {
+                        System.out.print("GST ");
+                    } else if (furniture.getNama().equals("Meja dan Kursi")) {
+                        System.out.print("TNC ");
+                    } else if (furniture.getNama().equals("Jam")) {
+                        System.out.print("CLK ");
+                    } else if (furniture.getNama().equals("Toilet")) {
+                        System.out.print("TOI ");
+                    } else if (furniture.getNama().equals("Piano")) {
+                        System.out.print("PNO ");
+                    } else if (furniture.getNama().equals("Sajadah")) {
+                        System.out.print("SJD ");
+                    } else if (furniture.getNama().equals("Teleskop")) {
+                        System.out.print("TSP ");
+                    } else if (furniture.getNama().equals("Rak Buku")) {
+                        System.out.print("RBK ");
+                    } else if (furniture.getNama().equals("Komputer")) {
+                        System.out.print("KOM ");
+                    } else if (furniture.getNama().equals("Shower")) {
+                        System.out.print("SWR ");
+                    } else {
+                        System.out.print("--- ");
+                    }
                 }
+                System.out.println();
             }
-            System.out.println();
+            System.out.println("-------------------------");
         }
-    
-        System.out.println("-------------------------");
     }
 
     // visualisasi sim pada ruangan
     public void printSim() {
         System.out.println("Sim Positions:");
         System.out.println("-------------------------");
-    
-        char[][] ruangan = new char[6][6];
-    
-        for (char[] row : ruangan) {
-            Arrays.fill(row, '-');
+
+        String[][] ruangan = new String[6][6];
+
+        for (String[] row : ruangan) {
+            Arrays.fill(row, "---");
         }
-    
+
         for (Map.Entry<Sim, Point> entry : daftarSim.entrySet()) {
             Sim sim = entry.getKey();
             Point simPosition = entry.getValue();
             int row = simPosition.getX();
             int col = simPosition.getY();
-            ruangan[row][col] = sim.getNama().charAt(0);
+            String simName = sim.getNama();
+            if (simName.length() > 3) {
+                simName = simName.substring(0, 3);
+            }
+            ruangan[row][col] = simName.toUpperCase();
         }
-    
-        for (char[] row : ruangan) {
-            for (char cell : row) {
+
+        for (String[] row : ruangan) {
+            for (String cell : row) {
                 System.out.print(cell + " ");
             }
             System.out.println();
         }
-    
+
         System.out.println("-------------------------");
     }
-    
 
     public void putSim(Sim sim, Point point) {
         daftarSim.put(sim, point);
@@ -287,7 +319,7 @@ public class Ruangan {
         }
     }
 
-    public void moveFurniture (Furniture furniture, Point point) {
+    public void moveFurniture(Furniture furniture, Point point) {
         List<Point> listPoint = daftarFurniture.get(furniture);
         if (listPoint != null) {
             int panjang = furniture.getPanjang();
@@ -319,7 +351,7 @@ public class Ruangan {
             System.out.println("Tidak ada furniture dengan nama tersebut.");
         }
     }
-    
+
     private List<Point> getPositionsOfFurniture(Furniture furniture) {
         List<Point> positions = new ArrayList<>();
         for (Map.Entry<Furniture, List<Point>> entry : daftarFurniture.entrySet()) {
@@ -339,7 +371,9 @@ public class Ruangan {
         }
         return false;
     }
-    // jika ada nama furniture yang sama, user akan disuruh untuk memilih furniture yang mana yang ingin dipilih, jika tidak langsung mereturn furniture tersebut
+
+    // jika ada nama furniture yang sama, user akan disuruh untuk memilih furniture
+    // yang mana yang ingin dipilih, jika tidak langsung mereturn furniture tersebut
     private Furniture selectFurniture(String furnitureName) {
         if (isFurnitureNameExist(furnitureName)) {
             List<Furniture> furnitureList = new ArrayList<>();
@@ -350,16 +384,20 @@ public class Ruangan {
             }
             if (furnitureList.size() > 1) {
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Ada beberapa furnitur dengan nama yang sama. Silakan pilih salah satu furnitur berikut:");
+                System.out.println(
+                        "Ada beberapa furnitur dengan nama yang sama. Silakan pilih salah satu furnitur berikut:");
                 for (int i = 0; i < furnitureList.size(); i++) {
-                    System.out.println((i + 1) + ". " + furnitureList.get(i).getNama() + " pada titik " + daftarFurniture.get(furnitureList.get(i)).get(0).getX() + ", " + daftarFurniture.get(furnitureList.get(i)).get(0).getY() + ".");
+                    System.out.println((i + 1) + ". " + furnitureList.get(i).getNama() + " pada titik "
+                            + daftarFurniture.get(furnitureList.get(i)).get(0).getX() + ", "
+                            + daftarFurniture.get(furnitureList.get(i)).get(0).getY() + ".");
                 }
                 System.out.print("Your choice: ");
                 int choice = scanner.nextInt();
 
-                //terus minta inputan sampai benar bahkan jika memasukkan inputan char/string
+                // terus minta inputan sampai benar bahkan jika memasukkan inputan char/string
                 while (choice < 1 || choice > furnitureList.size()) {
-                    System.out.println("Inputan salah. Silakan masukkan angka antara 1 sampai " + furnitureList.size() + ".");
+                    System.out.println(
+                            "Inputan salah. Silakan masukkan angka antara 1 sampai " + furnitureList.size() + ".");
                     System.out.print("Your choice: ");
                     choice = scanner.nextInt();
                 }
@@ -394,7 +432,8 @@ public class Ruangan {
                 sim.setPosisiSim(targetPosition);
 
                 // Print success message
-                System.out.println("Sim berhasil dipindahkan ke " + furniture.getNama() + " pada titik " + targetPosition.getX() + ", " + targetPosition.getY() + ".");
+                System.out.println("Sim berhasil dipindahkan ke " + furniture.getNama() + " pada titik "
+                        + targetPosition.getX() + ", " + targetPosition.getY() + ".");
             } else {
                 System.out.println("Tidak ada posisi yang tersedia pada furnitur.");
             }
@@ -415,7 +454,7 @@ public class Ruangan {
         Point nearestPosition = furniturePositions.get(0);
         for (Point position : furniturePositions) {
             if (position.getX() < nearestPosition.getX() ||
-                (position.getX() == nearestPosition.getX() && position.getY() < nearestPosition.getY())) {
+                    (position.getX() == nearestPosition.getX() && position.getY() < nearestPosition.getY())) {
                 nearestPosition = position;
             }
         }
@@ -425,23 +464,24 @@ public class Ruangan {
 
     // YANG BISA MILIH SENDIRI TITIKNYA
     // private Point selectPositionOnFurniture(List<Point> furniturePositions) {
-    //     System.out.println("Posisi yang dapat dituju untuk berinteraksi dengan furniture:");
-    //     for (int i = 0; i < furniturePositions.size(); i++) {
-    //         System.out.println((i + 1) + ". " + furniturePositions.get(i).getX() + ", "
-    //                 + furniturePositions.get(i).getY());
-    //     }
+    // System.out.println("Posisi yang dapat dituju untuk berinteraksi dengan
+    // furniture:");
+    // for (int i = 0; i < furniturePositions.size(); i++) {
+    // System.out.println((i + 1) + ". " + furniturePositions.get(i).getX() + ", "
+    // + furniturePositions.get(i).getY());
+    // }
 
-    //     Scanner scanner = new Scanner(System.in);
-    //     int choice = -1;
+    // Scanner scanner = new Scanner(System.in);
+    // int choice = -1;
 
-    //     while (choice <= 0 || choice > furniturePositions.size()) {
-    //         System.out.print("Pilih posisi:");
-    //         choice = scanner.nextInt();
-    //         if (choice <= 0 || choice > furniturePositions.size()) {
-    //             System.out.println("Pilihan tidak valid.");
-    //         }
-    //     }
-    //     return furniturePositions.get(choice - 1);
+    // while (choice <= 0 || choice > furniturePositions.size()) {
+    // System.out.print("Pilih posisi:");
+    // choice = scanner.nextInt();
+    // if (choice <= 0 || choice > furniturePositions.size()) {
+    // System.out.println("Pilihan tidak valid.");
+    // }
+    // }
+    // return furniturePositions.get(choice - 1);
     // }
 
     // driver ruangan
@@ -468,13 +508,15 @@ public class Ruangan {
                     (i + 1) + ". " + furniturePositions.get(i).getX() + ", " + furniturePositions.get(i).getY());
         }
 
-        ruangan.printRuangan(); ruangan.printSim();
+        ruangan.printRuangan();
+        ruangan.printSim();
         System.out.println("Sebelum dipindah");
         System.out.println(sim.getPosisiSim().getX() + ", " + sim.getPosisiSim().getY());
 
         ruangan.moveSimToFurniture(sim, "Toilet");
-        //print sim position
-        ruangan.printRuangan(); ruangan.printSim();
+        // print sim position
+        ruangan.printRuangan();
+        ruangan.printSim();
         System.out.println("Sesudah dipindah");
         System.out.println(sim.getPosisiSim().getX() + ", " + sim.getPosisiSim().getY());
 
@@ -484,13 +526,17 @@ public class Ruangan {
         try {
             ruangan.moveFurniture(mejaKursi, new Point(4, 4));
         } catch (Exception e) {
-            System.out.println("Penempatan furniture berada di luar ukuran ruangan atau ada furniture lain yang menghalanginya, error: " + e.getMessage());
+            System.out.println(
+                    "Penempatan furniture berada di luar ukuran ruangan atau ada furniture lain yang menghalanginya, error: "
+                            + e.getMessage());
         }
 
         try {
             ruangan.moveFurniture(mejaKursi, new Point(3, 3));
         } catch (Exception e) {
-            System.out.println("Penempatan furniture berada di luar ukuran ruangan atau ada furniture lain yang menghalanginya, error: " + e.getMessage());
+            System.out.println(
+                    "Penempatan furniture berada di luar ukuran ruangan atau ada furniture lain yang menghalanginya, error: "
+                            + e.getMessage());
         }
 
         System.out.println("Sesudah FURNITURE dipindah");
@@ -499,6 +545,5 @@ public class Ruangan {
         System.out.println("\nNambahin MejaKursi lagi : ");
         ruangan.addFurniture(new MejaKursi(), new Point(0, 3));
         ruangan.printRuangan();
-
     }
 }

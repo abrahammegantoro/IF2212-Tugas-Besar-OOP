@@ -2,51 +2,245 @@ package src.MainMenu;
 import java.util.*;
 
 import src.Sim.Sim;
+import src.World.Point;
+import src.World.World;
 
 public class MainMenu {
-    Scanner in = new Scanner(System.in);
+    private static ArrayList<Sim> listSim = new ArrayList<Sim>();
+    private static World world = World.getInstance();
+    private static boolean isGameStarted = false;
+    private static Sim currentSim;
+    private static Scanner in = new Scanner(System.in);
  
-    public void start(){
-        //masih dalam proses
+    public static void start(){
+        addSim();
+
+        while (isGameStarted) {
+            
+        }
     }
 
-    public void load(){
-        //masih dalam proses
+    // public static void load(){
+    //     //masih dalam proses
+    // }
+
+    // Menu paling pertama yang ditampilkan
+    public static void showGameMenu() {
+        System.out.println("Selamat datang di Simpli-City!");
+        System.out.println("Silakan pilih menu yang tersedia :");
+        System.out.println("1. Start Game");
+        System.out.println("2. Help");
+        System.out.println("3. Exit");
+        System.out.print("Masukkan pilihan Anda (Angka saja) : ");
+        int input = in.nextInt();
+        in.nextLine();
+        switch (input) {
+            case 1:
+                showGameMenuNewGameOrLoadGame();
+                break;
+            case 2:
+                help();
+                showGameMenu();
+                break;
+            case 3:
+                System.out.println("Terima kasih telah bermain!");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Pilihan tidak tersedia.");
+                showGameMenu();
+                break;
+        }
     }
 
-    public void addSim(ArrayList<Sim> listSim){
-        System.out.print("Silahkan Masukkan nama sim : ");
-        String nama = in.next();
-        
-        Sim simBaru = new Sim(nama);
-
-        listSim.add(simBaru);
+    // Menu kedua yang ditampilkan
+    public static void showGameMenuNewGameOrLoadGame() {
+        System.out.println("Silakan pilih menu yang tersedia :");
+        System.out.println("1. New Game");
+        System.out.println("2. Load Game (msh blm bisa)");
+        System.out.println("3. Back");
+        System.out.print("Masukkan pilihan Anda (Angka saja) : ");
+        int input = in.nextInt();
+        in.nextLine();
+        switch (input) {
+            case 1: 
+                start();
+                break;
+            case 2:
+                // load();
+                showGameMenuNewGameOrLoadGame();
+                break;
+            case 3:
+                showGameMenu();
+                break;
+            default:
+                System.out.println("Pilihan tidak tersedia.");
+                showGameMenuNewGameOrLoadGame();
+                break;
+        }
     }
 
-    public void changeSim(Sim currentSIm, Sim sim){
-        currentSIm = sim;
+    // Menu setelah game dimulai dan sim pertama sudah dibuat
+    public static void showInGameMenu() {
+        System.out.println("Silakan pilih menu yang tersedia :");
+        System.out.println("1. Kerja");
+        System.out.println("2. Olahraga");
+        System.out.println("3. Move to Object");
+        System.out.println("4. Berkunjung");
+        System.out.println("5. Upgrade Rumah"); // jgn lupa dicek dulu di rumahnya sendiri ato kgk
+        System.out.println("6. Pindah Ruangan");
+        System.out.println("7. Lihat Inventory");
+        System.out.println("8. Edit Room"); //Pasang Barang dan Beli Barang (jgn lupa dicek dulu di rumahnya sendiri ato kgk)
+        System.out.println("9. View List Object");
+        System.out.println("10. View Sim Info");
+        System.out.println("11. View Current Location");
+        System.out.println("12. Add Sim");
+        System.out.println("13. Change Sim");
+        System.out.println("14. Save Game");
+        System.out.println("15. Load Game");
+        System.out.println("16. Help");
+        System.out.println("17. Exit");
+        System.out.print("Masukkan pilihan Anda (Angka saja) : ");
+        int input = in.nextInt();
+        in.nextLine();
+        switch (input) {
+            case 1:
+                currentSim.kerja();
+                // tekan key enter untuk lanjut
+
+                break;
+            case 2:
+                currentSim.olahraga();
+                break;
+            case 3:
+                currentSim.moveToObject();
+                break;
+            case 4:
+                currentSim.berkunjung();
+                break;
+            case 5:
+                if (currentSim.getRumahSaatIni() == currentSim.getRumahUtama()) {
+                    currentSim.getRumahUtama().upgradeRumah(currentSim);
+                } else {
+                    System.out.println("Anda tidak berada di rumah utama.");
+                    delay(1000);
+                    showInGameMenu();
+                }
+                break;
+            case 6:
+                currentSim.pindahRuangan();
+                showInGameMenu();
+                break;
+            case 7:
+                currentSim.viewInventory();
+                showInGameMenu();
+                break;
+            case 8:
+                currentSim.editRoom();
+                break;
+            case 9:
+                currentSim.getRuanganSaatIni().printRuangan();
+                break;
+            case 10:
+                viewSimInfo(); // jgn lupa rapiin, bikinnya di Sim.java
+                showInGameMenu();
+                break;
+            case 11:
+                viewCurrentLocation(); // jgn lupa rapiin, bikinnya di Sim.java
+                break;
+            case 12:
+                addSim();
+                break;
+            case 13:
+                changeSim();
+                break;
+            case 14:
+                // save();
+                break;
+            case 15:
+                // load();
+                break;
+            case 16:
+                help();
+                showInGameMenu();
+                break;
+            case 17:
+                System.out.println("Terima kasih telah bermain!");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Pilihan tidak tersedia.");
+                showInGameMenu();
+                break;
+        }
     }
 
-    public void viewSimInfo(Sim sim){
+    private static void delay(int i) {
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addSim(){ // Menambahkan sim baru
+        System.out.println("Silakan masukkan nama sim Anda");
+        String nama = in.nextLine();
+        Sim sim = new Sim(nama);
+        listSim.add(sim);
+        currentSim = sim;
+        System.out.println("Sim berhasil dibuat.");
+
+        // Pembuatan rumah, user memilih untuk dibuatkan rumah di point yang di mana saja ataupun yang dipilih oleh user secara langsung
+        System.out.println("Apakah anda ingin menentukan lokasi/titik tertentu ((0, 0) s.d. (64, 64)) dari rumah sim? Jika tidak, akan dipilihkan secara otomatis. (Y/N)");
+        String input = in.nextLine();
+        if(input.equals("Y")){
+            System.out.println("Silakan masukkan koordinat x dan y dari rumah sim Anda");
+            System.out.print("x : ");
+            int x = in.nextInt();
+            System.out.print("y : ");
+            int y = in.nextInt();
+            world.addRumah(sim, new Point(x, y));
+            System.out.println("Rumah sim berhasil dibuat.");
+        }
+        else {
+            world.addRumah(sim);
+            System.out.println("Rumah sim berhasil dibuat.");
+        }
+    }
+
+    public static void changeSim(){
+        System.out.println("Silakan pilih sim yang ingin Anda mainkan :");
+        for(int i = 0; i < listSim.size(); i++){
+            System.out.println((i+1) + ". " + listSim.get(i).getNama());
+        }
+        System.out.print("Masukkan pilihan Anda (Angka saja) : ");
+        int input = in.nextInt();
+        currentSim = listSim.get(input-1);
+    }
+
+    public static void viewSimInfo(){
         System.out.println("Berikut adalah informasi sim yang sedang Anda mainkan");
-        System.out.println("Nama        : " + sim.getNama());
-        System.out.println("Pekerjaan   : " + sim.getPekerjaan());
-        System.out.println("Kesehatan   : " + sim.getKesehatan());
-        System.out.println("Kekenyangan : " + sim.getKekenyangan());
-        System.out.println("Mood        : " + sim.getMood());
-        System.out.println("Uang        : " + sim.getUang());
+        System.out.println("Nama        : " + currentSim.getNama());
+        System.out.println("Pekerjaan   : " + currentSim.getPekerjaan().getNamaPekerjaan());
+        System.out.println("Kesehatan   : " + currentSim.getKesehatan());
+        System.out.println("Kekenyangan : " + currentSim.getKekenyangan());
+        System.out.println("Mood        : " + currentSim.getMood());
+        System.out.println("Uang        : " + currentSim.getUang());
+        System.out.println("PRESS ENTER TO GO BACK");
+        in.nextLine();
     }
 
-    public void viewCurrentLocation(Sim sim){
-        System.out.println("Sim sedang berada di rumah " + sim.getRumahSaatIni().getNamaRumah() + ", pada ruangan " + sim.getRuanganSaatIni().getNamaRuangan());
+    public static void viewCurrentLocation(){
+        System.out.println("Sim sedang berada di rumah " + currentSim.getRumahSaatIni().getNamaRumah() + ", pada ruangan " + currentSim.getRuanganSaatIni().getNamaRuangan());
     }
 
-    public void help(){
+    public static void help(){
         boolean end = false;
         int input;
 
         while(!end){
-            System.out.println("HELP");
+            System.out.println("HELP MENU :");
             System.out.println("1. Apa itu Simplicity?");
             System.out.println("2. Bagaimana cara memulai game ini?");
             System.out.println("3. Tentang Rumah");
@@ -91,7 +285,7 @@ public class MainMenu {
         }
     }
 
-    public void exit(){
+    public static void exit(){
         System.out.println("Terima kasih telah memainkan Simpli-city");
         System.exit(0);
     }
