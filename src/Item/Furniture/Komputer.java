@@ -8,7 +8,7 @@ public class Komputer extends Furniture{
         super("Komputer", 1, 1, 100);
     }
 
-    public void mainGame(Sim sim){
+    public static void mainGame(Sim sim){
         Thread mainGameThread = new Thread(new Runnable() {
             @Override
             public void run() {

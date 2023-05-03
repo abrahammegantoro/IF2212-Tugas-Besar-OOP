@@ -8,7 +8,7 @@ public class Teleskop extends Furniture{
         super("Teleskop", 1, 1, 100);
     }
     
-    public void melihatBintang(Sim sim){
+    public static void lihatBintang(Sim sim){
         Thread melihatBintangThread = new Thread(new Runnable() {
             @Override
             public void run() {

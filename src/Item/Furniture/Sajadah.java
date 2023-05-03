@@ -8,7 +8,7 @@ public class Sajadah extends Furniture{
         super("Sajadah", 2, 1, 10);
     }
     
-    public void sholat(Sim sim){
+    public static void sholat(Sim sim){
         Thread sholatThread = new Thread(new Runnable() {
             @Override
             public void run() {

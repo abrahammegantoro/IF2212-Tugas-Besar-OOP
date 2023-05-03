@@ -7,14 +7,14 @@ import java.util.Scanner;
 
 public abstract class Bed extends Furniture{
     //Scanner
-    Scanner input = new Scanner(System.in);
+    private static Scanner input = new Scanner(System.in);
 
     //Konstruktor 
     public Bed(String nama, int panjang, int lebar, int harga){
         super("Bed", panjang, lebar, harga);
     }
 
-    public void tidur(Sim sim){
+    public static void tidur(Sim sim){
         // Input durasi tidur
         System.out.print("Durasi Tidur :  ");
         final int durasi = input.nextInt();

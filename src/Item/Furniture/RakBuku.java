@@ -8,7 +8,7 @@ public class RakBuku extends Furniture{
         super("Rak Buku", 3, 1, 100);
     }
 
-    public void bacaBuku(Sim sim){
+    public static void bacaBuku(Sim sim){
         Thread bacaBukuThread = new Thread(new Runnable() {
             @Override
             public void run() {

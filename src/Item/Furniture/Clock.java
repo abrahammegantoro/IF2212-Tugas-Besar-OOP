@@ -7,7 +7,7 @@ public class Clock extends Furniture {
         super("Jam", 1, 1, 10);
     }
 
-    public void lihatWaktu(){
+    public static void lihatWaktu(){
         System.out.println(Time.getInstance().getTimeRemaining());
         Time.getInstance().getActivityTimeRemaining();
     }

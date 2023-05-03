@@ -8,7 +8,7 @@ public class TV extends Furniture{
         super("TV", 1, 1, 150);
     }
 
-    public void nontonTV(Sim sim){
+    public static void nontonTV(Sim sim){
         Thread nontonTVThread = new Thread(new Runnable() {
             @Override
             public void run() {
