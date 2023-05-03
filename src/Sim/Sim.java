@@ -35,6 +35,7 @@ public class Sim {
     private Rumah rumahSaatIni;
     private Ruangan ruanganSaatIni;
     private String status;
+    private boolean isGantiPekerjaan = false; //atribut ini digunakan untuk validasi apakah bisa melakukan penggantian pekerjaan
 
     public Sim(String nama) {
         Random random = new Random();
@@ -125,6 +126,8 @@ public class Sim {
         // // do nothing
         // }
         // this.pekerjaan = pekerjaanDefault;
+
+        this.pekerjaan = pekerjaan;
     }
 
     public void setUang(int uang) {
@@ -610,6 +613,96 @@ public class Sim {
                 Point point = new Point(x, y);
                 ruanganSaatIni.addFurniture(furniture, point);
                 break;
+        }
+    }
+
+    public void showPekerjaan(){
+        // Print header
+        System.out.printf("%-5s| %-18s| %-6s| %-6s%n", "No.", "Pekerjaan", "Gaji", "Biaya");
+        System.out.println("________________________________________");
+
+        // Print the data row
+        System.out.printf("%-5d| %-18s| %-6d| %-6s%n", 1, "Badut Sulap", 15, 8);
+        System.out.printf("%-5d| %-18s| %-6d| %-6s%n", 2, "Koki", 30, 15);
+        System.out.printf("%-5d| %-18s| %-6d| %-6s%n", 3, "Polisi", 35, 18);
+        System.out.printf("%-5d| %-18s| %-6d| %-6s%n", 4, "Programmer", 45, 23);
+        System.out.printf("%-5d| %-18s| %-6d| %-6s%n", 5, "Dokter", 50, 25);
+    }
+
+    public void gantiPekerjaan(){
+        Scanner in = new Scanner(System.in);
+
+        //Pengecekan apakah Sim bisa mengganti pekerjaan
+        if (this.pekerjaan.getTimesWorked() < 720){
+            System.out.println("Anda harus bekerja minimal 12 menit untuk pekerjaan sekarang!!");
+        } else if (isGantiPekerjaan){
+            System.out.println("Anda sudah mengganti pekerjaan hari ini, tunggu besok untuk mengganti pekerjaan lagi");
+        } else {
+            showPekerjaan();
+            System.out.print("Pilih nomor pekerjaan yang diinginkan : ");
+            int input = in.nextInt();
+            String pilihan = "";
+            int biaya = 0;
+            if (input == 1){pilihan = "Badut Sulap";biaya = 8;}
+            else if (input == 2){pilihan = "Koki";biaya = 15;}
+            else if (input == 3){pilihan = "Polisi";biaya = 18;}
+            else if (input == 4){pilihan = "Programmer";biaya = 23;}
+            else if (input == 5){pilihan = "Dokter";biaya = 25;}
+
+            while (input < 1 || input > 5 || this.pekerjaan.equals(pilihan)) {
+                if (this.pekerjaan.equals(pilihan)){
+                    System.out.println("Anda tidak bisa memilih pekerjaan Anda sekarang");
+                } else {
+                    System.out.println("Pilihan tidak valid");
+                }
+                System.out.println("Pilih nomor pekerjaan yang diinginkan : ");
+                input = in.nextInt();
+                if (input == 1){pilihan = "Badut Sulap";biaya = 8;}
+                else if (input == 2){pilihan = "Koki";biaya = 15;}
+                else if (input == 3){pilihan = "Polisi";biaya = 18;}
+                else if (input == 4){pilihan = "Programmer";biaya = 23;}
+                else if (input == 5){pilihan = "Dokter";biaya = 25;}
+            }   
+
+            //simpan pekerjan default yang dia miliki, akan kembali ke pekerjaan ini setelah 1 hari diganti pekerjaan
+            Pekerjaan pekerjaanDefault = this.pekerjaan;
+
+            //Membuat object pekerjaan yang pilih
+            Pekerjaan pekerjaanPilihan = new Pekerjaan(pilihan);
+
+            //Pengecekan apakah memiliki uang yang cukup
+            if (uang < biaya){
+                System.out.println("Anda tidak memiliki uang yang cukup mengganti ke perkerjaan ini"); 
+            } else {
+                setUang(uang-biaya); //kurangi uang sebanyak biaya
+                //Thread mengganti pekerjaan
+                Thread gantiPekerjaanThread = new Thread(new Runnable() {
+                    public void run(){
+                        isGantiPekerjaan = true; //Dijadikan true agar tidak bisa ganti pekerjaan lagi
+
+                        //Menunggu hari selanjutnya sebelum pekerjaan diganti
+                        try {
+                            Thread.sleep(Time.getInstance().getTimeRemaining()*1000);
+                        } catch (InterruptedException e){
+                            System.out.println("Thread ganti pekerjaan interrupted");
+                        }
+                        
+                        //Harinya sudah berganti, kemudian diganti pekerjaan selama 1 hari
+                        setPekerjaan(pekerjaanPilihan);
+                        try {
+                            Thread.sleep(720*1000);
+                        } catch (InterruptedException e) {
+                            System.out.println("Thread ganti pekerjaan interrupted");
+                        }
+
+                        //Mengembalikan pekerjaan Sim yang awal
+                        setPekerjaan(pekerjaanDefault);
+                        isGantiPekerjaan = false; //Dijadikan false agar bisa mengganti pekerjaan lagi
+                    }
+                });
+
+                gantiPekerjaanThread.start();
+            }
         }
     }
 
