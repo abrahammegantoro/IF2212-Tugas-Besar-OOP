@@ -175,11 +175,15 @@ public class MainMenu {
                 break;
             case 8:
                 currentSim.editRoom();
+                System.out.println("Tekan Enter untuk melanjutkan...");
+                in.nextLine();
+                showInGameMenu();
                 break;
             case 9:
                 currentSim.getRuanganSaatIni().printDaftarFurnitureName();
                 System.out.println("Tekan Enter untuk melanjutkan...");
                 in.nextLine();
+                showInGameMenu();
                 break;
             case 10:
                 viewSimInfo(); // jgn lupa rapiin, bikinnya di Sim.java
@@ -269,12 +273,12 @@ public class MainMenu {
             } else if (currentSim.getRuanganSaatIni().isSimOnFurniture(currentSim, TV.class)) {
                 System.out.print("Nonton TV");
             }
-            System.out.println("0. Kembali");
+            System.out.println("\n0. Kembali");
             System.out.print("Pilihan: ");
-            int pilihan = in.nextInt();
+            String pilihan = in.next();
             in.nextLine();
             switch (pilihan) {
-                case 1:
+                case "1":
                     if (currentSim.getRuanganSaatIni().isSimOnFurniture(currentSim, MejaKursi.class)) {
                         MejaKursi.makan(currentSim);
                     } else if (currentSim.getRuanganSaatIni().isSimOnFurniture(currentSim, Bed.class)) {
@@ -305,7 +309,7 @@ public class MainMenu {
                     showInGameMenu();
                     break;
 
-                case 0:
+                case "0":
                     showInGameMenu();
                     break;
                 default:
@@ -340,16 +344,18 @@ public class MainMenu {
                 "Apakah anda ingin menentukan lokasi/titik tertentu ((0, 0) s.d. (64, 64)) dari rumah sim? Jika tidak, akan dipilihkan secara otomatis. (Y/N)");
         String input = in.nextLine();
         if (input.equals("Y")) {
-            System.out.println("Silakan masukkan koordinat x dan y dari rumah sim Anda");
-            System.out.print("x : ");
+            System.out.println("Silakan masukkan koordinat X dan Y untuk lokasi rumah sim yang baru dibuat.");
+            System.out.print("X : ");
             int x = in.nextInt();
-            System.out.print("y : ");
+            System.out.print("Y : ");
             int y = in.nextInt();
             world.addRumah(sim, new Point(x, y));
-            System.out.println("Rumah sim berhasil dibuat.");
+            System.out.println("Rumah sim berhasil dibuat di titik (" + x + ", " + y + ")");
         } else {
             world.addRumah(sim);
-            System.out.println("Rumah sim berhasil dibuat.");
+            System.out.println("Rumah sim berhasil dibuat di titik random, yaitu di ("
+                    + currentSim.getRumahUtama().getLokasi().getX() + ", "
+                    + currentSim.getRumahUtama().getLokasi().getY() + ")");
         }
     }
 
@@ -386,8 +392,11 @@ public class MainMenu {
     }
 
     public static void viewCurrentLocation() {
-        System.out.println("Sim sedang berada di rumah " + currentSim.getRumahSaatIni().getNamaRumah()
-                + ", pada ruangan " + currentSim.getRuanganSaatIni().getNamaRuangan());
+        System.out.println("Sim sedang berada di " + currentSim.getRumahSaatIni().getNamaRumah()
+                + " pada titik dunia " + "(" + currentSim.getRumahSaatIni().getLokasi().getX() + ", "
+                + currentSim.getRumahSaatIni().getLokasi().getY() + ")" + ", di "
+                + currentSim.getRuanganSaatIni().getNamaRuangan() + " pada titik ruangan " + "("
+                + currentSim.getPosisiSim().getX() + ", " + currentSim.getPosisiSim().getY() + ")");
     }
 
     public static void help() {
