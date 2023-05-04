@@ -8,7 +8,7 @@ public class Piano extends Furniture{
         super("Piano", 2, 1, 100);
     }
 
-    public void mainPiano(Sim sim){
+    public static void mainPiano(Sim sim){
         Thread mainPianoThread = new Thread(new Runnable() {
             @Override
             public void run() {

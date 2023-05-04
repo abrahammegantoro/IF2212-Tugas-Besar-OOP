@@ -13,7 +13,7 @@ import src.Item.Masakan.Masakan;
 import src.Sim.Sim;
 
 public abstract class Stove extends Furniture {
-    private HashMap<Integer, Masakan> resep; // HashMap untuk menyimpan resep masakan
+    private static HashMap<Integer, Masakan> resep; // HashMap untuk menyimpan resep masakan
 
     public Stove(String nama, int panjang, int lebar, int harga) {
         super(nama, panjang, lebar, harga);
@@ -54,7 +54,7 @@ public abstract class Stove extends Furniture {
         resep.put(5, bistik);
     }
 
-    public void masak(Sim sim, Inventory<Item> inventory, Masakan masakan) {
+    public static void masak(Sim sim, Inventory<Item> inventory) {
         printResep();
 
         // User memilih nomor masakan yang ingin dimasak dari buku resep
@@ -124,7 +124,7 @@ public abstract class Stove extends Furniture {
         masakThread.start();
     }
 
-    public void printResep() {
+    public static void printResep() {
         // Menampilkan buku resep
         System.out.println("Buku Resep: ");
         System.out.println("No.\tNama Masakan\t\t\t\tBahan\t\t\t\tKekenyangan");
@@ -150,7 +150,7 @@ public abstract class Stove extends Furniture {
     // }
     // return true;
     // }
-    private boolean cekBahanBaku(Inventory<Item> inventory, Masakan masakan) {
+    private static boolean cekBahanBaku(Inventory<Item> inventory, Masakan masakan) {
         ArrayList<BahanBaku> bahanBaku = masakan.getBahanBaku();
         boolean foundAllIngredients = true;
 
@@ -177,7 +177,7 @@ public abstract class Stove extends Furniture {
         return foundAllIngredients;
     }
 
-    private String getBahanBakuString(Masakan masakan) {
+    private static String getBahanBakuString(Masakan masakan) {
         ArrayList<BahanBaku> bahanBaku = masakan.getBahanBaku();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < bahanBaku.size(); i++) {

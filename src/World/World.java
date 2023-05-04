@@ -2,6 +2,7 @@ package src.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import src.Rumah.Rumah;
 import src.Sim.Sim;
@@ -55,21 +56,38 @@ public class World {
 
     public void addRumah(Sim sim) {
         // Temukan titik yang masih kosong pada gridRumah
+        List<Point> availablePoints = findAvailablePoints();
+
+        if (availablePoints.isEmpty()) {
+            System.out.println("Tidak ada titik yang tersedia untuk menambahkan rumah.");
+            return;
+        }
+
+        // Pilih titik acak dari daftar titik yang tersedia
+        Random random = new Random();
+        Point randomPoint = availablePoints.get(random.nextInt(availablePoints.size()));
+
+        Rumah rumahBaru = new Rumah(sim, randomPoint);
+        this.daftarRumah.add(rumahBaru);
+        gridRumah[(int) randomPoint.getX()][(int) randomPoint.getY()] = rumahBaru;
+        sim.setRumahUtama(rumahBaru);
+        sim.setRumahSaatIni(rumahBaru);
+        sim.setRuanganSaatIni(rumahBaru.getRuangan("Ruang Tamu"));
+        System.out.println("Rumah " + sim.getNama() + " berhasil dibuat.");
+    }
+
+    private List<Point> findAvailablePoints() {
+        List<Point> availablePoints = new ArrayList<>();
+
         for (int i = 0; i < 64; i++) {
             for (int j = 0; j < 64; j++) {
                 if (gridRumah[i][j] == null) {
-                    Point temp = new Point(i, j);
-                    Rumah rumahBaru = new Rumah(sim, temp);
-                    this.daftarRumah.add(rumahBaru);
-                    gridRumah[i][j] = rumahBaru;
-                    sim.setRumahUtama(rumahBaru);
-                    sim.setRumahSaatIni(rumahBaru);
-                    sim.setRuanganSaatIni(rumahBaru.getRuangan("Ruang Tamu"));
-                    System.out.println("Rumah " + sim.getNama() + " berhasil dibuat.");
-                    return;
+                    availablePoints.add(new Point(i, j));
                 }
             }
         }
+
+        return availablePoints;
     }
 
     public void addRumah(Sim sim, Point location) {

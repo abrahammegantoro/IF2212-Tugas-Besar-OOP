@@ -60,6 +60,19 @@ public class Inventory<T extends Item> { // T adalah tipe data yang akan digunak
         return items;
     }
 
+    // check if item exist in the inventory
+    public Furniture getFurniture(String namaFurniture) {
+        for (Map.Entry<T, Integer> entry : items.entrySet()) {
+            if (entry.getKey() instanceof Furniture) {
+                Furniture furniture = (Furniture) entry.getKey();
+                if (furniture.getNama().equalsIgnoreCase(namaFurniture)) {
+                    return furniture;
+                }
+            }
+        }
+        return null;
+    }
+
     public boolean isItemExist(T item) {
         return items.containsKey(item);
     }
