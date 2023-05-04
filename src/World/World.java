@@ -24,6 +24,11 @@ public class World {
         return instance;
     }
 
+    //Method yang digunakan untuk set world ketika load file
+    public static void setInstance(World world){
+        instance = world;
+    }
+
     // public void addSim(Sim sim) {
     //     this.daftarSim.add(sim);
     // }
