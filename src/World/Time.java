@@ -26,6 +26,11 @@ public class Time {
         return instance;
     }
 
+    //Method yang digunakan untuk set Time ketika load file
+    public static void setInstance(Time time){
+        instance = time;
+    }
+
     public void setTimeMapBeliBarang(Item key, int value) {
         timeMapBeliBarang.put(key, value);
     }

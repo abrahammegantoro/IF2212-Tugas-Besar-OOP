@@ -2,6 +2,7 @@ package src.MainMenu;
 
 import java.util.*;
 
+import src.AllData.AllData;
 import src.Item.Furniture.Clock;
 import src.Item.Furniture.Furniture;
 import src.Item.Furniture.Komputer;
@@ -85,8 +86,8 @@ public class MainMenu {
                 showInGameMenu();
                 break;
             case 2:
-                // load();
-                showGameMenuNewGameOrLoadGame();
+                AllData.load();
+                showInGameMenu();
                 break;
             case 3:
                 showGameMenu();
@@ -210,7 +211,8 @@ public class MainMenu {
                 showInGameMenu();
                 break;
             case 14:
-                // save();
+                AllData.save();
+                showInGameMenu();
                 break;
             case 15:
                 // load();
@@ -462,6 +464,26 @@ public class MainMenu {
     public static void exit() {
         System.out.println("Terima kasih telah memainkan Simpli-city");
         System.exit(0);
+    }
+
+    //Method digunakan di class AllData.java
+    public static ArrayList<Sim> getListSim(){
+        return listSim;
+    }
+
+    //Method digunakan di class AllData.java
+    public static void setListSim(ArrayList<Sim> sims){
+        listSim = sims;
+    }
+
+    //Method digunakan di class AllData.java
+    public static Sim getCurrentSim(){
+        return currentSim;
+    }
+
+    //Method digunakan di class AllData.java
+    public static void setCurrentSim(Sim sim){
+        currentSim = sim;
     }
 
     public static void main(String[] args) {
