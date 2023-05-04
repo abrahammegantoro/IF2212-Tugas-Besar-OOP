@@ -47,7 +47,7 @@ public class Rumah {
         return null;
     }
 
-    public Ruangan getRuangan (String namaRuangan) { // With name
+    public Ruangan getRuangan(String namaRuangan) { // With name
         for (Ruangan ruangan : daftarRuangan) {
             if (ruangan.getNamaRuangan().equals(namaRuangan)) {
                 return ruangan;
@@ -80,9 +80,11 @@ public class Rumah {
     public void printDaftarRuanganExceptSim(String namaRuanganSaatIni) {
         System.out.println("Daftar ruangan yang tersedia :");
         System.out.println("-------------------------------");
+        int counter = 1;
         for (int i = 0; i < daftarRuangan.size(); i++) {
             if (!daftarRuangan.get(i).getNamaRuangan().equals(namaRuanganSaatIni)) {
-                System.out.println((i + 1) + ". " + daftarRuangan.get(i).getNamaRuangan());
+                System.out.println(counter + ". " + daftarRuangan.get(i).getNamaRuangan());
+                counter++;
             }
         }
         System.out.println("0. Exit");
@@ -131,13 +133,15 @@ public class Rumah {
         printDaftarRuangan();
         // minta pilih ruangan yang ingin diupgrade
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Masukkan nama ruangan yang ingin ditambahi ruangan di sisi atas, bawah, kiri, atau kanannya (input String): ");
+        System.out.print(
+                "Masukkan nama ruangan yang ingin ditambahi ruangan di sisi atas, bawah, kiri, atau kanannya (input String): ");
         String ruanganUpgrade = scanner.nextLine();
 
         // cek apakah ruanganUpgrade ada di daftarRuangan dan terus minta input
         while (!isNamaRuanganAvailable(ruanganUpgrade)) {
             System.out.println("\nRuangan tidak ditemukan, silakan masukkan nama ruangan yang valid.");
-            System.out.print("Masukkan nama ruangan yang ingin ditambahi ruangan di sisi atas, bawah, kiri, atau kanannya (input String): ");
+            System.out.print(
+                    "Masukkan nama ruangan yang ingin ditambahi ruangan di sisi atas, bawah, kiri, atau kanannya (input String): ");
             ruanganUpgrade = scanner.nextLine();
         }
 
@@ -196,7 +200,7 @@ public class Rumah {
         }
         System.out.println("Pembangunan ruang " + namaRuanganBaru + " di rumah " + sim.getNama() + " dimulai");
         sim.setUang(sim.getUang() - 1500);
-        Time.getInstance().setTimeMapUpgradeRumah(sim.getRumahUtama(), 1000); //18*60*1000
+        Time.getInstance().setTimeMapUpgradeRumah(sim.getRumahUtama(), 18*60*1000); // 18*60*1000
         setRuanganToUpgrade(ruanganToUpgrade);
         setArahFinal(arahFinal);
         setNamaRuanganBaru(namaRuanganBaru);
@@ -210,28 +214,32 @@ public class Rumah {
     }
 
     public boolean isThereRuanganUp(Ruangan ruangan) {
-        if (getRuanganWithPoint(new Point(getLokasiRuangan(ruangan).getX(), getLokasiRuangan(ruangan).getY() + 1)) != null) {
+        if (getRuanganWithPoint(
+                new Point(getLokasiRuangan(ruangan).getX(), getLokasiRuangan(ruangan).getY() + 1)) != null) {
             return true;
         }
         return false;
     }
 
     public boolean isThereRuanganDown(Ruangan ruangan) {
-        if (getRuanganWithPoint(new Point(getLokasiRuangan(ruangan).getX(), getLokasiRuangan(ruangan).getY() - 1)) != null) {
+        if (getRuanganWithPoint(
+                new Point(getLokasiRuangan(ruangan).getX(), getLokasiRuangan(ruangan).getY() - 1)) != null) {
             return true;
         }
         return false;
     }
 
     public boolean isThereRuanganLeft(Ruangan ruangan) {
-        if (getRuanganWithPoint(new Point(getLokasiRuangan(ruangan).getX() - 1, getLokasiRuangan(ruangan).getY())) != null) {
+        if (getRuanganWithPoint(
+                new Point(getLokasiRuangan(ruangan).getX() - 1, getLokasiRuangan(ruangan).getY())) != null) {
             return true;
         }
         return false;
     }
 
     public boolean isThereRuanganRight(Ruangan ruangan) {
-        if (getRuanganWithPoint(new Point(getLokasiRuangan(ruangan).getX() + 1, getLokasiRuangan(ruangan).getY())) != null) {
+        if (getRuanganWithPoint(
+                new Point(getLokasiRuangan(ruangan).getX() + 1, getLokasiRuangan(ruangan).getY())) != null) {
             return true;
         }
         return false;
@@ -240,91 +248,131 @@ public class Rumah {
     public void addRuangan(Ruangan ruangan, String arah, String namaRuangan) {
         Ruangan newRuangan = new Ruangan(namaRuangan);
         if (arah.equals("up")) {
-            mapRuangan.put(new Point(getLokasiRuangan(ruangan).getX(), getLokasiRuangan(ruangan).getY() + 1), newRuangan);
+            mapRuangan.put(new Point(getLokasiRuangan(ruangan).getX(), getLokasiRuangan(ruangan).getY() + 1),
+                    newRuangan);
             ruangan.setUp(newRuangan);
             newRuangan.setDown(ruangan);
 
             // cek sekeliling newRuangan
             if (isThereRuanganLeft(newRuangan)) {
-                newRuangan.setLeft(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY())));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY())).setRight(newRuangan);
+                newRuangan.setLeft(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY())));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY()))
+                        .setRight(newRuangan);
             }
 
             if (isThereRuanganRight(newRuangan)) {
-                newRuangan.setRight(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY())));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY())).setLeft(newRuangan);
+                newRuangan.setRight(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY())));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY()))
+                        .setLeft(newRuangan);
             }
 
             if (isThereRuanganUp(newRuangan)) {
-                newRuangan.setUp(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1)));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1)).setDown(newRuangan);
+                newRuangan.setUp(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1)));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1))
+                        .setDown(newRuangan);
             }
         } else if (arah.equals("down")) {
-            mapRuangan.put(new Point(getLokasiRuangan(ruangan).getX(), getLokasiRuangan(ruangan).getY() - 1), newRuangan);
+            mapRuangan.put(new Point(getLokasiRuangan(ruangan).getX(), getLokasiRuangan(ruangan).getY() - 1),
+                    newRuangan);
             ruangan.setDown(newRuangan);
             newRuangan.setUp(ruangan);
 
             // cek sekeliling newRuangan
             if (isThereRuanganLeft(newRuangan)) {
-                newRuangan.setLeft(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY())));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY())).setRight(newRuangan);
+                newRuangan.setLeft(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY())));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY()))
+                        .setRight(newRuangan);
             }
 
             if (isThereRuanganRight(newRuangan)) {
-                newRuangan.setRight(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY())));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY())).setLeft(newRuangan);
+                newRuangan.setRight(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY())));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY()))
+                        .setLeft(newRuangan);
             }
 
             if (isThereRuanganDown(newRuangan)) {
-                newRuangan.setDown(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1)));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1)).setUp(newRuangan);
+                newRuangan.setDown(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1)));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1))
+                        .setUp(newRuangan);
             }
         } else if (arah.equals("left")) {
-            mapRuangan.put(new Point(getLokasiRuangan(ruangan).getX() - 1, getLokasiRuangan(ruangan).getY()), newRuangan);
+            mapRuangan.put(new Point(getLokasiRuangan(ruangan).getX() - 1, getLokasiRuangan(ruangan).getY()),
+                    newRuangan);
             ruangan.setLeft(newRuangan);
             newRuangan.setRight(ruangan);
 
             // cek sekeliling newRuangan
             if (isThereRuanganLeft(newRuangan)) {
-                newRuangan.setLeft(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY())));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY())).setRight(newRuangan);
+                newRuangan.setLeft(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY())));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() - 1, getLokasiRuangan(newRuangan).getY()))
+                        .setRight(newRuangan);
             }
 
             if (isThereRuanganUp(newRuangan)) {
-                newRuangan.setUp(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1)));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1)).setDown(newRuangan);
+                newRuangan.setUp(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1)));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1))
+                        .setDown(newRuangan);
             }
 
             if (isThereRuanganDown(newRuangan)) {
-                newRuangan.setDown(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1)));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1)).setUp(newRuangan);
+                newRuangan.setDown(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1)));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1))
+                        .setUp(newRuangan);
             }
         } else if (arah.equals("right")) {
-            mapRuangan.put(new Point(getLokasiRuangan(ruangan).getX() + 1, getLokasiRuangan(ruangan).getY()), newRuangan);
+            mapRuangan.put(new Point(getLokasiRuangan(ruangan).getX() + 1, getLokasiRuangan(ruangan).getY()),
+                    newRuangan);
             ruangan.setRight(newRuangan);
             newRuangan.setLeft(ruangan);
 
             // cek sekeliling newRuangan
             if (isThereRuanganRight(newRuangan)) {
-                newRuangan.setRight(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY())));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY())).setLeft(newRuangan);
+                newRuangan.setRight(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY())));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX() + 1, getLokasiRuangan(newRuangan).getY()))
+                        .setLeft(newRuangan);
             }
 
             if (isThereRuanganUp(newRuangan)) {
-                newRuangan.setUp(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1)));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1)).setDown(newRuangan);
+                newRuangan.setUp(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1)));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() + 1))
+                        .setDown(newRuangan);
             }
 
             if (isThereRuanganDown(newRuangan)) {
-                newRuangan.setDown(getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1)));
-                getRuanganWithPoint(new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1)).setUp(newRuangan);
+                newRuangan.setDown(getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1)));
+                getRuanganWithPoint(
+                        new Point(getLokasiRuangan(newRuangan).getX(), getLokasiRuangan(newRuangan).getY() - 1))
+                        .setUp(newRuangan);
             }
         }
         daftarRuangan.add(newRuangan);
-        //print daftar ruangan
+        // print daftar ruangan
         // System.out.println("Daftar ruangan:");
         // for (Ruangan ruangan1 : daftarRuangan) {
-        //     System.out.println(ruangan1.getNamaRuangan());
+        // System.out.println(ruangan1.getNamaRuangan());
         // }
     }
 
@@ -348,23 +396,23 @@ public class Rumah {
         Rumah rumah = new Rumah(sim1, new Point(0, 0));
         rumah.upgradeRumah(sim1);
         sim1.kerja();
-        //print daftar ruangan
+        // print daftar ruangan
         rumah.printDaftarRuangan();
         rumah.upgradeRumah(sim1);
         sim1.kerja();
-        //print daftar ruangan
+        // print daftar ruangan
         rumah.printDaftarRuangan();
         rumah.upgradeRumah(sim1);
         sim1.kerja();
-        //print daftar ruangan
+        // print daftar ruangan
         rumah.printDaftarRuangan();
         rumah.upgradeRumah(sim1);
         sim1.kerja();
-        //print daftar ruangan
+        // print daftar ruangan
         rumah.printDaftarRuangan();
         rumah.upgradeRumah(sim1);
         sim1.kerja();
-        //print daftar ruangan
+        // print daftar ruangan
         rumah.printDaftarRuangan();
 
         // get up, down, left, right ruangan M
@@ -393,9 +441,9 @@ public class Rumah {
 
         // // get up, down, left, right ruangan M
         // try {
-        //     System.out.println(rumah.getRuangan("M").getUp().getNamaRuangan());
+        // System.out.println(rumah.getRuangan("M").getUp().getNamaRuangan());
         // } catch (Exception e) {
-        //     System.out.println(e.getMessage());
+        // System.out.println(e.getMessage());
         // }
         // System.out.println(rumah.getRuangan("M").getDown().getNamaRuangan());
         // System.out.println(rumah.getRuangan("M").getLeft().getNamaRuangan());

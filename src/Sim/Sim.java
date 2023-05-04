@@ -41,13 +41,27 @@ public class Sim {
         Random random = new Random();
         this.nama = nama;
         this.pekerjaan = new Pekerjaan(random.nextInt(1, 6));
-        this.uang = 100;
+        this.uang = 100; //GANTI JADI 100
         this.inventory = new Inventory<>();
         this.kekenyangan = 80;
         this.mood = 80;
         this.kesehatan = 80;
         this.posisiSim = new Point(0, 0);
         this.status = "None";
+
+        // Bikin furniture kasur, toilet, kompor, kursi, meja, dan jam, lalu menambahinya ke inventory
+        SingleBed kasurSingle = new SingleBed();
+        Toilet toilet = new Toilet();
+        GasStove komporGas = new GasStove();
+        MejaKursi mejaKursi = new MejaKursi();
+        Clock jam = new Clock();
+
+        inventory.addItem(kasurSingle, 1);
+        inventory.addItem(toilet, 1);
+        inventory.addItem(komporGas, 1);
+        inventory.addItem(mejaKursi, 1);
+        inventory.addItem(jam, 1);
+
         // Atribut rumahUtama, rumahSaatIni, dan ruanganSaatIni belum diinisialisasi
         // Akan diinisialisasi di World.java setelah melakukan addRumah(Sim sim, Point
         // location)
@@ -206,8 +220,8 @@ public class Sim {
         System.out.print("Durasi Kerja :  ");
         int durasi = input.nextInt();
 
-        while (durasi % 120 != 0) {
-            System.out.println("Durasi kerja harus kelipatan 120");
+        while (durasi % 120 != 0 || durasi <= 0) {
+            System.out.println("Durasi kerja harus kelipatan 120 dan juga lebih dari 0");
             System.out.print("Durasi Kerja :  ");
             durasi = input.nextInt();
         }
@@ -216,7 +230,7 @@ public class Sim {
         Thread kerjaThread = new Thread(new Runnable() {
             public void run() {
                 int counter = 0;
-                System.out.println(durasiAkhir);
+                System.out.println("Bekerja dimulai...");
                 while (counter < durasiAkhir) {
                     try {
                         Thread.sleep(1000);
@@ -224,6 +238,7 @@ public class Sim {
                         decrementBeliBarangTime();
                         decrementUpgradeRumahTime();
                         counter++;
+                        System.out.println(counter);
                     } catch (InterruptedException e) {
                         System.out.println("Thread interrupted");
                     }
@@ -231,7 +246,7 @@ public class Sim {
                 kekenyangan -= ((durasiAkhir / 30) * 10);
                 mood -= ((durasiAkhir / 30) * 10);
                 uang += ((durasiAkhir / 240) * pekerjaan.getGaji());
-                System.out.println(kekenyangan);
+                System.out.println("Sim telah selesai bekerja.");
 
                 pekerjaan.addTimesWorked(durasiAkhir);
                 setStatus("None");
@@ -253,8 +268,8 @@ public class Sim {
         System.out.print("Durasi Olahraga :  ");
         int durasi = input.nextInt();
 
-        while (durasi % 20 != 0) {
-            System.out.println("Durasi olahraga harus kelipatan 20");
+        while (durasi % 20 != 0 || durasi <= 0) {
+            System.out.println("Durasi olahraga harus kelipatan 20 dan juga lebih dari 0");
             System.out.print("Durasi Olahraga :  ");
             durasi = input.nextInt();
         }
@@ -273,6 +288,7 @@ public class Sim {
                         decrementBeliBarangTime();
                         decrementUpgradeRumahTime();
                         counter++;
+                        System.out.println(counter);
                     } catch (InterruptedException e) {
                         System.out.println("Thread interrupted");
                     }
@@ -280,6 +296,7 @@ public class Sim {
                 kesehatan += ((durasiFinal / 20) * 5);
                 mood += ((durasiFinal / 20) * 10);
                 kekenyangan -= ((durasiFinal / 20) * 5);
+                System.out.println("Sim telah selesai berolahraga");
                 setStatus("None");
             }
         });
@@ -508,6 +525,7 @@ public class Sim {
                 public void run() {
                     int deliveryTime = barang.getDeliveryTime();
                     Time.getInstance().setTimeMapBeliBarang(itemFinal, deliveryTime);
+                    System.out.println("Barang akan sampai dalam " + deliveryTime + " hari");
                 }
             });
             t.start();
@@ -548,7 +566,7 @@ public class Sim {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Menu :");
         System.out.println("1. Beli Barang");
-        System.out.println("2. Pindah Barang");
+        System.out.println("2. Pasang Barang");
         System.out.println("Pilih menu :");
         int choice = scanner.nextInt();
 
@@ -569,49 +587,155 @@ public class Sim {
                 System.out.print("Pilih furniture yang ingin dipasang: ");
 
                 Furniture furniture = null;
-                String pilih = scanner.next();
+                String pilih = scanner.nextLine();
                 while (furniture == null) {
                     if (pilih.equals("Jam")) {
-                        furniture = new Clock();
+                        // check apakah ada jam di inventory
+                        if (inventory.getFurniture("Jam") != null) {
+                            furniture = inventory.getFurniture("Jam");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Jam tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("TV")) {
-                        furniture = new TV();
+                        if (inventory.getFurniture("TV") != null) {
+                            furniture = inventory.getFurniture("TV");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("TV tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Komputer")) {
-                        furniture = new Komputer();
+                        if (inventory.getFurniture("Komputer") != null) {
+                            furniture = inventory.getFurniture("Komputer");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Komputer tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Piano")) {
-                        furniture = new Piano();
+                        if (inventory.getFurniture("Piano") != null) {
+                            furniture = inventory.getFurniture("Piano");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Piano tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Meja dan Kursi")) {
-                        furniture = new MejaKursi();
+                        if (inventory.getFurniture("Meja dan Kursi") != null) {
+                            furniture = inventory.getFurniture("Meja dan Kursi");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Meja dan Kursi tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Sajadah")) {
-                        furniture = new Sajadah();
+                        if (inventory.getFurniture("Sajadah") != null) {
+                            furniture = inventory.getFurniture("Sajadah");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Sajadah tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Teleskop")) {
-                        furniture = new Teleskop();
+                        if (inventory.getFurniture("Teleskop") != null) {
+                            furniture = inventory.getFurniture("Teleskop");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Teleskop tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Rak Buku")) {
-                        furniture = new RakBuku();
+                        if (inventory.getFurniture("Rak Buku") != null) {
+                            furniture = inventory.getFurniture("Rak Buku");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Rak Buku tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Toilet")) {
-                        furniture = new Toilet();
+                        if (inventory.getFurniture("Toilet") != null) {
+                            furniture = inventory.getFurniture("Toilet");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Toilet tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Kompor Gas")) {
-                        furniture = new GasStove();
+                        if (inventory.getFurniture("Kompor Gas") != null) {
+                            furniture = inventory.getFurniture("Kompor Gas");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Kompor Gas tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Kompor Listrik")) {
-                        furniture = new EStove();
+                        if (inventory.getFurniture("Kompor Listrik") != null) {
+                            furniture = inventory.getFurniture("Kompor Listrik");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Kompor Listrik tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Shower")) {
-                        furniture = new Shower();
+                        if (inventory.getFurniture("Shower") != null) {
+                            furniture = inventory.getFurniture("Shower");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Shower tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Kasur Single")) {
-                        furniture = new SingleBed();
+                        if (inventory.getFurniture("Kasur Single") != null) {
+                            furniture = inventory.getFurniture("Kasur Single");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Kasur Single tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Kasur Queen Size")) {
-                        furniture = new QueenBed();
+                        if (inventory.getFurniture("Kasur Queen Size") != null) {
+                            furniture = inventory.getFurniture("Kasur Queen Size");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Kasur Queen Size tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else if (pilih.equals("Kasur King Size")) {
-                        furniture = new KingBed();
+                        if (inventory.getFurniture("Kasur King Size") != null) {
+                            furniture = inventory.getFurniture("Kasur King Size");
+                            inventory.removeItem(furniture);
+                        } else {
+                            System.out.println("Kasur King Size tidak ada di inventory");
+                            System.out.print("Pilih furniture yang ingin dipasang: ");
+                            pilih = scanner.nextLine();
+                        }
                     } else {
                         System.out.println("Inputan salah. Silakan masukkan nama furniture yang ingin dipasang.");
                         System.out.print("Pilih furniture yang ingin dipasang: ");
-                        pilih = scanner.next();
+                        pilih = scanner.nextLine();
                     }
                 }
 
                 // Input point
-                System.out.print("Masukkan koordinat x: ");
+                System.out.print("Masukkan koordinat X: ");
                 int x = scanner.nextInt();
-                System.out.print("Masukkan koordinat y: ");
+                System.out.print("Masukkan koordinat Y: ");
                 int y = scanner.nextInt();
 
                 Point point = new Point(x, y);

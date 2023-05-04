@@ -11,7 +11,7 @@ public abstract class Bed extends Furniture{
 
     //Konstruktor 
     public Bed(String nama, int panjang, int lebar, int harga){
-        super("Bed", panjang, lebar, harga);
+        super(nama, panjang, lebar, harga);
     }
 
     public static void tidur(Sim sim){
