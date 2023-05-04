@@ -10,7 +10,7 @@
 | 4 | 18221099 | Clara Alrosa Fernanda Sinaga |
 | 5 | 18221123 | Abraham Megantoro Samudra |
 
-## Cara buat ngerjain di local
+## Cara Untuk Mengerjakan di Local
 
 ```
 git clone https://github.com/abrahammegantoro/IF2212-Tugas-Besar-OOP.git

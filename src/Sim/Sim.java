@@ -35,13 +35,14 @@ public class Sim {
     private Rumah rumahSaatIni;
     private Ruangan ruanganSaatIni;
     private String status;
-    private boolean isGantiPekerjaan = false; //atribut ini digunakan untuk validasi apakah bisa melakukan penggantian pekerjaan
+    private boolean isGantiPekerjaan = false; // atribut ini digunakan untuk validasi apakah bisa melakukan penggantian
+                                              // pekerjaan
 
     public Sim(String nama) {
         Random random = new Random();
         this.nama = nama;
         this.pekerjaan = new Pekerjaan(random.nextInt(1, 6));
-        this.uang = 100; //GANTI JADI 100
+        this.uang = 100; // GANTI JADI 100
         this.inventory = new Inventory<>();
         this.kekenyangan = 80;
         this.mood = 80;
@@ -49,7 +50,8 @@ public class Sim {
         this.posisiSim = new Point(0, 0);
         this.status = "None";
 
-        // Bikin furniture kasur, toilet, kompor, kursi, meja, dan jam, lalu menambahinya ke inventory
+        // Bikin furniture kasur, toilet, kompor, kursi, meja, dan jam, lalu
+        // menambahinya ke inventory
         SingleBed kasurSingle = new SingleBed();
         Toilet toilet = new Toilet();
         GasStove komporGas = new GasStove();
@@ -412,8 +414,41 @@ public class Sim {
                 return;
             }
         }
+        // apus sim dari daftarSim untuk ruangan yang lama
+        System.out.println("Ruangan lama : " + getRuanganSaatIni().getNamaRuangan());
+        System.out.println("Berikut adalah daftar sim yang sedang berada di " + getRuanganSaatIni().getNamaRuangan());
+        Map<Sim, Point> map = this.getRuanganSaatIni().getDaftarSim();
+        // check if empty
+        if (map.isEmpty()) {
+            System.out.println("Tidak ada sim yang sedang berada di ruangan ini.");
+        }
+        for (Map.Entry<Sim, Point> entry : map.entrySet()) {
+            System.out.println(entry.getKey().getNama() + " pada titik (" + entry.getValue().getX() + ", "
+                    + entry.getValue().getY() + ")");
+        }
+        // print sim map
+        System.out.println("Sim : " + this.getNama() + " pada titik (" + this.getPosisiSim().getX() + ", "
+                + this.getPosisiSim().getY() + ")");
+        getRuanganSaatIni().removeSim(this);
 
+        // pindah ruangan
         setRuanganSaatIni(getRumahSaatIni().getRuangan(pilihan));
+
+        // masukin sim ke daftarSim untuk ruangan yang baru
+        System.out.println("Ruangan baru : " + getRuanganSaatIni().getNamaRuangan());
+        System.out.println("Berikut adalah daftar sim yang sedang berada di " + getRuanganSaatIni().getNamaRuangan());
+        Map<Sim, Point> map1 = this.getRuanganSaatIni().getDaftarSim();
+        if (map.isEmpty()) {
+            System.out.println("Tidak ada sim yang sedang berada di ruangan ini.");
+        }
+        for (Map.Entry<Sim, Point> entry : map1.entrySet()) {
+            System.out.println(entry.getKey().getNama() + " pada titik (" + entry.getValue().getX() + ", "
+                    + entry.getValue().getY() + ")");
+        }
+        System.out.println("Sim : " + this.getNama() + " pada titik (" + this.getPosisiSim().getX() + ", "
+                + this.getPosisiSim().getY() + ")");
+        getRuanganSaatIni().putSim(this, new Point(0, 0));
+        this.setPosisiSim(new Point(0, 0));
         System.out.println("Berhasil pindah ruangan. Sekarang Anda berada di " + getRuanganSaatIni().getNamaRuangan());
     }
 
@@ -422,7 +457,6 @@ public class Sim {
         System.out.println("-----------------------------------");
         System.out.printf("| %-4s| %-18s| %-6s|%n", "No.", "Item", "Price");
         System.out.println("-----------------------------------");
-
 
         // Print the data row
         System.out.printf("| %-4d| %-18s| %-6d|%n", 1, "Kasur Single", 50);
@@ -511,7 +545,7 @@ public class Sim {
             item = new BahanBaku("Kacang", 2, 2);
         } else if (pilihan == 23) {
             item = new BahanBaku("Susu", 2, 1);
-        } 
+        }
         final Item itemFinal = item;
         Buyable barang = (Buyable) item;
 
@@ -562,16 +596,25 @@ public class Sim {
 
     public void editRoom() {
         Scanner scanner = new Scanner(System.in);
+        // cek apakah sim berada di rumah sim lain
         System.out.println("Menu :");
         System.out.println("1. Beli Barang");
-        System.out.println("2. Pasang Barang");
+        if (this.getRumahSaatIni() == this.getRumahUtama()) {
+            System.out.println("2. Pasang Barang");
+        }
         System.out.println("Pilih menu :");
         int choice = scanner.nextInt();
 
-        //terus minta inputan sampai benar bahkan jika memasukkan inputan char/string
+        while (this.getRumahSaatIni() != this.getRumahUtama() && choice != 1) {
+            System.out.println("Inputan salah. Silakan masukkan angka 1.");
+            System.out.print("Pilihan : ");
+            choice = scanner.nextInt();
+        }
+
+        // terus minta inputan sampai benar bahkan jika memasukkan inputan char/string
         while (choice < 1 || choice > 2) {
             System.out.println("Inputan salah. Silakan masukkan angka antara 1 dan 2.");
-            System.out.print("Your choice: ");
+            System.out.print("Pilihan : ");
             choice = scanner.nextInt();
         }
 
@@ -580,7 +623,7 @@ public class Sim {
                 beliBarang();
                 break;
             case 2:
-                // Cek inventory yang ingin  dipasang, Cek Furniture apa aja di inventory
+                // Cek inventory yang ingin dipasang, Cek Furniture apa aja di inventory
                 inventory.showFurnitureInventory();
                 System.out.print("Pilih furniture yang ingin dipasang: ");
 
@@ -742,7 +785,7 @@ public class Sim {
         }
     }
 
-    public void showPekerjaan(){
+    public void showPekerjaan() {
         // Print header
         System.out.printf("%-5s| %-18s| %-6s| %-6s%n", "No.", "Pekerjaan", "Gaji", "Biaya");
         System.out.println("________________________________________");
@@ -755,13 +798,13 @@ public class Sim {
         System.out.printf("%-5d| %-18s| %-6d| %-6s%n", 5, "Dokter", 50, 25);
     }
 
-    public void gantiPekerjaan(){
+    public void gantiPekerjaan() {
         Scanner in = new Scanner(System.in);
 
-        //Pengecekan apakah Sim bisa mengganti pekerjaan
-        if (this.pekerjaan.getTimesWorked() < 720){
+        // Pengecekan apakah Sim bisa mengganti pekerjaan
+        if (this.pekerjaan.getTimesWorked() < 720) {
             System.out.println("Anda harus bekerja minimal 12 menit untuk pekerjaan sekarang!!");
-        } else if (isGantiPekerjaan){
+        } else if (isGantiPekerjaan) {
             System.out.println("Anda sudah mengganti pekerjaan hari ini, tunggu besok untuk mengganti pekerjaan lagi");
         } else {
             showPekerjaan();
@@ -769,61 +812,84 @@ public class Sim {
             int input = in.nextInt();
             String pilihan = "";
             int biaya = 0;
-            if (input == 1){pilihan = "Badut Sulap";biaya = 8;}
-            else if (input == 2){pilihan = "Koki";biaya = 15;}
-            else if (input == 3){pilihan = "Polisi";biaya = 18;}
-            else if (input == 4){pilihan = "Programmer";biaya = 23;}
-            else if (input == 5){pilihan = "Dokter";biaya = 25;}
+            if (input == 1) {
+                pilihan = "Badut Sulap";
+                biaya = 8;
+            } else if (input == 2) {
+                pilihan = "Koki";
+                biaya = 15;
+            } else if (input == 3) {
+                pilihan = "Polisi";
+                biaya = 18;
+            } else if (input == 4) {
+                pilihan = "Programmer";
+                biaya = 23;
+            } else if (input == 5) {
+                pilihan = "Dokter";
+                biaya = 25;
+            }
 
             while (input < 1 || input > 5 || this.pekerjaan.equals(pilihan)) {
-                if (this.pekerjaan.equals(pilihan)){
+                if (this.pekerjaan.equals(pilihan)) {
                     System.out.println("Anda tidak bisa memilih pekerjaan Anda sekarang");
                 } else {
                     System.out.println("Pilihan tidak valid");
                 }
                 System.out.println("Pilih nomor pekerjaan yang diinginkan : ");
                 input = in.nextInt();
-                if (input == 1){pilihan = "Badut Sulap";biaya = 8;}
-                else if (input == 2){pilihan = "Koki";biaya = 15;}
-                else if (input == 3){pilihan = "Polisi";biaya = 18;}
-                else if (input == 4){pilihan = "Programmer";biaya = 23;}
-                else if (input == 5){pilihan = "Dokter";biaya = 25;}
-            }   
+                if (input == 1) {
+                    pilihan = "Badut Sulap";
+                    biaya = 8;
+                } else if (input == 2) {
+                    pilihan = "Koki";
+                    biaya = 15;
+                } else if (input == 3) {
+                    pilihan = "Polisi";
+                    biaya = 18;
+                } else if (input == 4) {
+                    pilihan = "Programmer";
+                    biaya = 23;
+                } else if (input == 5) {
+                    pilihan = "Dokter";
+                    biaya = 25;
+                }
+            }
 
-            //simpan pekerjan default yang dia miliki, akan kembali ke pekerjaan ini setelah 1 hari diganti pekerjaan
+            // simpan pekerjan default yang dia miliki, akan kembali ke pekerjaan ini
+            // setelah 1 hari diganti pekerjaan
             Pekerjaan pekerjaanDefault = this.pekerjaan;
 
-            //Membuat object pekerjaan yang pilih
+            // Membuat object pekerjaan yang pilih
             Pekerjaan pekerjaanPilihan = new Pekerjaan(pilihan);
 
-            //Pengecekan apakah memiliki uang yang cukup
-            if (uang < biaya){
-                System.out.println("Anda tidak memiliki uang yang cukup mengganti ke perkerjaan ini"); 
+            // Pengecekan apakah memiliki uang yang cukup
+            if (uang < biaya) {
+                System.out.println("Anda tidak memiliki uang yang cukup mengganti ke perkerjaan ini");
             } else {
-                setUang(uang-biaya); //kurangi uang sebanyak biaya
-                //Thread mengganti pekerjaan
+                setUang(uang - biaya); // kurangi uang sebanyak biaya
+                // Thread mengganti pekerjaan
                 Thread gantiPekerjaanThread = new Thread(new Runnable() {
-                    public void run(){
-                        isGantiPekerjaan = true; //Dijadikan true agar tidak bisa ganti pekerjaan lagi
+                    public void run() {
+                        isGantiPekerjaan = true; // Dijadikan true agar tidak bisa ganti pekerjaan lagi
 
-                        //Menunggu hari selanjutnya sebelum pekerjaan diganti
+                        // Menunggu hari selanjutnya sebelum pekerjaan diganti
                         try {
-                            Thread.sleep(Time.getInstance().getTimeRemaining()*1000);
-                        } catch (InterruptedException e){
-                            System.out.println("Thread ganti pekerjaan interrupted");
-                        }
-                        
-                        //Harinya sudah berganti, kemudian diganti pekerjaan selama 1 hari
-                        setPekerjaan(pekerjaanPilihan);
-                        try {
-                            Thread.sleep(720*1000);
+                            Thread.sleep(Time.getInstance().getTimeRemaining() * 1000);
                         } catch (InterruptedException e) {
                             System.out.println("Thread ganti pekerjaan interrupted");
                         }
 
-                        //Mengembalikan pekerjaan Sim yang awal
+                        // Harinya sudah berganti, kemudian diganti pekerjaan selama 1 hari
+                        setPekerjaan(pekerjaanPilihan);
+                        try {
+                            Thread.sleep(720 * 1000);
+                        } catch (InterruptedException e) {
+                            System.out.println("Thread ganti pekerjaan interrupted");
+                        }
+
+                        // Mengembalikan pekerjaan Sim yang awal
                         setPekerjaan(pekerjaanDefault);
-                        isGantiPekerjaan = false; //Dijadikan false agar bisa mengganti pekerjaan lagi
+                        isGantiPekerjaan = false; // Dijadikan false agar bisa mengganti pekerjaan lagi
                     }
                 });
 
@@ -838,63 +904,78 @@ public class Sim {
         // World world = World.getInstance();
         // Item item = new MejaKursi();
         // System.out.println("Nama sim1: " + sim1.getNama());
-        // System.out.println("Pekerjaan sim1: " + sim1.getPekerjaan().getNamaPekerjaan());
+        // System.out.println("Pekerjaan sim1: " +
+        // sim1.getPekerjaan().getNamaPekerjaan());
         // System.out.println("Uang sim1: " + sim1.getUang());
         // System.out.println("Alamat inventory sim1: " + sim1.getInventory());
         // sim1.viewInventory();
         // sim1.addItemToInventory(item, 1);
         // sim1.viewInventory();
-        // System.out.println("Apakah ada toilet di inventory sim1? " + sim1.isItemInInventory(new Toilet()));
+        // System.out.println("Apakah ada toilet di inventory sim1? " +
+        // sim1.isItemInInventory(new Toilet()));
         // System.out
-        //         .println("Apakah ada " + item.getNama() + " di dalam inventory sim1? " + sim1.isItemInInventory(item));
+        // .println("Apakah ada " + item.getNama() + " di dalam inventory sim1? " +
+        // sim1.isItemInInventory(item));
         // System.out.println("Kekenyangan : " + sim1.getKekenyangan());
         // System.out.printf("Mood %d\n", sim1.getMood());
         // System.out.printf("Kesehatan %d\n", sim1.getKesehatan());
 
         // System.out.println("\nNama sim2: " + sim2.getNama());
-        // System.out.println("Pekerjaan sim2: " + sim2.getPekerjaan().getNamaPekerjaan());
+        // System.out.println("Pekerjaan sim2: " +
+        // sim2.getPekerjaan().getNamaPekerjaan());
         // System.out.println("Uang sim2: " + sim2.getUang());
         // System.out.println("Alamat inventory sim2: " + sim2.getInventory());
         // sim2.viewInventory();
-        // System.out.println("Apakah ada toilet di inventory sim2? " + sim1.isItemInInventory(new Toilet()));
+        // System.out.println("Apakah ada toilet di inventory sim2? " +
+        // sim1.isItemInInventory(new Toilet()));
         // System.out
-        //         .println("Apakah ada " + item.getNama() + " di dalam inventory sim2? " + sim1.isItemInInventory(item));
+        // .println("Apakah ada " + item.getNama() + " di dalam inventory sim2? " +
+        // sim1.isItemInInventory(item));
 
         // System.out.println("Sebelum ditambahkan ke world :");
         // try {
-        //     System.out.println("Posisi sim : " + sim1.getPosisiSim());
-        //     System.out.println("Rumah saat ini : " + sim1.getRumahSaatIni().getNamaRumah());
-        //     System.out.println("Ruangan saat ini : " + sim1.getRuanganSaatIni().getNamaRuangan());
-        //     System.out.println("Daftar ruangan di rumah saat ini : ");
-        //     sim1.getRumahSaatIni().printDaftarRuangan();
+        // System.out.println("Posisi sim : " + sim1.getPosisiSim());
+        // System.out.println("Rumah saat ini : " +
+        // sim1.getRumahSaatIni().getNamaRumah());
+        // System.out.println("Ruangan saat ini : " +
+        // sim1.getRuanganSaatIni().getNamaRuangan());
+        // System.out.println("Daftar ruangan di rumah saat ini : ");
+        // sim1.getRumahSaatIni().printDaftarRuangan();
         // } catch (NullPointerException e) {
-        //     System.out.println("Sim belum memiliki rumah");
+        // System.out.println("Sim belum memiliki rumah");
         // }
 
         // world.addRumah(sim1);
         // world.addRumah(sim2, new Point(13, 2));
 
         // System.out.println("Setelah ditambahkan ke world :");
-        // System.out.println("Posisi rumah sim1 : " + sim1.getRumahSaatIni().getLokasi().getX() + ", "
-        //         + sim1.getRumahSaatIni().getLokasi().getY());
-        // System.out.println("Rumah saat ini: " + sim1.getRumahSaatIni().getNamaRumah());
-        // System.out.println("Ruangan saat ini : " + sim1.getRuanganSaatIni().getNamaRuangan());
+        // System.out.println("Posisi rumah sim1 : " +
+        // sim1.getRumahSaatIni().getLokasi().getX() + ", "
+        // + sim1.getRumahSaatIni().getLokasi().getY());
+        // System.out.println("Rumah saat ini: " +
+        // sim1.getRumahSaatIni().getNamaRumah());
+        // System.out.println("Ruangan saat ini : " +
+        // sim1.getRuanganSaatIni().getNamaRuangan());
         // System.out.println("Daftar ruangan di rumah saat ini : ");
         // sim1.getRumahSaatIni().printDaftarRuangan();
         // System.out.println(sim1.getStatus());
 
-        // System.out.println("\nPosisi rumah sim2 : " + sim2.getRumahSaatIni().getLokasi().getX() + ", "
-        //         + sim2.getRumahSaatIni().getLokasi().getY());
-        // System.out.println("Rumah saat ini: " + sim2.getRumahSaatIni().getNamaRumah());
-        // System.out.println("Ruangan saat ini : " + sim2.getRuanganSaatIni().getNamaRuangan());
+        // System.out.println("\nPosisi rumah sim2 : " +
+        // sim2.getRumahSaatIni().getLokasi().getX() + ", "
+        // + sim2.getRumahSaatIni().getLokasi().getY());
+        // System.out.println("Rumah saat ini: " +
+        // sim2.getRumahSaatIni().getNamaRumah());
+        // System.out.println("Ruangan saat ini : " +
+        // sim2.getRuanganSaatIni().getNamaRuangan());
         // System.out.println("Daftar ruangan di rumah saat ini : ");
         // sim2.getRumahSaatIni().printDaftarRuangan();
         // System.out.println(sim2.getStatus());
 
         // sim1.berkunjung();
 
-        // System.out.println("\nPosisi rumah sim1 saat ini : " + sim1.getRumahSaatIni().getLokasi().getX() + ", "
-        //         + sim1.getRumahSaatIni().getLokasi().getY());
+        // System.out.println("\nPosisi rumah sim1 saat ini : " +
+        // sim1.getRumahSaatIni().getLokasi().getX() + ", "
+        // + sim1.getRumahSaatIni().getLokasi().getY());
         Sim sim1 = new Sim("Gibran");
         Sim sim2 = new Sim("Samudra");
         World world = World.getInstance();
@@ -907,7 +988,8 @@ public class Sim {
         sim1.addItemToInventory(item, 1);
         sim1.viewInventory();
         System.out.println("Apakah ada toilet di inventory sim1? " + sim1.isItemInInventory(new Toilet()));
-        System.out.println("Apakah ada " + item.getNama() + " di dalam inventory sim1? " + sim1.isItemInInventory(item));
+        System.out
+                .println("Apakah ada " + item.getNama() + " di dalam inventory sim1? " + sim1.isItemInInventory(item));
         System.out.println("Kekenyangan : " + sim1.getKekenyangan());
         System.out.printf("Mood %d\n", sim1.getMood());
         System.out.printf("Kesehatan %d\n", sim1.getKesehatan());
@@ -918,11 +1000,12 @@ public class Sim {
         System.out.println("Alamat inventory sim2: " + sim2.getInventory());
         sim2.viewInventory();
         System.out.println("Apakah ada toilet di inventory sim2? " + sim1.isItemInInventory(new Toilet()));
-        System.out.println("Apakah ada " + item.getNama() + " di dalam inventory sim2? " + sim1.isItemInInventory(item));
-        
+        System.out
+                .println("Apakah ada " + item.getNama() + " di dalam inventory sim2? " + sim1.isItemInInventory(item));
+
         System.out.println("Sebelum ditambahkan ke world :");
         try {
-            System.out.println("Posisi sim : "  + sim1.getPosisiSim());
+            System.out.println("Posisi sim : " + sim1.getPosisiSim());
             System.out.println("Rumah saat ini : " + sim1.getRumahSaatIni().getNamaRumah());
             System.out.println("Ruangan saat ini : " + sim1.getRuanganSaatIni().getNamaRuangan());
             System.out.println("Daftar ruangan di rumah saat ini : ");
@@ -932,17 +1015,19 @@ public class Sim {
         }
 
         world.addRumah(sim1);
-        world.addRumah(sim2, new Point(13,2));
+        world.addRumah(sim2, new Point(13, 2));
 
         System.out.println("Setelah ditambahkan ke world :");
-        System.out.println("Posisi rumah sim1 : "  + sim1.getRumahSaatIni().getLokasi().getX() + ", " + sim1.getRumahSaatIni().getLokasi().getY());
+        System.out.println("Posisi rumah sim1 : " + sim1.getRumahSaatIni().getLokasi().getX() + ", "
+                + sim1.getRumahSaatIni().getLokasi().getY());
         System.out.println("Rumah saat ini: " + sim1.getRumahSaatIni().getNamaRumah());
         System.out.println("Ruangan saat ini : " + sim1.getRuanganSaatIni().getNamaRuangan());
         System.out.println("Daftar ruangan di rumah saat ini : ");
         sim1.getRumahSaatIni().printDaftarRuangan();
         System.out.println(sim1.getStatus());
 
-        System.out.println("\nPosisi rumah sim2 : "  + sim2.getRumahSaatIni().getLokasi().getX() + ", " + sim2.getRumahSaatIni().getLokasi().getY());
+        System.out.println("\nPosisi rumah sim2 : " + sim2.getRumahSaatIni().getLokasi().getX() + ", "
+                + sim2.getRumahSaatIni().getLokasi().getY());
         System.out.println("Rumah saat ini: " + sim2.getRumahSaatIni().getNamaRumah());
         System.out.println("Ruangan saat ini : " + sim2.getRuanganSaatIni().getNamaRuangan());
         System.out.println("Daftar ruangan di rumah saat ini : ");
@@ -951,13 +1036,8 @@ public class Sim {
 
         sim1.berkunjung();
 
-        System.out.println("\nPosisi rumah sim1 saat ini : "  + sim1.getRumahSaatIni().getLokasi().getX() + ", " + sim1.getRumahSaatIni().getLokasi().getY());
-
-
-
-
-
-
+        System.out.println("\nPosisi rumah sim1 saat ini : " + sim1.getRumahSaatIni().getLokasi().getX() + ", "
+                + sim1.getRumahSaatIni().getLokasi().getY());
 
         sim1.setNama("Gibran Jakarta");
         sim1.setPekerjaan(new Pekerjaan("Koki"));
@@ -978,7 +1058,7 @@ public class Sim {
         System.out.println(Time.getInstance().getTimeRemaining());
         Time.getInstance().getActivityTimeRemaining();
         sim1.getInventory().showInventory();
-        
+
         sim1.kerja();
         System.out.println(Time.getInstance().getTimeRemaining());
         Time.getInstance().getActivityTimeRemaining();
