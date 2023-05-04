@@ -216,7 +216,6 @@ public class Sim {
         Thread kerjaThread = new Thread(new Runnable() {
             public void run() {
                 int counter = 0;
-                System.out.println(durasiAkhir);
                 while (counter < durasiAkhir) {
                     try {
                         Thread.sleep(1000);
@@ -231,7 +230,6 @@ public class Sim {
                 kekenyangan -= ((durasiAkhir / 30) * 10);
                 mood -= ((durasiAkhir / 30) * 10);
                 uang += ((durasiAkhir / 240) * pekerjaan.getGaji());
-                System.out.println(kekenyangan);
 
                 pekerjaan.addTimesWorked(durasiAkhir);
                 setStatus("None");
