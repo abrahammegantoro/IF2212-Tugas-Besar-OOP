@@ -601,6 +601,7 @@ public class Sim {
         System.out.println("1. Beli Barang");
         if (this.getRumahSaatIni() == this.getRumahUtama()) {
             System.out.println("2. Pasang Barang");
+            System.out.println("3. Pindah Barang");
         }
         System.out.println("Pilih menu :");
         int choice = scanner.nextInt();
@@ -612,7 +613,7 @@ public class Sim {
         }
 
         // terus minta inputan sampai benar bahkan jika memasukkan inputan char/string
-        while (choice < 1 || choice > 2) {
+        while (choice < 1 || choice > 3) {
             System.out.println("Inputan salah. Silakan masukkan angka antara 1 dan 2.");
             System.out.print("Pilihan : ");
             choice = scanner.nextInt();
@@ -620,9 +621,11 @@ public class Sim {
 
         switch (choice) {
             case 1:
+                clearTerminal();
                 beliBarang();
                 break;
             case 2:
+                clearTerminal();
                 // Cek inventory yang ingin dipasang, Cek Furniture apa aja di inventory
                 inventory.showFurnitureInventory();
                 System.out.print("Pilih furniture yang ingin dipasang: ");
@@ -782,7 +785,61 @@ public class Sim {
                 Point point = new Point(x, y);
                 ruanganSaatIni.addFurniture(furniture, point);
                 break;
+            case 3:
+                clearTerminal();
+                // Pindah Barang
+                pindahBarang();
+                break;
         }
+    }
+
+    public void clearTerminal() {
+        try {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Memindahkan furnitur yang ada di ruanganSaatIni dari titik yang satu ke titik
+    // yang lain
+    public void pindahBarang() {
+        Scanner scanner = new Scanner(System.in);
+        // Cek apakah ada furniture di ruanganSaatIni
+        if (ruanganSaatIni.getDaftarFurniture().size() == 0) {
+            System.out.println("Tidak ada furniture di ruangan ini.");
+            System.out.println("Tekan Enter untuk melanjutkan...");
+            scanner.nextLine();
+            clearTerminal();
+            editRoom();
+            return;
+        }
+
+        // print daftar furniture yang ada di ruanganSaatIni
+        System.out.println("Daftar furniture yang ada di ruangan: ");
+        ruanganSaatIni.printDaftarFurnitureName();
+        System.out.print("Masukkan nama furniture yang ingin dipindahkan: ");
+        String pilih = scanner.nextLine();
+        Furniture furniturePilihan = ruanganSaatIni.selectFurniture(pilih);
+        // Cek apakah furniture ada di ruanganSaatIni
+        while (furniturePilihan == null) {
+            System.out.println("Furniture tidak ada di ruangan");
+            System.out.print("Masukkan nama furniture yang ingin dipindahkan: ");
+            pilih = scanner.nextLine();
+        }
+
+        // Input point
+        System.out.print("Masukkan koordinat X: ");
+        int x = scanner.nextInt();
+        System.out.print("Masukkan koordinat Y: ");
+        int y = scanner.nextInt();
+
+        Point point = new Point(x, y);
+        ruanganSaatIni.moveFurniture(furniturePilihan, point);
+        System.out.println(furniturePilihan.getNama() + " berhasil dipindahkan");
     }
 
     public void showPekerjaan() {
