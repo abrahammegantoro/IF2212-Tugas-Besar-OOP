@@ -353,7 +353,7 @@ public class Ruangan {
                 }
                 daftarFurniture.put(furniture, listPoint);
             } else {
-                System.out.println("Tidak bisa memindahkan furniture ke koordinat tersebut.");
+                System.out.println("Tidak bisa memindahkan " + furniture.getNama() + " ke koordinat tersebut karena sudah ada furniture lain, yaitu " + gridRuangan[point.getX()][point.getY()].getNama() + ".");
             }
         } else {
             System.out.println("Tidak ada furniture dengan nama tersebut.");
@@ -382,7 +382,7 @@ public class Ruangan {
 
     // jika ada nama furniture yang sama, user akan disuruh untuk memilih furniture
     // yang mana yang ingin dipilih, jika tidak langsung mereturn furniture tersebut
-    private Furniture selectFurniture(String furnitureName) {
+    public Furniture selectFurniture(String furnitureName) {
         if (isFurnitureNameExist(furnitureName)) {
             List<Furniture> furnitureList = new ArrayList<>();
             for (Furniture furniture : daftarFurniture.keySet()) {
