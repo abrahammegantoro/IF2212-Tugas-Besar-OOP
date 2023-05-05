@@ -39,6 +39,22 @@ public class MainMenu {
     // public static void load(){
     // //masih dalam proses
     // }
+    
+    // Hapus sim dari listSim dan ganti currentSim dengan inputan pengguna
+    public static void removeSimAndChangeSim(Sim sim) {
+        listSim.remove(sim);
+        if (!isAllSimDead()) {
+            // Menerima masukan dari pengguna sim mana yang ingin dimainkan
+            System.out.println("Silakan pilih sim yang ingin dimainkan :");
+            for (int i = 0; i < listSim.size(); i++) {
+                System.out.println((i + 1) + ". " + listSim.get(i).getNama());
+            }
+            System.out.print("Masukkan pilihan Anda (Angka saja) : ");
+            int input = in.nextInt();
+            in.nextLine();
+            currentSim = listSim.get(input - 1);
+        }
+    }
 
     // Menu paling pertama yang ditampilkan
     public static void showGameMenu() {
@@ -47,7 +63,7 @@ public class MainMenu {
             System.out.println("Silakan pilih menu yang tersedia :");
             System.out.println("1. Start Game");
             System.out.println("2. Help");
-            System.out.println("3. Exit");
+            System.out.println("0. Exit Game");
             System.out.print("Masukkan pilihan Anda (Angka saja) : ");
             int input = in.nextInt();
             in.nextLine();
@@ -62,9 +78,9 @@ public class MainMenu {
                     help();
                     showGameMenu();
                     break;
-                case 3:
+                case 0:
                     clearTerminal();
-                    System.out.println("Terima kasih telah bermain!");
+                    System.out.println("Terima kasih telah bermain Simplicity!");
                     System.exit(0);
                     break;
                 default:
@@ -92,7 +108,7 @@ public class MainMenu {
             System.out.println("Silakan pilih menu yang tersedia :");
             System.out.println("1. New Game");
             System.out.println("2. Load Game (msh blm bisa)");
-            System.out.println("3. Back");
+            System.out.println("0. Kembali");
             System.out.print("Masukkan pilihan Anda (Angka saja) : ");
             int input = in.nextInt();
             in.nextLine(); // hati-hati
@@ -109,7 +125,7 @@ public class MainMenu {
                     AllData.load();
                     showInGameMenu();
                     break;
-                case 3:
+                case 0:
                     clearTerminal();
                     showGameMenu();
                     break;
@@ -136,189 +152,200 @@ public class MainMenu {
 
     // Menu setelah game dimulai dan sim pertama sudah dibuat
     public static void showInGameMenu() {
-        try {
-            System.out.println("Silakan pilih menu yang tersedia :");
-            System.out.println("1. Kerja");
-            System.out.println("2. Olahraga");
-            System.out.println("3. Move to Object");
-            System.out.println("4. Berkunjung");
-            System.out.println("5. Upgrade Rumah"); // jgn lupa dicek dulu di rumahnya sendiri ato kgk
-            System.out.println("6. Pindah Ruangan");
-            System.out.println("7. Lihat Inventory");
-            System.out.println("8. Edit Room"); // Pasang Barang dan Beli Barang (jgn lupa dicek dulu di rumahnya
-                                                // sendiri
-                                                // ato kgk)
-            System.out.println("9. View List Object");
-            System.out.println("10. View Sim Info");
-            System.out.println("11. View Current Location");
-            System.out.println("12. Add Sim");
-            System.out.println("13. Change Sim");
-            System.out.println("14. Save Game");
-            System.out.println("15. Load Game");
-            System.out.println("16. Help");
-            System.out.println("17. Exit");
-            System.out.println("18. Lihat Aksi Tambahan");
-            System.out.print("Masukkan pilihan Anda (Angka saja) : ");
-            int input = in.nextInt();
-            in.nextLine();
-            switch (input) {
-                case 1:
-                    clearTerminal();
-                    currentSim.kerja();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 2:
-                    clearTerminal();
-                    currentSim.olahraga();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 3:
-                    clearTerminal();
-                    moveToObject();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 4:
-                    clearTerminal();
-                    currentSim.berkunjung();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 5:
-                    clearTerminal();
-                    if (currentSim.getRumahSaatIni() == currentSim.getRumahUtama()) {
-                        currentSim.getRumahUtama().upgradeRumah(currentSim);
+        if (!isAllSimDead()) {
+            try {
+                System.out.println("Silakan pilih menu yang tersedia :");
+                System.out.println("1. Kerja");
+                System.out.println("2. Olahraga");
+                System.out.println("3. Move to Object");
+                System.out.println("4. Berkunjung");
+                System.out.println("5. Upgrade Rumah"); // jgn lupa dicek dulu di rumahnya sendiri ato kgk
+                System.out.println("6. Pindah Ruangan");
+                System.out.println("7. Lihat Inventory");
+                System.out.println("8. Edit Room"); // Pasang Barang dan Beli Barang (jgn lupa dicek dulu di rumahnya
+                                                    // sendiri
+                                                    // ato kgk)
+                System.out.println("9. View List Object");
+                System.out.println("10. View Sim Info");
+                System.out.println("11. View Current Location");
+                System.out.println("12. Add Sim");
+                System.out.println("13. Change Sim");
+                System.out.println("14. Save Game");
+                System.out.println("15. Load Game");
+                System.out.println("16. Help");
+                System.out.println("17. Exit Game");
+                System.out.println("18. Lihat Aksi Tambahan");
+                System.out.print("Masukkan pilihan Anda (Angka saja) : ");
+                int input = in.nextInt();
+                in.nextLine();
+                switch (input) {
+                    case 1:
+                        clearTerminal();
+                        currentSim.kerja();
                         System.out.println("Tekan Enter untuk melanjutkan...");
                         in.nextLine();
                         clearTerminal();
                         showInGameMenu();
-                    } else {
-                        System.out.println("Anda tidak berada di rumah utama.");
+                        break;
+                    case 2:
+                        clearTerminal();
+                        currentSim.olahraga();
                         System.out.println("Tekan Enter untuk melanjutkan...");
                         in.nextLine();
                         clearTerminal();
                         showInGameMenu();
-                    }
-                    break;
-                case 6:
-                    clearTerminal();
-                    currentSim.pindahRuangan();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 7:
-                    clearTerminal();
-                    currentSim.viewInventory();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 8:
-                    clearTerminal();
-                    currentSim.editRoom();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 9:
-                    clearTerminal();
-                    currentSim.getRuanganSaatIni().printDaftarFurnitureName();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 10:
-                    clearTerminal();
-                    viewSimInfo(); // jgn lupa rapiin, bikinnya di Sim.java
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 11:
-                    clearTerminal();
-                    viewCurrentLocation(); // jgn lupa rapiin, bikinnya di Sim.java
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 12:
-                    clearTerminal();
-                    addSim();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 13:
-                    clearTerminal();
-                    changeSim();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 14:
-                    AllData.save();
-                    showInGameMenu();
-                    break;
-                case 15:
-                    // load();
-                    break;
-                case 16:
-                    clearTerminal();
-                    help();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                case 17:
-                    clearTerminal();
-                    System.out.println("Terima kasih telah bermain!");
-                    System.exit(0);
-                    break;
-                case 18:
-                    clearTerminal();
-                    showAksiOnFurniture();
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
-                default:
-                    clearTerminal();
-                    System.out.println("Pilihan tidak tersedia.");
-                    System.out.println("Tekan Enter untuk melanjutkan...");
-                    in.nextLine();
-                    clearTerminal();
-                    showInGameMenu();
-                    break;
+                        break;
+                    case 3:
+                        clearTerminal();
+                        moveToObject();
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 4:
+                        clearTerminal();
+                        currentSim.berkunjung();
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 5:
+                        clearTerminal();
+                        if (currentSim.getRumahSaatIni() == currentSim.getRumahUtama()) {
+                            currentSim.getRumahUtama().upgradeRumah(currentSim);
+                            System.out.println("Tekan Enter untuk melanjutkan...");
+                            in.nextLine();
+                            clearTerminal();
+                            showInGameMenu();
+                        } else {
+                            System.out.println("Anda tidak berada di rumah utama.");
+                            System.out.println("Tekan Enter untuk melanjutkan...");
+                            in.nextLine();
+                            clearTerminal();
+                            showInGameMenu();
+                        }
+                        break;
+                    case 6:
+                        clearTerminal();
+                        currentSim.pindahRuangan();
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 7:
+                        clearTerminal();
+                        currentSim.viewInventory();
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 8:
+                        clearTerminal();
+                        currentSim.editRoom();
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 9:
+                        clearTerminal();
+                        currentSim.getRuanganSaatIni().printDaftarFurnitureName();
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 10:
+                        clearTerminal();
+                        viewSimInfo(); // jgn lupa rapiin, bikinnya di Sim.java
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 11:
+                        clearTerminal();
+                        viewCurrentLocation(); // jgn lupa rapiin, bikinnya di Sim.java
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 12:
+                        clearTerminal();
+                        addSim();
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 13:
+                        clearTerminal();
+                        changeSim();
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 14:
+                        AllData.save();
+                        showInGameMenu();
+                        break;
+                    case 15:
+                        // load();
+                        break;
+                    case 16:
+                        clearTerminal();
+                        help();
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    case 17:
+                        clearTerminal();
+                        System.out.println("Terima kasih telah bermain Simplicity!");
+                        System.exit(0);
+                        break;
+                    case 18:
+                        clearTerminal();
+                        showAksiOnFurniture();
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                    default:
+                        clearTerminal();
+                        System.out.println("Pilihan tidak tersedia.");
+                        System.out.println("Tekan Enter untuk melanjutkan...");
+                        in.nextLine();
+                        clearTerminal();
+                        showInGameMenu();
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                clearTerminal();
+                System.out.println("Input harus berupa angka.");
+                System.out.println("Tekan Enter untuk melanjutkan...");
+                in.nextLine();
+                in.nextLine();
+                clearTerminal();
+                showInGameMenu();
             }
-        } catch (InputMismatchException e) {
+        } else {
             clearTerminal();
-            System.out.println("Input harus berupa angka.");
-            System.out.println("Tekan Enter untuk melanjutkan...");
-            in.nextLine();
+            System.out.println("Semua sim anda telah meninggal.");
+            System.out.println("Tekan Enter untuk mengakhiri permainan :(");
             in.nextLine();
             clearTerminal();
-            showInGameMenu();
+            System.out.println("Terima kasih telah bermain Simplicity!");
+            // exit program
+            System.exit(0);
         }
     }
 
@@ -598,8 +625,16 @@ public class MainMenu {
         }
     }
 
+    public static boolean isAllSimDead() {
+        // cek jika arraylist kosong
+        if (listSim.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
     public static void exit() {
-        System.out.println("Terima kasih telah memainkan Simpli-city");
+        System.out.println("Terima kasih telah memainkan Simplicity");
         System.exit(0);
     }
 
