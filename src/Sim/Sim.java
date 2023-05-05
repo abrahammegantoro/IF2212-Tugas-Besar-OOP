@@ -223,7 +223,7 @@ public class Sim {
         System.out.print("Durasi Kerja :  ");
         int durasi = input.nextInt();
 
-        while (durasi % 1 != 0 || durasi <= 0) {
+        while (durasi % 120 != 0 || durasi <= 0) {
             System.out.println("Durasi kerja harus kelipatan 120 dan juga lebih dari 0");
             System.out.print("Durasi Kerja :  ");
             durasi = input.nextInt();
@@ -249,9 +249,8 @@ public class Sim {
                 System.out.println("Sim telah selesai bekerja.");
                 System.out.println("Tekan Enter untuk melanjutkan.");
                 input.nextLine();
-                input.nextLine();
                 clearTerminal();
-                setKekenyangan(0); // kekenyangan - ((durasiAkhir / 30) * 10
+                setKekenyangan(kekenyangan - ((durasiAkhir / 30) * 10));
                 setMood(mood - ((durasiAkhir / 30) * 10));
                 uang += ((durasiAkhir / 240) * pekerjaan.getGaji());
 
