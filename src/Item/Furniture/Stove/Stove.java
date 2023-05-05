@@ -88,8 +88,6 @@ public abstract class Stove extends Furniture {
             }
         }
 
-        scanner.close();
-
         Masakan masakanTerpilih = resep.get(noMasakan);
 
         // Memasak masakan

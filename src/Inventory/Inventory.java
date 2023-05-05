@@ -79,7 +79,7 @@ public class Inventory<T extends Item> { // T adalah tipe data yang akan digunak
 
     public void showInventory() {
         System.out.println("Inventory: ");
-        System.out.println("Item_name\t\tAmount");
+        System.out.println("Item     \t\tAmount");
         System.out.println("---------------------------------");
 
         for (Map.Entry<T, Integer> entry : items.entrySet()) {
