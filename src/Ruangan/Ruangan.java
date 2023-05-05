@@ -451,7 +451,7 @@ public class Ruangan {
                 System.out.println("Sim berhasil dipindahkan ke " + furniture.getNama() + " pada titik "
                         + targetPosition.getX() + ", " + targetPosition.getY() + ".");
             } else {
-                System.out.println("Tidak ada posisi yang tersedia pada furnitur.");
+                System.out.println("Tidak ada posisi yang tersedia pada furniture.");
             }
         } else {
             System.out.println("Furnitur tidak ada di dalam ruangan.");

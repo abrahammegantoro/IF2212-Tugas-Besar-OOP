@@ -376,6 +376,35 @@ public class Rumah {
         // }
     }
 
+    // Pindahkan semua sim-sim yang ada di seluruh ruangan ke rumahUtama mereka masing-masing
+    // public void pindahkanSemuaSim() {
+    //     List<Ruangan> daftarRuanganz = getDaftarRuangan();
+    //     for (Ruangan ruangan : daftarRuanganz) {
+    //         Map<Sim, Point> daftarSim = ruangan.getDaftarSim();
+    //         Iterator<Sim> iterator = daftarSim.keySet().iterator();
+    //         while (iterator.hasNext()) {
+    //             Sim sim = iterator.next();
+    //             sim.getRuanganSaatIni().removeSim(sim);
+    //             sim.setRumahSaatIni(sim.getRumahUtama());
+    //             sim.setRuanganSaatIni(sim.getRumahUtama().getRuangan("Ruang Tamu"));
+    //             sim.getRumahUtama().getRuangan("Ruang Tamu").putSim(sim, new Point(0, 0));
+    //             iterator.remove();
+    //         }
+    //     }
+    // }
+
+    public void pindahkanSemuaSim() {
+        for (Ruangan ruangan : daftarRuangan) {
+            Map<Sim, Point> daftarSim = new HashMap<>(ruangan.getDaftarSim());
+            for (Sim sim : daftarSim.keySet()) {
+                sim.getRuanganSaatIni().removeSim(sim);
+                sim.setRumahSaatIni(sim.getRumahUtama());
+                sim.setRuanganSaatIni(sim.getRumahUtama().getRuangan("Ruang Tamu"));
+                sim.getRumahUtama().getRuangan("Ruang Tamu").putSim(sim, new Point(0, 0));
+            }
+        }
+    }
+
     public static void main(String[] args) {
         // Sim sim = new Sim("Budi");
         // sim.setUang(999999);
