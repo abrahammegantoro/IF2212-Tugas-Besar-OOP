@@ -170,7 +170,7 @@ public class Ruangan {
 
     // visualisasi furniture pada ruangan
     public void printRuangan() {
-        System.out.println(namaRuangan);
+        System.out.println("Peta " + namaRuangan);
         System.out.println("-------------------------");
 
         for (int row = 0; row < 6; row++) {
@@ -224,7 +224,7 @@ public class Ruangan {
 
     // visualisasi sim pada ruangan
     public void printSim() {
-        System.out.println("Sim Positions:");
+        System.out.println("Peta posisi sim :");
         System.out.println("-------------------------");
 
         String[][] ruangan = new String[6][6];
@@ -258,6 +258,10 @@ public class Ruangan {
     public void putSim(Sim sim, Point point) {
         daftarSim.put(sim, point);
         sim.setPosisiSim(point);
+    }
+
+    public void removeSim(Sim sim) {
+        daftarSim.remove(sim);
     }
 
     public Map<Sim, Point> getDaftarSim() {
@@ -424,13 +428,21 @@ public class Ruangan {
 
         if (daftarFurniture.containsKey(furniture)) {
             List<Point> furniturePositions = daftarFurniture.get(furniture);
-            if (!furniturePositions.isEmpty()) {
+            if (!furniturePositions.isEmpty()) { // artinya 
                 // Remove Sim's current position
                 // Point currentSimPosition = daftarSim.get(sim);
                 // gridRuangan[currentSimPosition.getX()][currentSimPosition.getY()] = null;
 
                 // Move Sim to a position on the furniture
                 Point targetPosition = selectPositionOnFurniture(furniture); // kalo bs milih : furniturePositions
+                // cek apakah ada sim di posisi tersebut
+                for (Map.Entry<Sim, Point> simEntry : daftarSim.entrySet()) {
+                    if (simEntry.getValue().equals(targetPosition)) {
+                        System.out.println("Tidak bisa memindahkan sim ke posisi tersebut karena sudah ada sim lain.");
+                        return;
+                    }
+                }
+                
                 gridRuangan[targetPosition.getX()][targetPosition.getY()] = furniture;
                 daftarSim.put(sim, targetPosition);
                 sim.setPosisiSim(targetPosition);
@@ -515,7 +527,7 @@ public class Ruangan {
         ruangan.addFurniture(mejaKursi1, new Point(3, 0));
         ruangan.addFurniture(toilet, new Point(0, 0));
 
-        Sim sim = new Sim("Sim1");
+        Sim sim = new Sim("aaaa");
         ruangan.putSim(sim, new Point(5, 5));
         System.out.println("Furniture yang tersedia:");
         ruangan.printDaftarFurnitureName();

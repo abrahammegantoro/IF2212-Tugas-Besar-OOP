@@ -39,8 +39,8 @@ public class World {
     // }
 
     public void printWorld() {
-        System.out.println("World :");
-        System.out.println("-------");
+        System.out.println("Peta Dunia :");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < 64; i++) {
             System.out.print("|");
             for (int j = 0; j < 64; j++) {
@@ -52,7 +52,7 @@ public class World {
             }
             System.out.println("|");
         }
-        System.out.println("-------");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public List<Rumah> getDaftarRumah() {
@@ -78,6 +78,8 @@ public class World {
         sim.setRumahUtama(rumahBaru);
         sim.setRumahSaatIni(rumahBaru);
         sim.setRuanganSaatIni(rumahBaru.getRuangan("Ruang Tamu"));
+        sim.setPosisiSim(new Point(0, 0));
+        sim.getRuanganSaatIni().putSim(sim, new Point(0, 0));
         System.out.println("Rumah " + sim.getNama() + " berhasil dibuat.");
     }
 
@@ -103,6 +105,8 @@ public class World {
             sim.setRumahUtama(rumahBaru);
             sim.setRumahSaatIni(rumahBaru);
             sim.setRuanganSaatIni(rumahBaru.getRuangan("Ruang Tamu"));
+            sim.setPosisiSim(new Point(0, 0));
+            sim.getRuanganSaatIni().putSim(sim, new Point(0, 0));
             System.out.println("Rumah " + sim.getNama() + " berhasil dibuat.");
         } else {
             System.out.println("Koordinat sudah terisi oleh rumah lain.");
