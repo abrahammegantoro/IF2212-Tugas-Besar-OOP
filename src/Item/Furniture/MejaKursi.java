@@ -69,9 +69,7 @@ public class MejaKursi extends Furniture {
         } catch (InterruptedException e) {
             System.out.println("Thread interrupted");
         }
-        // input.close();
 
-        // note : waktu makan belum diurus
     }
 
     public static boolean showMakanan(Inventory<Item> inventory) {
