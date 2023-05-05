@@ -244,8 +244,8 @@ public class Sim {
                         System.out.println("Thread interrupted");
                     }
                 }
-                kekenyangan -= ((durasiAkhir / 30) * 10);
-                mood -= ((durasiAkhir / 30) * 10);
+                setKekenyangan(kekenyangan - ((durasiAkhir / 30) * 10));
+                setMood(mood - ((durasiAkhir / 30) * 10));
                 uang += ((durasiAkhir / 240) * pekerjaan.getGaji());
 
                 pekerjaan.addTimesWorked(durasiAkhir);
@@ -293,9 +293,9 @@ public class Sim {
                         System.out.println("Thread interrupted");
                     }
                 }
-                kesehatan += ((durasiFinal / 20) * 5);
-                mood += ((durasiFinal / 20) * 10);
-                kekenyangan -= ((durasiFinal / 20) * 5);
+                setKesehatan(kesehatan + ((durasiFinal / 20) * 5));
+                setMood(mood + ((durasiFinal / 20) * 10));
+                setKekenyangan(kekenyangan - ((durasiFinal / 20) * 5));
                 System.out.println("Sim telah selesai berolahraga");
                 setStatus("None");
             }
