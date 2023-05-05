@@ -16,23 +16,23 @@ public class MejaKursi extends Furniture {
     }
 
     public static void makan(Sim sim) {
-        showMakanan(sim.getInventory());
+        if (!showMakanan(sim.getInventory())) {
+            return;
+        };
 
         Scanner input = new Scanner(System.in);
 
         System.out.print("Pilih Makanan :  ");
-        int nomorMakanan = input.nextInt();
+        String namaMakanan = input.nextLine();
 
         Item makanan = null;
-        int counter = 1;
         for (Map.Entry<Item, Integer> entry : sim.getInventory().getItems().entrySet()) {
             Item item = entry.getKey();
             if (item instanceof Edible) {
-                if (counter == nomorMakanan) {
+                if (item.getNama().equals(namaMakanan)) {
                     makanan = item;
                     break;
                 }
-                counter++;
             }
         }
 
@@ -42,10 +42,19 @@ public class MejaKursi extends Furniture {
             public void run() {
                 try {
                     if (makananAkhir != null) {
+                        int durasi = 30;
+                        while (durasi > 0) {
+                            System.out.println("Sisa waktu makan : " + durasi);
+                            sim.decrementBeliBarangTime();
+                            sim.decrementUpgradeRumahTime();
+                            sim.setPekerjaanBaru();
+                            Thread.sleep(1000);
+                            durasi--;
+                        }
+                        
                         sim.getInventory().removeItem(makananAkhir);
                         Edible kekenyangan = (Edible) makananAkhir;
                         sim.setKekenyangan(sim.getKekenyangan() + kekenyangan.getKekenyangan());
-                        Thread.sleep(30000);
                     }
                 } catch (InterruptedException e) {
                     System.out.println("Thread interrupted");
@@ -54,22 +63,37 @@ public class MejaKursi extends Furniture {
         });
 
         makan.start();
+
+        try {
+            makan.join();
+        } catch (InterruptedException e) {
+            System.out.println("Thread interrupted");
+        }
         input.close();
 
         // note : waktu makan belum diurus
     }
 
-    public static void showMakanan(Inventory<Item> inventory) {
+    public static boolean showMakanan(Inventory<Item> inventory) {
         System.out.println("Inventory: ");
-        System.out.println("Makanan\t\tAmount");
+        System.out.printf("| %-20s| %s\n", "Makanan", "Amount");
         System.out.println("---------------------------------");
-
+        
+        boolean foundEdible = false;
+        
         for (Map.Entry<Item, Integer> entry : inventory.getItems().entrySet()) {
             Item item = (Item) entry.getKey();
             int amount = entry.getValue();
             if (item instanceof Edible) {
-                System.out.printf("%-20s\t%d\n", item.getNama(), amount);
+                System.out.printf("| %-20s| %d\n", item.getNama(), amount);
+                foundEdible = true;
             }
         }
+
+        if (!foundEdible) {
+            System.out.println("Tidak ada makanan di inventory");
+        }
+
+        return foundEdible;
     }
 }

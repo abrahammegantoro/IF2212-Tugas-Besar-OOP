@@ -200,7 +200,7 @@ public class Rumah {
         }
         System.out.println("Pembangunan ruang " + namaRuanganBaru + " di rumah " + sim.getNama() + " dimulai");
         sim.setUang(sim.getUang() - 1500);
-        Time.getInstance().setTimeMapUpgradeRumah(sim.getRumahUtama(), 18*60*1000); // 18*60*1000
+        Time.getInstance().setTimeMapUpgradeRumah(sim.getRumahUtama(), 18*60); // 18*60*1000
         setRuanganToUpgrade(ruanganToUpgrade);
         setArahFinal(arahFinal);
         setNamaRuanganBaru(namaRuanganBaru);

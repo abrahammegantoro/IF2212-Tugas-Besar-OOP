@@ -17,6 +17,9 @@ public class Piano extends Furniture{
                     try {
                         System.out.println("Sedang bermain piano...");
                         Time.getInstance().incrementTime();
+                        sim.decrementBeliBarangTime();
+                        sim.decrementUpgradeRumahTime();
+                        sim.setPekerjaanBaru();
                         Thread.sleep(1000);
                         durasi--;
                     } catch (InterruptedException e) {

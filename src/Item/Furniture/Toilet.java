@@ -16,6 +16,9 @@ public class Toilet extends Furniture{
                     try {
                         System.out.println("Sedang buang air...");
                         Time.getInstance().incrementTime();
+                        sim.decrementBeliBarangTime();
+                        sim.decrementUpgradeRumahTime();
+                        sim.setPekerjaanBaru();
                         Thread.sleep(1000);
                         durasi--;
                     } catch (InterruptedException e) {

@@ -342,7 +342,6 @@ public class MainMenu {
                 System.out.println("Input harus berupa angka.");
                 System.out.println("Tekan Enter untuk melanjutkan...");
                 in.nextLine();
-                in.nextLine();
                 clearTerminal();
                 showInGameMenu();
             }
@@ -510,15 +509,27 @@ public class MainMenu {
     }
 
     public static void moveToObject() {
-        // print available furnitures
-        System.out.println("Berikut adalah daftar furniture yang tersedia di ruangan ini :");
-        currentSim.getRuanganSaatIni().printDaftarFurnitureName();
-        System.out.println("Silakan pilih furniture yang ingin Anda tuju :");
-        String furnitureName = in.nextLine();
-        currentSim.getRuanganSaatIni().moveSimToFurniture(currentSim, furnitureName);
-        // udah bisa make aksi di furniture
-        System.out.println("Anda sudah berada di " + furnitureName + " pada titik (" + currentSim.getPosisiSim().getX()
-                + ", " + currentSim.getPosisiSim().getY() + ")");
+        // Kalau isi furnitures kosong
+        if (currentSim.getRuanganSaatIni().getDaftarFurniture().size() == 0) {
+            System.out.println("Tidak ada furniture di ruangan ini.\n");
+            System.out.println("Anda saat ini berada pada titik (" + currentSim.getPosisiSim().getX()
+            + ", " + currentSim.getPosisiSim().getY() + ")");
+
+            System.out.println("Tekan Enter untuk melanjutkan...");
+            in.nextLine();
+            clearTerminal();
+            showInGameMenu();
+        } else {
+            // print available furnitures
+            System.out.println("Berikut adalah daftar furniture yang tersedia di ruangan ini :");
+            currentSim.getRuanganSaatIni().printDaftarFurnitureName();
+            System.out.println("Silakan pilih furniture yang ingin Anda tuju :");
+            String furnitureName = in.nextLine();
+            currentSim.getRuanganSaatIni().moveSimToFurniture(currentSim, furnitureName);
+            // udah bisa make aksi di furniture
+            System.out.println("Anda sudah berada di " + furnitureName + " pada titik (" + currentSim.getPosisiSim().getX()
+                    + ", " + currentSim.getPosisiSim().getY() + ")");
+        }       
     }
 
     public static void changeSim() {

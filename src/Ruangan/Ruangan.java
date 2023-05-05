@@ -296,7 +296,7 @@ public class Ruangan {
         this.daftarFurniture = daftarFurniture;
     }
 
-    public void addFurniture(Furniture furniture, Point point) {
+    public boolean addFurniture(Furniture furniture, Point point) {
         Furniture lokasiFurniture = gridRuangan[point.getX()][point.getY()];
         if (lokasiFurniture == null) {
             int panjang = furniture.getPanjang();
@@ -321,10 +321,13 @@ public class Ruangan {
                 daftarFurniture.put(furniture, listPoint);
             } else {
                 System.out.println("Tidak bisa menambahkan furniture di koordinat tersebut.");
+                return false;
             }
         } else {
             System.out.println("Tidak bisa menambahkan furniture di koordinat tersebut.");
+            return false;
         }
+        return true;
     }
 
     public void moveFurniture(Furniture furniture, Point point) {

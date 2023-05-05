@@ -17,6 +17,9 @@ public class Komputer extends Furniture{
                     try {
                         System.out.println("Sedang bermain game...");
                         Time.getInstance().incrementTime();
+                        sim.decrementBeliBarangTime();
+                        sim.decrementUpgradeRumahTime();
+                        sim.setPekerjaanBaru();
                         Thread.sleep(1000);
                         durasi--;
                     } catch (InterruptedException e) {
