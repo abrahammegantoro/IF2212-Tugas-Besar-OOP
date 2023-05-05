@@ -15,6 +15,7 @@ import src.Item.Furniture.Bed.QueenBed;
 import src.Item.Furniture.Bed.SingleBed;
 import src.Item.Furniture.Stove.EStove;
 import src.Item.Furniture.Stove.GasStove;
+import src.MainMenu.MainMenu;
 import src.World.Point;
 import src.Item.Buyable;
 
@@ -159,9 +160,9 @@ public class Sim {
         this.kekenyangan = kekenyangan;
         if (kekenyangan == 0) {
             // Sim mati karena kelaparan
-            System.out.println("Sim mati karena kelaparan");
-            System.out.println("Game Over.");
-            System.exit(0);
+            System.out.println("Sim dengan nama " + this.nama + " mati karena kelaparan.");
+            MainMenu.removeSimAndChangeSim(this);
+            clearTerminal();
         }
     }
 
@@ -174,9 +175,9 @@ public class Sim {
         this.mood = mood;
         if (mood == 0) {
             // Sim mati karena depresi
-            System.out.println("Sim mati karena depresi");
-            System.out.println("Game Over.");
-            System.exit(0);
+            System.out.println("Sim dengan nama " + this.nama + " mati karena depresi.");
+            MainMenu.removeSimAndChangeSim(this);
+            clearTerminal();
         }
     }
 
@@ -189,9 +190,9 @@ public class Sim {
         this.kesehatan = kesehatan;
         if (kesehatan == 0) {
             // Sim mati karena sakit
-            System.out.println("Sim mati karena sakit");
-            System.out.println("Game Over.");
-            System.exit(0);
+            System.out.println("Sim dengan nama " + this.nama + " mati karena sakit.");
+            MainMenu.removeSimAndChangeSim(this);
+            clearTerminal();
         }
     }
 
@@ -222,13 +223,14 @@ public class Sim {
         System.out.print("Durasi Kerja :  ");
         int durasi = input.nextInt();
 
-        while (durasi % 120 != 0 || durasi <= 0) {
+        while (durasi % 1 != 0 || durasi <= 0) {
             System.out.println("Durasi kerja harus kelipatan 120 dan juga lebih dari 0");
             System.out.print("Durasi Kerja :  ");
             durasi = input.nextInt();
         }
         final int durasiAkhir = durasi;
         setStatus("Kerja");
+        System.out.println("Kerja dimulai selama " + durasi + " detik.");
         Thread kerjaThread = new Thread(new Runnable() {
             public void run() {
                 int counter = 0;
@@ -244,7 +246,12 @@ public class Sim {
                         System.out.println("Thread interrupted");
                     }
                 }
-                setKekenyangan(kekenyangan - ((durasiAkhir / 30) * 10));
+                System.out.println("Sim telah selesai bekerja.");
+                System.out.println("Tekan Enter untuk melanjutkan.");
+                input.nextLine();
+                input.nextLine();
+                clearTerminal();
+                setKekenyangan(0); // kekenyangan - ((durasiAkhir / 30) * 10
                 setMood(mood - ((durasiAkhir / 30) * 10));
                 uang += ((durasiAkhir / 240) * pekerjaan.getGaji());
 
@@ -603,23 +610,29 @@ public class Sim {
             System.out.println("2. Pasang Barang");
             System.out.println("3. Pindah Barang");
         }
-        System.out.println("Pilih menu :");
+        System.out.println("0. Kembali");
+        System.out.print("Masukkan pilihan Anda (Angka saja) : ");
         int choice = scanner.nextInt();
 
         while (this.getRumahSaatIni() != this.getRumahUtama() && choice != 1) {
-            System.out.println("Inputan salah. Silakan masukkan angka 1.");
-            System.out.print("Pilihan : ");
+            System.out.println("Inputan salah. Silakan masukkan ulang angka.");
+            System.out.print("Masukkan pilihan Anda (Angka saja) : ");
             choice = scanner.nextInt();
         }
 
         // terus minta inputan sampai benar bahkan jika memasukkan inputan char/string
-        while (choice < 1 || choice > 3) {
-            System.out.println("Inputan salah. Silakan masukkan angka antara 1 dan 2.");
+        while (choice < 0 || choice > 3) {
+            System.out.println("Inputan salah. Silakan masukkan angka antara 0 dan 3.");
             System.out.print("Pilihan : ");
             choice = scanner.nextInt();
         }
 
         switch (choice) {
+            case 0:
+                clearTerminal();
+                // Kembali ke menu utama
+                MainMenu.showInGameMenu();
+                break;
             case 1:
                 clearTerminal();
                 beliBarang();
