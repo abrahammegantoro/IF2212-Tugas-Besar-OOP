@@ -59,6 +59,7 @@ public class MainMenu {
     // Menu paling pertama yang ditampilkan
     public static void showGameMenu() {
         try {
+            clearTerminal();
             System.out.println("Selamat datang di Simpli-City!");
             System.out.println("Silakan pilih menu yang tersedia :");
             System.out.println("1. Start Game");
@@ -506,9 +507,6 @@ public class MainMenu {
         System.out.println("Silakan pilih furniture yang ingin Anda tuju :");
         String furnitureName = in.nextLine();
         currentSim.getRuanganSaatIni().moveSimToFurniture(currentSim, furnitureName);
-        // udah bisa make aksi di furniture
-        System.out.println("Anda sudah berada di " + furnitureName + " pada titik (" + currentSim.getPosisiSim().getX()
-                + ", " + currentSim.getPosisiSim().getY() + ")");
     }
 
     public static void changeSim() {
@@ -549,14 +547,13 @@ public class MainMenu {
         currentSim.getRuanganSaatIni().printRuangan();
         System.out.println("\n");
         // print daftarSim
-        // System.out.println("Berikut adalah daftar sim yang sedang berada di ruangan
-        // ini :");
-        // Map<Sim, Point> map = currentSim.getRuanganSaatIni().getDaftarSim();
-        // for (Map.Entry<Sim, Point> entry : map.entrySet()) {
-        // System.out.println(entry.getKey().getNama() + " pada titik (" +
-        // entry.getValue().getX() + ", "
-        // + entry.getValue().getY() + ")");
-        // }
+        System.out.println("Berikut adalah daftar sim yang sedang berada di ruangan ini :");
+        Map<Sim, Point> map = currentSim.getRuanganSaatIni().getDaftarSim();
+        for (Map.Entry<Sim, Point> entry : map.entrySet()) {
+        System.out.println(entry.getKey().getNama() + " pada titik (" +
+        entry.getValue().getX() + ", "
+        + entry.getValue().getY() + ")");
+        }
         currentSim.getRuanganSaatIni().printSim();
         System.out.println("\nSim sedang berada di " + currentSim.getRumahSaatIni().getNamaRumah()
                 + " pada titik dunia " + "(" + currentSim.getRumahSaatIni().getLokasi().getX() + ", "

@@ -83,6 +83,11 @@ public class World {
         System.out.println("Rumah " + sim.getNama() + " berhasil dibuat.");
     }
 
+    public void removeRumah(Rumah rumah) {
+        daftarRumah.remove(rumah);
+        gridRumah[(int) rumah.getLokasi().getX()][(int) rumah.getLokasi().getY()] = null;
+    }
+
     private List<Point> findAvailablePoints() {
         List<Point> availablePoints = new ArrayList<>();
 

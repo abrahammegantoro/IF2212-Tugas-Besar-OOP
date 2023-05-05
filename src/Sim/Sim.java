@@ -24,6 +24,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Sim {
+    private World world = World.getInstance();
     private String nama;
     private Pekerjaan pekerjaan;
     private int uang;
@@ -161,6 +162,13 @@ public class Sim {
         if (kekenyangan == 0) {
             // Sim mati karena kelaparan
             System.out.println("Sim dengan nama " + this.nama + " mati karena kelaparan.");
+            // Hapus sim dari list sim di RuanganSaatIni
+            // Pindahkan sim-sim yang hidup, yang ada di rumah tersebut ke rumah utama
+            // masing-masing sim di Ruangan Ruang Tamu dan Hapus rumah sim yang mati dari
+            // dunia
+            getRumahUtama().pindahkanSemuaSim();
+            getRuanganSaatIni().removeSim(this);
+            world.removeRumah(this.getRumahUtama());
             MainMenu.removeSimAndChangeSim(this);
             clearTerminal();
         }
@@ -176,6 +184,13 @@ public class Sim {
         if (mood == 0) {
             // Sim mati karena depresi
             System.out.println("Sim dengan nama " + this.nama + " mati karena depresi.");
+            // Hapus sim dari list sim di RuanganSaatIni
+            // Pindahkan sim-sim yang hidup, yang ada di rumah tersebut ke rumah utama
+            // masing-masing sim di Ruangan Ruang Tamu dan Hapus rumah sim yang mati dari
+            // dunia
+            getRumahUtama().pindahkanSemuaSim();
+            getRuanganSaatIni().removeSim(this);
+            world.removeRumah(this.getRumahUtama());
             MainMenu.removeSimAndChangeSim(this);
             clearTerminal();
         }
@@ -191,6 +206,13 @@ public class Sim {
         if (kesehatan == 0) {
             // Sim mati karena sakit
             System.out.println("Sim dengan nama " + this.nama + " mati karena sakit.");
+            // Hapus sim dari list sim di RuanganSaatIni
+            // Pindahkan sim-sim yang hidup, yang ada di rumah tersebut ke rumah utama
+            // masing-masing sim di Ruangan Ruang Tamu dan Hapus rumah sim yang mati dari
+            // dunia
+            getRumahUtama().pindahkanSemuaSim();
+            getRuanganSaatIni().removeSim(this);
+            world.removeRumah(this.getRumahUtama());
             MainMenu.removeSimAndChangeSim(this);
             clearTerminal();
         }
@@ -223,7 +245,7 @@ public class Sim {
         System.out.print("Durasi Kerja :  ");
         int durasi = input.nextInt();
 
-        while (durasi % 1 != 0 || durasi <= 0) {
+        while (durasi % 120 != 0 || durasi <= 0) {
             System.out.println("Durasi kerja harus kelipatan 120 dan juga lebih dari 0");
             System.out.print("Durasi Kerja :  ");
             durasi = input.nextInt();
@@ -251,10 +273,9 @@ public class Sim {
                 input.nextLine();
                 input.nextLine();
                 clearTerminal();
-                setKekenyangan(0); // kekenyangan - ((durasiAkhir / 30) * 10
                 setMood(mood - ((durasiAkhir / 30) * 10));
+                setKekenyangan(kekenyangan - ((durasiAkhir / 30) * 10)); // diset 0 kalo pengen ngetes, aslinya kekenyangan - ((durasiAkhir / 30) * 10)
                 uang += ((durasiAkhir / 240) * pekerjaan.getGaji());
-
                 pekerjaan.addTimesWorked(durasiAkhir);
                 setStatus("None");
             }
@@ -371,10 +392,14 @@ public class Sim {
 
         try {
             berkunjungThread.join();
+            // Hapus sim dari daftarSim yang ada di ruangan pada rumah sebelumnya
+            getRuanganSaatIni().removeSim(this);
             setMood(mood + ((lamaBerkunjung / 30) * 10));
             setKekenyangan(kekenyangan - ((lamaBerkunjung / 30) * 10));
             setRumahSaatIni(world.getRumah(pilihan));
             setRuanganSaatIni(world.getRumah(pilihan).getRuangan("Ruang Tamu"));
+            // masukin ke daftarSim yang ada di ruangan pada rumah yang dikunjungi
+            world.getRumah(pilihan).getRuangan("Ruang Tamu").putSim(this, new Point(0, 0));
 
             if (getRumahSaatIni().getNamaRumah() == getRumahUtama().getNamaRumah())
                 System.out.println("Berhasil pindah rumah. Sekarang Anda berada di " + getRumahSaatIni().getNamaRumah()
@@ -421,41 +446,47 @@ public class Sim {
                 return;
             }
         }
+        // System.out.println("Ruangan lama : " + getRuanganSaatIni().getNamaRuangan());
+        // System.out.println("Berikut adalah daftar sim yang sedang berada di " +
+        // getRuanganSaatIni().getNamaRuangan());
+        // Map<Sim, Point> map = this.getRuanganSaatIni().getDaftarSim();
+        // // check if empty
+        // if (map.isEmpty()) {
+        // System.out.println("Tidak ada sim yang sedang berada di ruangan ini.");
+        // }
+        // for (Map.Entry<Sim, Point> entry : map.entrySet()) {
+        // System.out.println(entry.getKey().getNama() + " pada titik (" +
+        // entry.getValue().getX() + ", "
+        // + entry.getValue().getY() + ")");
+        // }
+        // // print sim map
+        // System.out.println("Sim : " + this.getNama() + " pada titik (" +
+        // this.getPosisiSim().getX() + ", "
+        // + this.getPosisiSim().getY() + ")");
+
         // apus sim dari daftarSim untuk ruangan yang lama
-        System.out.println("Ruangan lama : " + getRuanganSaatIni().getNamaRuangan());
-        System.out.println("Berikut adalah daftar sim yang sedang berada di " + getRuanganSaatIni().getNamaRuangan());
-        Map<Sim, Point> map = this.getRuanganSaatIni().getDaftarSim();
-        // check if empty
-        if (map.isEmpty()) {
-            System.out.println("Tidak ada sim yang sedang berada di ruangan ini.");
-        }
-        for (Map.Entry<Sim, Point> entry : map.entrySet()) {
-            System.out.println(entry.getKey().getNama() + " pada titik (" + entry.getValue().getX() + ", "
-                    + entry.getValue().getY() + ")");
-        }
-        // print sim map
-        System.out.println("Sim : " + this.getNama() + " pada titik (" + this.getPosisiSim().getX() + ", "
-                + this.getPosisiSim().getY() + ")");
         getRuanganSaatIni().removeSim(this);
 
         // pindah ruangan
         setRuanganSaatIni(getRumahSaatIni().getRuangan(pilihan));
 
         // masukin sim ke daftarSim untuk ruangan yang baru
-        System.out.println("Ruangan baru : " + getRuanganSaatIni().getNamaRuangan());
-        System.out.println("Berikut adalah daftar sim yang sedang berada di " + getRuanganSaatIni().getNamaRuangan());
-        Map<Sim, Point> map1 = this.getRuanganSaatIni().getDaftarSim();
-        if (map.isEmpty()) {
-            System.out.println("Tidak ada sim yang sedang berada di ruangan ini.");
-        }
-        for (Map.Entry<Sim, Point> entry : map1.entrySet()) {
-            System.out.println(entry.getKey().getNama() + " pada titik (" + entry.getValue().getX() + ", "
-                    + entry.getValue().getY() + ")");
-        }
-        System.out.println("Sim : " + this.getNama() + " pada titik (" + this.getPosisiSim().getX() + ", "
-                + this.getPosisiSim().getY() + ")");
+        // System.out.println("Ruangan baru : " + getRuanganSaatIni().getNamaRuangan());
+        // System.out.println("Berikut adalah daftar sim yang sedang berada di " +
+        // getRuanganSaatIni().getNamaRuangan());
+        // Map<Sim, Point> map1 = this.getRuanganSaatIni().getDaftarSim();
+        // if (map.isEmpty()) {
+        // System.out.println("Tidak ada sim yang sedang berada di ruangan ini.");
+        // }
+        // for (Map.Entry<Sim, Point> entry : map1.entrySet()) {
+        // System.out.println(entry.getKey().getNama() + " pada titik (" +
+        // entry.getValue().getX() + ", "
+        // + entry.getValue().getY() + ")");
+        // }
+        // System.out.println("Sim : " + this.getNama() + " pada titik (" +
+        // this.getPosisiSim().getX() + ", "
+        // + this.getPosisiSim().getY() + ")");
         getRuanganSaatIni().putSim(this, new Point(0, 0));
-        this.setPosisiSim(new Point(0, 0));
         System.out.println("Berhasil pindah ruangan. Sekarang Anda berada di " + getRuanganSaatIni().getNamaRuangan());
     }
 
@@ -614,7 +645,7 @@ public class Sim {
         System.out.print("Masukkan pilihan Anda (Angka saja) : ");
         int choice = scanner.nextInt();
 
-        while (this.getRumahSaatIni() != this.getRumahUtama() && choice != 1) {
+        while (this.getRumahSaatIni() != this.getRumahUtama() && choice != 1 && choice != 0) {
             System.out.println("Inputan salah. Silakan masukkan ulang angka.");
             System.out.print("Masukkan pilihan Anda (Angka saja) : ");
             choice = scanner.nextInt();
