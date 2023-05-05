@@ -136,15 +136,6 @@ public class Sim {
     }
 
     public void setPekerjaan(Pekerjaan pekerjaan) {
-        // Pekerjaan pekerjaanDefault = this.pekerjaan;
-        // int hariGanti = Time.getHari();
-        // this.pekerjaan = pekerjaan;
-        // this.uang -= pekerjaan.getGaji() / 2;
-        // while (hariGanti = Time.getHari()) {
-        // // do nothing
-        // }
-        // this.pekerjaan = pekerjaanDefault;
-
         this.pekerjaan = pekerjaan;
     }
 
@@ -930,8 +921,8 @@ public class Sim {
                 biaya = 25;
             }
 
-            while (input < 1 || input > 5 || this.pekerjaan.equals(pilihan)) {
-                if (this.pekerjaan.equals(pilihan)) {
+            while (input < 1 || input > 5 || this.pekerjaan.getNamaPekerjaan().equals(pilihan)) {
+                if (this.pekerjaan.getNamaPekerjaan().equals(pilihan)) {
                     System.out.println("Anda tidak bisa memilih pekerjaan Anda sekarang");
                 } else {
                     System.out.println("Pilihan tidak valid");
