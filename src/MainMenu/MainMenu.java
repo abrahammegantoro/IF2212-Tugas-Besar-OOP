@@ -157,7 +157,8 @@ public class MainMenu {
             System.out.println("15. Load Game");
             System.out.println("16. Help");
             System.out.println("17. Exit");
-            System.out.println("18. Lihat Aksi Tambahan");
+            System.out.println("18. Ganti Pekerjaan");
+            System.out.println("19. Lihat Aksi Tambahan");
             System.out.print("Masukkan pilihan Anda (Angka saja) : ");
             int input = in.nextInt();
             in.nextLine();
@@ -296,6 +297,14 @@ public class MainMenu {
                     break;
                 case 18:
                     clearTerminal();
+                    currentSim.gantiPekerjaan();
+                    System.out.println("Tekan Enter untuk melanjutkan...");
+                    in.nextLine();
+                    clearTerminal();
+                    showInGameMenu();
+                    break;
+                case 19:
+                    clearTerminal();
                     showAksiOnFurniture();
                     System.out.println("Tekan Enter untuk melanjutkan...");
                     in.nextLine();
@@ -395,6 +404,7 @@ public class MainMenu {
                         break;
 
                     case "0":
+                        clearTerminal();
                         showInGameMenu();
                         break;
                     default:

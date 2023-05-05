@@ -35,6 +35,9 @@ public class Sim {
     private Rumah rumahSaatIni;
     private Ruangan ruanganSaatIni;
     private String status;
+    private int waktuGantiPekerjaan = -1; // atribut ini digunakan untuk menentukan kapan bisa melakukan
+                                                // penggantian pekerjaan
+    private Pekerjaan pekerjaanBaru = null;
     private boolean isGantiPekerjaan = false; // atribut ini digunakan untuk validasi apakah bisa melakukan penggantian
                                               // pekerjaan
 
@@ -238,6 +241,7 @@ public class Sim {
                         Time.getInstance().incrementTime();
                         decrementBeliBarangTime();
                         decrementUpgradeRumahTime();
+                        setPekerjaanBaru();
                         counter++;
                         System.out.println(counter);
                     } catch (InterruptedException e) {
@@ -287,6 +291,7 @@ public class Sim {
                         Time.getInstance().incrementTime();
                         decrementBeliBarangTime();
                         decrementUpgradeRumahTime();
+                        setPekerjaanBaru();
                         counter++;
                         System.out.println(counter);
                     } catch (InterruptedException e) {
@@ -351,6 +356,7 @@ public class Sim {
                         Time.getInstance().incrementTime();
                         decrementBeliBarangTime();
                         decrementUpgradeRumahTime();
+                        setPekerjaanBaru();
                         counter++;
                         System.out.println(counter);
                     } catch (InterruptedException e) {
@@ -800,7 +806,6 @@ public class Sim {
 
     public void gantiPekerjaan() {
         Scanner in = new Scanner(System.in);
-
         // Pengecekan apakah Sim bisa mengganti pekerjaan
         if (this.pekerjaan.getTimesWorked() < 720) {
             System.out.println("Anda harus bekerja minimal 12 menit untuk pekerjaan sekarang!!");
@@ -855,12 +860,8 @@ public class Sim {
                 }
             }
 
-            // simpan pekerjan default yang dia miliki, akan kembali ke pekerjaan ini
-            // setelah 1 hari diganti pekerjaan
-            Pekerjaan pekerjaanDefault = this.pekerjaan;
-
             // Membuat object pekerjaan yang pilih
-            Pekerjaan pekerjaanPilihan = new Pekerjaan(pilihan);
+            pekerjaanBaru = new Pekerjaan(pilihan);
 
             // Pengecekan apakah memiliki uang yang cukup
             if (uang < biaya) {
@@ -868,32 +869,26 @@ public class Sim {
             } else {
                 setUang(uang - biaya); // kurangi uang sebanyak biaya
                 // Thread mengganti pekerjaan
-                Thread gantiPekerjaanThread = new Thread(new Runnable() {
-                    public void run() {
-                        isGantiPekerjaan = true; // Dijadikan true agar tidak bisa ganti pekerjaan lagi
+                isGantiPekerjaan = true; // Dijadikan true agar tidak bisa ganti pekerjaan lagi
+                waktuGantiPekerjaan = Time.getInstance().getTimeRemaining(); // Waktu ganti pekerjaan
 
-                        // Menunggu hari selanjutnya sebelum pekerjaan diganti
-                        try {
-                            Thread.sleep(Time.getInstance().getTimeRemaining() * 1000);
-                        } catch (InterruptedException e) {
-                            System.out.println("Thread ganti pekerjaan interrupted");
-                        }
+                // Harinya sudah berganti, kemudian diganti pekerjaan selama 1 hari
+                // setPekerjaan(pekerjaanPilihan);
+                // isGantiPekerjaan = false;
+                
+            }
+        }
+    }
 
-                        // Harinya sudah berganti, kemudian diganti pekerjaan selama 1 hari
-                        setPekerjaan(pekerjaanPilihan);
-                        try {
-                            Thread.sleep(720 * 1000);
-                        } catch (InterruptedException e) {
-                            System.out.println("Thread ganti pekerjaan interrupted");
-                        }
-
-                        // Mengembalikan pekerjaan Sim yang awal
-                        setPekerjaan(pekerjaanDefault);
-                        isGantiPekerjaan = false; // Dijadikan false agar bisa mengganti pekerjaan lagi
-                    }
-                });
-
-                gantiPekerjaanThread.start();
+    public synchronized void setPekerjaanBaru() {
+        // Pengecekan apakah sudah waktunya ganti pekerjaan
+        if (waktuGantiPekerjaan != -1) {
+            // Harinya sudah berganti, kemudian diganti pekerjaan selama 1 hari
+            waktuGantiPekerjaan--;
+            if(waktuGantiPekerjaan == 0) {
+                setPekerjaan(pekerjaanBaru);
+                isGantiPekerjaan = false;
+                waktuGantiPekerjaan = -1;
             }
         }
     }
