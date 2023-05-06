@@ -436,10 +436,10 @@ public class Sim {
                     setKesehatan(kesehatan - 5);
                     setMood(mood - 5);
                 }
+                System.out.println("Sim telah selesai berolahraga");
                 setKesehatan(kesehatan + ((durasiFinal / 20) * 5));
                 setMood(mood + ((durasiFinal / 20) * 10));
                 setKekenyangan(kekenyangan - ((durasiFinal / 20) * 5));
-                System.out.println("Sim telah selesai berolahraga");
                 setStatus("None");
             }
         });
@@ -535,6 +535,12 @@ public class Sim {
             berkunjungThread.join();
             // Hapus sim dari daftarSim yang ada di ruangan pada rumah sebelumnya
             getRuanganSaatIni().removeSim(this);
+            if (getRumahSaatIni().getNamaRumah() == getRumahUtama().getNamaRumah())
+                System.out.println("Berhasil pindah rumah. Sekarang Anda berada di " + getRumahSaatIni().getNamaRumah()
+                        + ", yaitu rumah Anda sendiri.");
+            else
+                System.out
+                        .println("Berhasil pindah rumah. Sekarang Anda berada di " + getRumahSaatIni().getNamaRumah());
             setMood(mood + ((lamaBerkunjung / 30) * 10));
             setKekenyangan(kekenyangan - ((lamaBerkunjung / 30) * 10));
             setRumahSaatIni(world.getRumah(pilihan));
@@ -542,12 +548,6 @@ public class Sim {
             // masukin ke daftarSim yang ada di ruangan pada rumah yang dikunjungi
             world.getRumah(pilihan).getRuangan("Ruang Tamu").putSim(this, new Point(0, 0));
 
-            if (getRumahSaatIni().getNamaRumah() == getRumahUtama().getNamaRumah())
-                System.out.println("Berhasil pindah rumah. Sekarang Anda berada di " + getRumahSaatIni().getNamaRumah()
-                        + ", yaitu rumah Anda sendiri.");
-            else
-                System.out
-                        .println("Berhasil pindah rumah. Sekarang Anda berada di " + getRumahSaatIni().getNamaRumah());
             setStatus("None");
         } catch (InterruptedException e) {
             System.out.println("Thread interrupted");

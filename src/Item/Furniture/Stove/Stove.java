@@ -140,14 +140,14 @@ public abstract class Stove extends Furniture {
                     sim.setIsMakan(false);
                 }
                 int tidakTidur = sim.getLamaTidakTidur() / 600;
+                // Memberi tahu user bahwa masakan telah selesai dimasak
+                System.out.println(masakanTerpilih.getNama() + " telah selesai dimasak!");
                 if (!sim.getIsTidur() && tidakTidur > lastTidakTidur) {
                     System.out.println(sim.getNama() + " lelah karena tidak tidur.");
                     sim.setKesehatan(sim.getKesehatan() - 5);
                     sim.setMood(sim.getMood() - 5);
                 }
                 
-                // Memberi tahu user bahwa masakan telah selesai dimasak
-                System.out.println(masakanTerpilih.getNama() + " telah selesai dimasak!");
                 // Menambahkan masakan ke dalam inventory
                 inventory.addItem(masakanTerpilih, 1);
                 inventory.showInventory();
