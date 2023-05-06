@@ -38,9 +38,15 @@ public class Inventory<T extends Item> { // T adalah tipe data yang akan digunak
         for (Map.Entry<T, Integer> entry : items.entrySet()) {
             if (entry.getKey() instanceof Item) {
                 Item inventoryItem = (Item) entry.getKey();
-                if (inventoryItem.getNama().equalsIgnoreCase(((Item) item).getNama())) {
-                    items.remove(entry.getKey());
-                    return;
+                // Kurang 1, kalau cuman 1 berarti remove
+                if (inventoryItem.getNama().equalsIgnoreCase(item.getNama())) {
+                    if (entry.getValue() == 1) {
+                        items.remove(entry.getKey());
+                        return;
+                    } else {
+                        items.put(entry.getKey(), entry.getValue() - 1);
+                        return;
+                    }
                 }
             }
         }
