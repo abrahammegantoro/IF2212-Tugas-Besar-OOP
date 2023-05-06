@@ -72,7 +72,7 @@ public class Rumah {
         for (int i = 0; i < daftarRuangan.size(); i++) {
             System.out.println((i + 1) + ". " + daftarRuangan.get(i).getNamaRuangan());
         }
-        System.out.println("0. Exit");
+        System.out.println("0. Back");
         System.out.println("\n");
     }
 
@@ -87,7 +87,7 @@ public class Rumah {
                 counter++;
             }
         }
-        System.out.println("0. Exit");
+        System.out.println("0. Back");
         System.out.println("\n");
     }
 
@@ -137,12 +137,19 @@ public class Rumah {
                 "Masukkan nama ruangan yang ingin ditambahi ruangan di sisi atas, bawah, kiri, atau kanannya (input String): ");
         String ruanganUpgrade = scanner.nextLine();
 
+        if (ruanganUpgrade.equals("Back")) {
+            return;
+        }
+
         // cek apakah ruanganUpgrade ada di daftarRuangan dan terus minta input
         while (!isNamaRuanganAvailable(ruanganUpgrade)) {
             System.out.println("\nRuangan tidak ditemukan, silakan masukkan nama ruangan yang valid.");
             System.out.print(
                     "Masukkan nama ruangan yang ingin ditambahi ruangan di sisi atas, bawah, kiri, atau kanannya (input String): ");
             ruanganUpgrade = scanner.nextLine();
+            if (ruanganUpgrade.equals("Back")) {
+                return;
+            }
         }
 
         Ruangan ruanganToUpgrade = null;

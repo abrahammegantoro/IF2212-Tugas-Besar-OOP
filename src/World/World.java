@@ -3,7 +3,9 @@ package src.World;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
+import src.MainMenu.MainMenu;
 import src.Rumah.Rumah;
 import src.Sim.Sim;
 
@@ -25,22 +27,23 @@ public class World {
         return instance;
     }
 
-    //Method yang digunakan untuk set world ketika load file
-    public static void setInstance(World world){
+    // Method yang digunakan untuk set world ketika load file
+    public static void setInstance(World world) {
         instance = world;
     }
 
     // public void addSim(Sim sim) {
-    //     this.daftarSim.add(sim);
+    // this.daftarSim.add(sim);
     // }
 
     // public List<Sim> getDaftarSim() {
-    //     return daftarSim;
+    // return daftarSim;
     // }
 
     public void printWorld() {
         System.out.println("Peta Dunia :");
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(
+                "----------------------------------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < 64; i++) {
             System.out.print("|");
             for (int j = 0; j < 64; j++) {
@@ -52,7 +55,8 @@ public class World {
             }
             System.out.println("|");
         }
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(
+                "----------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public List<Rumah> getDaftarRumah() {
@@ -61,26 +65,41 @@ public class World {
 
     public void addRumah(Sim sim) {
         // Temukan titik yang masih kosong pada gridRumah
+        Scanner scanner = new Scanner(System.in);
         List<Point> availablePoints = findAvailablePoints();
-
+        boolean addRumah = true;
         if (availablePoints.isEmpty()) {
-            System.out.println("Tidak ada titik yang tersedia untuk menambahkan rumah.");
-            return;
+            addRumah = false;
         }
 
-        // Pilih titik acak dari daftar titik yang tersedia
-        Random random = new Random();
-        Point randomPoint = availablePoints.get(random.nextInt(availablePoints.size()));
+        if (addRumah) {// Pilih titik acak dari daftar titik yang tersedia
+            Random random = new Random();
+            Point randomPoint = availablePoints.get(random.nextInt(availablePoints.size()));
 
-        Rumah rumahBaru = new Rumah(sim, randomPoint);
-        this.daftarRumah.add(rumahBaru);
-        gridRumah[(int) randomPoint.getX()][(int) randomPoint.getY()] = rumahBaru;
-        sim.setRumahUtama(rumahBaru);
-        sim.setRumahSaatIni(rumahBaru);
-        sim.setRuanganSaatIni(rumahBaru.getRuangan("Ruang Tamu"));
-        sim.setPosisiSim(new Point(0, 0));
-        sim.getRuanganSaatIni().putSim(sim, new Point(0, 0));
-        System.out.println("Rumah " + sim.getNama() + " berhasil dibuat.");
+            Rumah rumahBaru = new Rumah(sim, randomPoint);
+            this.daftarRumah.add(rumahBaru);
+            gridRumah[(int) randomPoint.getX()][(int) randomPoint.getY()] = rumahBaru;
+            MainMenu.addSim(sim);
+            MainMenu.setCurrentSim(sim);
+            sim.setRumahUtama(rumahBaru);
+            sim.setRumahSaatIni(rumahBaru);
+            sim.setRuanganSaatIni(rumahBaru.getRuangan("Ruang Tamu"));
+            sim.setPosisiSim(new Point(0, 0));
+            sim.getRuanganSaatIni().putSim(sim, new Point(0, 0));
+            System.out.println("Rumah sim berhasil dibuat di titik random, yaitu di ("
+                    + sim.getRumahUtama().getLokasi().getX() + ", "
+                    + sim.getRumahUtama().getLokasi().getY() + ")");
+            System.out.println("Tekan Enter untuk melanjutkan...");
+            scanner.nextLine();
+            clearTerminal();
+            MainMenu.showInGameMenu();
+        } else {
+            System.out.println("Tidak ada titik yang tersedia untuk menambahkan rumah.");
+            System.out.println("Tekan Enter untuk melanjutkan...");
+            scanner.nextLine();
+            clearTerminal();
+            MainMenu.showInGameMenu();
+        }
     }
 
     public void removeRumah(Rumah rumah) {
@@ -103,21 +122,43 @@ public class World {
     }
 
     public void addRumah(Sim sim, Point location) {
+        Scanner scanner = new Scanner(System.in);
         if (isCoordinateAvailable(location)) {
             Rumah rumahBaru = new Rumah(sim, location);
             this.daftarRumah.add(rumahBaru);
             gridRumah[(int) location.getX()][(int) location.getY()] = rumahBaru;
+            MainMenu.addSim(sim);
+            MainMenu.setCurrentSim(sim);
             sim.setRumahUtama(rumahBaru);
             sim.setRumahSaatIni(rumahBaru);
             sim.setRuanganSaatIni(rumahBaru.getRuangan("Ruang Tamu"));
             sim.setPosisiSim(new Point(0, 0));
             sim.getRuanganSaatIni().putSim(sim, new Point(0, 0));
             System.out.println("Rumah " + sim.getNama() + " berhasil dibuat.");
+            System.out.println("Tekan Enter untuk melanjutkan...");
+            scanner.nextLine();
+            clearTerminal();
+            MainMenu.showInGameMenu();
         } else {
             System.out.println("Koordinat sudah terisi oleh rumah lain.");
+            System.out.println("Tekan Enter untuk melanjutkan...");
+            scanner.nextLine();
+            clearTerminal();
+            MainMenu.showInGameMenu();
         }
     }
-    
+
+    public void clearTerminal() {
+        try {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public Rumah getRumah(String namaRumah) {
         for (Rumah rumah : daftarRumah) {
             if (rumah.getNamaRumah().equals(namaRumah)) {
@@ -164,19 +205,19 @@ public class World {
 
     // driver world
     // public static void main(String[] args) {
-    //     World world = new World();
-    //     Point point = new Point(0, 0);
-    //     Sim sim = new Sim("Sim1");
-    //     world.addSim(sim);
-    //     world.addRumah(sim, new Point(0, 0));
+    // World world = new World();
+    // Point point = new Point(0, 0);
+    // Sim sim = new Sim("Sim1");
+    // world.addSim(sim);
+    // world.addRumah(sim, new Point(0, 0));
 
-    //     Sim sim2 = new Sim("Sim2");
-    //     world.addSim(sim2);
-    //     world.addRumah(sim2, new Point(0, 0));
+    // Sim sim2 = new Sim("Sim2");
+    // world.addSim(sim2);
+    // world.addRumah(sim2, new Point(0, 0));
 
-    //     // print daftar sim
-    //     for (Sim s : world.getDaftarSim()) {
-    //         System.out.println(s.getNama());
-    //     }
+    // // print daftar sim
+    // for (Sim s : world.getDaftarSim()) {
+    // System.out.println(s.getNama());
+    // }
     // }
 }

@@ -343,18 +343,22 @@ public class Ruangan {
                     }
                 }
             }
-
+    
             if (isAvailable) {
+                List<Point> newListPoint = new ArrayList<Point>();
+                // Remove the furniture's previous position from the daftarFurniture map
+                daftarFurniture.remove(furniture);
                 for (Point p : listPoint) {
                     gridRuangan[p.getX()][p.getY()] = null;
                 }
                 for (int i = 0; i < panjang; i++) {
                     for (int j = 0; j < lebar; j++) {
                         gridRuangan[point.getX() + i][point.getY() + j] = furniture;
-                        listPoint.add(new Point(point.getX() + i, point.getY() + j));
+                        newListPoint.add(new Point(point.getX() + i, point.getY() + j));
                     }
                 }
-                daftarFurniture.put(furniture, listPoint);
+                // Add the furniture's new position to the daftarFurniture map
+                daftarFurniture.put(furniture, newListPoint);
             } else {
                 System.out.println("Tidak bisa memindahkan " + furniture.getNama() + " ke koordinat tersebut karena sudah ada furniture lain, yaitu " + gridRuangan[point.getX()][point.getY()].getNama() + ".");
             }
@@ -362,6 +366,7 @@ public class Ruangan {
             System.out.println("Tidak ada furniture dengan nama tersebut.");
         }
     }
+    
 
     private List<Point> getPositionsOfFurniture(Furniture furniture) {
         List<Point> positions = new ArrayList<>();
@@ -441,18 +446,25 @@ public class Ruangan {
                 // cek apakah ada sim di posisi tersebut
                 for (Map.Entry<Sim, Point> simEntry : daftarSim.entrySet()) {
                     if (simEntry.getValue().equals(targetPosition)) {
-                        System.out.println("Tidak bisa memindahkan sim ke posisi tersebut karena sudah ada sim lain.");
-                        return;
+                        // check if sim name is the same as the sim name that is going to be moved
+                        if (simEntry.getKey().getNama().equals(sim.getNama())) {
+                            System.out.println("Tidak bisa memindahkan sim ke posisi tersebut karena sim sudah berada di titik tersebut.");
+                            return;
+                        }
+                        else {
+                            System.out.println("Tidak bisa memindahkan sim ke posisi tersebut karena sudah ada sim lain.");
+                            return;
+                        }
                     }
                 }
                 
                 gridRuangan[targetPosition.getX()][targetPosition.getY()] = furniture;
-                daftarSim.put(sim, targetPosition);
-                sim.setPosisiSim(targetPosition);
-
+                // daftarSim.put(sim, targetPosition);
+                // sim.setPosisiSim(targetPosition);
+                putSim(sim, targetPosition);
                 // Print success message
                 System.out.println("Sim berhasil dipindahkan ke " + furniture.getNama() + " pada titik "
-                        + targetPosition.getX() + ", " + targetPosition.getY() + ".");
+                        + "(" + targetPosition.getX() + ", " + targetPosition.getY() + ").");
             } else {
                 System.out.println("Tidak ada posisi yang tersedia pada furniture.");
             }
@@ -467,7 +479,7 @@ public class Ruangan {
                 for (Map.Entry<Furniture, List<Point>> furnitureEntry : daftarFurniture.entrySet()) {
                     if (furnitureClass.isInstance(furnitureEntry.getKey())) {
                         for (Point point : furnitureEntry.getValue()) {
-                            if (point.equals(simEntry.getValue())) {
+                            if ((point.getX() == simEntry.getValue().getX()) && (point.getY() == simEntry.getValue().getX())) { // point.equals(simEntry.getValue())
                                 return true;
                             }
                         }
