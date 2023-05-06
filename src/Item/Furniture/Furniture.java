@@ -32,6 +32,6 @@ public abstract class Furniture extends Item implements Buyable {
     @Override
     public int getDeliveryTime() {
         Random random = new Random();
-        return random.nextInt(1, 5) * 30;
+        return (random.nextInt(5) + 1) * 30;
     }
 }

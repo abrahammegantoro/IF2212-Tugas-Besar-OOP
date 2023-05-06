@@ -50,7 +50,7 @@ public class Sim {
     public Sim(String nama) {
         Random random = new Random();
         this.nama = nama;
-        this.pekerjaan = new Pekerjaan(random.nextInt(1, 6));
+        this.pekerjaan = new Pekerjaan(random.nextInt(6) + 1);
         this.uang = 2000; // GANTI JADI 100
         this.inventory = new Inventory<>();
         this.kekenyangan = 80;

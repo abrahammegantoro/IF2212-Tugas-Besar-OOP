@@ -22,7 +22,7 @@ public class BahanBaku extends Item implements Edible, Buyable {
     @Override
     public int getDeliveryTime(){
         Random random = new Random();
-        return random.nextInt(1, 5)*30;
+        return (random.nextInt(5) + 1) * 30;
     }
 
     @Override
