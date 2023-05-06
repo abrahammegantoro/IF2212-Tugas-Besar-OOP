@@ -288,6 +288,7 @@ public class Sim {
                 int counter = 0;
                 int lastHourCount = pekerjaan.getTimesWorked() / 240; 
                 int tempDay = Time.getInstance().getCurrentDay();
+                int lastTidakTidur = lamaTidakTidur / 600;
                 while (counter < durasiAkhir) {
                     try {
                         Thread.sleep(1000);
@@ -307,7 +308,8 @@ public class Sim {
                         System.out.println("Thread interrupted");
                     }
                 }
-                if (lamaTidakTidur >= 600) {
+                int tidakTidur = lamaTidakTidur / 600;
+                if (!isTidur && tidakTidur > lastTidakTidur) {
                     System.out.println(nama + " lelah karena tidak tidur.");
                     kesehatan -= 5;
                     mood -= 5;
@@ -358,6 +360,7 @@ public class Sim {
             public void run() {
                 int counter = 0;
                 int tempDay = Time.getInstance().getCurrentDay();
+                int lastTidakTidur = lamaTidakTidur / 600;
                 while (counter < durasiFinal) {
                     try {
                         Thread.sleep(1000);
@@ -377,7 +380,8 @@ public class Sim {
                         System.out.println("Thread interrupted");
                     }
                 }
-                if (lamaTidakTidur >= 600) {
+                int tidakTidur = lamaTidakTidur / 600;
+                if (!isTidur && tidakTidur > lastTidakTidur) {
                     System.out.println(nama + " lelah karena tidak tidur.");
                     kesehatan -= 5;
                     mood -= 5;

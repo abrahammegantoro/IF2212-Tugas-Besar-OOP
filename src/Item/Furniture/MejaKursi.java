@@ -6,6 +6,7 @@ import src.Item.Item;
 import src.Sim.Sim;
 // import src.Item.BahanBaku.BahanBaku;
 // import src.Item.Masakan.Masakan;
+import src.World.Time;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -43,15 +44,28 @@ public class MejaKursi extends Furniture {
                 try {
                     if (makananAkhir != null) {
                         int durasi = 30;
+                        int tempDay = Time.getInstance().getCurrentDay();
+                        int lastTidakTidur = sim.getLamaTidakTidur() / 600;
                         while (durasi > 0) {
                             System.out.println("Sisa waktu makan : " + durasi);
+                            Thread.sleep(1000);
                             sim.decrementBeliBarangTime();
                             sim.decrementUpgradeRumahTime();
                             sim.setPekerjaanBaru();
-                            Thread.sleep(1000);
+                            if (tempDay != Time.getInstance().getCurrentDay()) {
+                                sim.setIsTidur(false);
+                                sim.setLamaTidakTidur(0);
+                                sim.setLamaTidur(0);
+                            }
+                            sim.incrementLamaTidakTidur();
                             durasi--;
                         }
-                        
+                        int tidakTidur = sim.getLamaTidakTidur() / 600;
+                        if (!sim.getIsTidur() && tidakTidur > lastTidakTidur) {
+                            System.out.println(sim.getNama() + " lelah karena tidak tidur.");
+                            sim.setKesehatan(sim.getKesehatan() - 5);
+                            sim.setMood(sim.getMood() - 5);
+                        }
                         sim.getInventory().removeItem(makananAkhir);
                         Edible kekenyangan = (Edible) makananAkhir;
                         sim.setKekenyangan(sim.getKekenyangan() + kekenyangan.getKekenyangan());

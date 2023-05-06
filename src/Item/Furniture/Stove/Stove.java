@@ -11,6 +11,7 @@ import src.Item.BahanBaku.BahanBaku;
 import src.Item.Furniture.Furniture;
 import src.Item.Masakan.Masakan;
 import src.Sim.Sim;
+import src.World.Time;
 
 public abstract class Stove extends Furniture {
     private static HashMap<Integer, Masakan> resep; // HashMap untuk menyimpan resep masakan
@@ -105,12 +106,34 @@ public abstract class Stove extends Furniture {
                 }
 
                 // Menunggu selama waktu masak
-                try {
-                    Thread.sleep((long) waktuMasak * 1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                int counter = 0; 
+                int tempDay = Time.getInstance().getCurrentDay();
+                int lastTidakTidur = sim.getLamaTidakTidur() / 600;
+                while (counter < waktuMasak) {
+                    try {
+                        Thread.sleep(1000);
+                        Time.getInstance().incrementTime();
+                        sim.decrementBeliBarangTime();
+                        sim.decrementUpgradeRumahTime();
+                        sim.setPekerjaanBaru();
+                        if (tempDay != Time.getInstance().getCurrentDay()) {
+                            sim.setIsTidur(false);
+                            sim.setLamaTidakTidur(0);
+                            sim.setLamaTidur(0);
+                        }
+                        sim.incrementLamaTidakTidur();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    counter++;
                 }
-
+                int tidakTidur = sim.getLamaTidakTidur() / 600;
+                if (!sim.getIsTidur() && tidakTidur > lastTidakTidur) {
+                    System.out.println(sim.getNama() + " lelah karena tidak tidur.");
+                    sim.setKesehatan(sim.getKesehatan() - 5);
+                    sim.setMood(sim.getMood() - 5);
+                }
+                
                 // Memberi tahu user bahwa masakan telah selesai dimasak
                 System.out.println(masakanTerpilih.getNama() + " telah selesai dimasak!");
                 // Menambahkan masakan ke dalam inventory
@@ -120,6 +143,12 @@ public abstract class Stove extends Furniture {
         });
 
         masakThread.start();
+
+        try {
+            masakThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void printResep() {

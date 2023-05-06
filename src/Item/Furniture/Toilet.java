@@ -12,19 +12,33 @@ public class Toilet extends Furniture{
             @Override
             public void run() {
                 int durasi = 10;
+                int tempDay = Time.getInstance().getCurrentDay();
+                int lastTidakTidur = sim.getLamaTidakTidur() / 600;
                 while (durasi > 0) {
                     try {
                         System.out.println("Sedang buang air...");
+                        Thread.sleep(1000);
                         Time.getInstance().incrementTime();
                         sim.decrementBeliBarangTime();
                         sim.decrementUpgradeRumahTime();
                         sim.setPekerjaanBaru();
-                        Thread.sleep(1000);
+                        if (tempDay != Time.getInstance().getCurrentDay()) {
+                            sim.setIsTidur(false);
+                            sim.setLamaTidakTidur(0);
+                            sim.setLamaTidur(0);
+                        }
+                        sim.incrementLamaTidakTidur();
                         durasi--;
                     } catch (InterruptedException e) {
                         System.out.println("Buang air dibatalkan");
                         return;
                     }
+                }
+                int tidakTidur = sim.getLamaTidakTidur() / 600;
+                if (!sim.getIsTidur() && tidakTidur > lastTidakTidur) {
+                    System.out.println(sim.getNama() + " lelah karena tidak tidur.");
+                    sim.setKesehatan(sim.getKesehatan() - 5);
+                    sim.setMood(sim.getMood() - 5);
                 }
             }
         });
