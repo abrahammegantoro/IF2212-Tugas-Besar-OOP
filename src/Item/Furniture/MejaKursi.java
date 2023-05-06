@@ -49,6 +49,7 @@ public class MejaKursi extends Furniture {
                         while (durasi > 0) {
                             System.out.println("Sisa waktu makan : " + durasi);
                             Thread.sleep(1000);
+                            Time.getInstance().incrementTime();
                             sim.decrementBeliBarangTime();
                             sim.decrementUpgradeRumahTime();
                             sim.setPekerjaanBaru();
