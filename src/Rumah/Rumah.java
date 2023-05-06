@@ -374,29 +374,7 @@ public class Rumah {
             }
         }
         daftarRuangan.add(newRuangan);
-        // print daftar ruangan
-        // System.out.println("Daftar ruangan:");
-        // for (Ruangan ruangan1 : daftarRuangan) {
-        // System.out.println(ruangan1.getNamaRuangan());
-        // }
     }
-
-    // Pindahkan semua sim-sim yang ada di seluruh ruangan ke rumahUtama mereka masing-masing
-    // public void pindahkanSemuaSim() {
-    //     List<Ruangan> daftarRuanganz = getDaftarRuangan();
-    //     for (Ruangan ruangan : daftarRuanganz) {
-    //         Map<Sim, Point> daftarSim = ruangan.getDaftarSim();
-    //         Iterator<Sim> iterator = daftarSim.keySet().iterator();
-    //         while (iterator.hasNext()) {
-    //             Sim sim = iterator.next();
-    //             sim.getRuanganSaatIni().removeSim(sim);
-    //             sim.setRumahSaatIni(sim.getRumahUtama());
-    //             sim.setRuanganSaatIni(sim.getRumahUtama().getRuangan("Ruang Tamu"));
-    //             sim.getRumahUtama().getRuangan("Ruang Tamu").putSim(sim, new Point(0, 0));
-    //             iterator.remove();
-    //         }
-    //     }
-    // }
 
     public void pindahkanSemuaSim() {
         for (Ruangan ruangan : daftarRuangan) {

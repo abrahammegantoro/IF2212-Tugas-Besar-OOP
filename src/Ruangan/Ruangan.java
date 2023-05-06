@@ -164,23 +164,6 @@ public class Ruangan {
         System.out.println("-------------------------");
     }
 
-    // visualisasikan ruangan dengan furniture
-    // public void printRuangan() {
-    // System.out.println(namaRuangan);
-    // System.out.println("--------------------------------------------------");
-    // for (int i = 0; i < gridRuangan.length; i++) {
-    // for (int j = 0; j < gridRuangan[i].length; j++) {
-    // if (gridRuangan[i][j] == null) {
-    // System.out.print("-");
-    // } else {
-    // System.out.print(gridRuangan[i][j].getNama().charAt(0) + " ");
-    // }
-    // }
-    // System.out.println();
-    // }
-    // System.out.println("--------------------------------------------------");
-    // }
-
     // visualisasi furniture pada ruangan
     public void printRuangan() {
         System.out.println("Peta " + namaRuangan);

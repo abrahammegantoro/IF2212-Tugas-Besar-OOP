@@ -14,8 +14,6 @@ public class World {
     private static World instance = new World();
     private Rumah[][] gridRumah;
     private List<Rumah> daftarRumah;
-    // private List<Sim> daftarSim;
-    // waktu?
 
     private World() {
         this.gridRumah = new Rumah[64][64];

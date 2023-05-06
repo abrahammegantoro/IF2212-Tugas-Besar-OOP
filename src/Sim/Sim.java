@@ -589,23 +589,6 @@ public class Sim {
                 return;
             }
         }
-        // System.out.println("Ruangan lama : " + getRuanganSaatIni().getNamaRuangan());
-        // System.out.println("Berikut adalah daftar sim yang sedang berada di " +
-        // getRuanganSaatIni().getNamaRuangan());
-        // Map<Sim, Point> map = this.getRuanganSaatIni().getDaftarSim();
-        // // check if empty
-        // if (map.isEmpty()) {
-        // System.out.println("Tidak ada sim yang sedang berada di ruangan ini.");
-        // }
-        // for (Map.Entry<Sim, Point> entry : map.entrySet()) {
-        // System.out.println(entry.getKey().getNama() + " pada titik (" +
-        // entry.getValue().getX() + ", "
-        // + entry.getValue().getY() + ")");
-        // }
-        // // print sim map
-        // System.out.println("Sim : " + this.getNama() + " pada titik (" +
-        // this.getPosisiSim().getX() + ", "
-        // + this.getPosisiSim().getY() + ")");
 
         // apus sim dari daftarSim untuk ruangan yang lama
         getRuanganSaatIni().removeSim(this);
@@ -613,22 +596,6 @@ public class Sim {
         // pindah ruangan
         setRuanganSaatIni(getRumahSaatIni().getRuangan(pilihan));
 
-        // masukin sim ke daftarSim untuk ruangan yang baru
-        // System.out.println("Ruangan baru : " + getRuanganSaatIni().getNamaRuangan());
-        // System.out.println("Berikut adalah daftar sim yang sedang berada di " +
-        // getRuanganSaatIni().getNamaRuangan());
-        // Map<Sim, Point> map1 = this.getRuanganSaatIni().getDaftarSim();
-        // if (map.isEmpty()) {
-        // System.out.println("Tidak ada sim yang sedang berada di ruangan ini.");
-        // }
-        // for (Map.Entry<Sim, Point> entry : map1.entrySet()) {
-        // System.out.println(entry.getKey().getNama() + " pada titik (" +
-        // entry.getValue().getX() + ", "
-        // + entry.getValue().getY() + ")");
-        // }
-        // System.out.println("Sim : " + this.getNama() + " pada titik (" +
-        // this.getPosisiSim().getX() + ", "
-        // + this.getPosisiSim().getY() + ")");
         getRuanganSaatIni().putSim(this, new Point(0, 0));
         System.out.println("Berhasil pindah ruangan. Sekarang Anda berada di " + getRuanganSaatIni().getNamaRuangan());
     }
