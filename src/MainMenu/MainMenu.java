@@ -135,7 +135,7 @@ public class MainMenu {
             System.out.println("╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝      ╚═════╝ ╚═╝  ╚═╝    ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ ");
             System.out.println("Silakan pilih menu yang tersedia :");
             System.out.println("1. New Game");
-            System.out.println("2. Load Game (msh blm bisa)");
+            System.out.println("2. Load Game");
             System.out.println("0. Kembali");
             System.out.print("Masukkan pilihan Anda (Angka saja) : ");
             int input = in.nextInt();

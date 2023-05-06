@@ -10,27 +10,24 @@
 | 4 | 18221099 | Clara Alrosa Fernanda Sinaga |
 | 5 | 18221123 | Abraham Megantoro Samudra |
 
-## Cara Untuk Mengerjakan di Local
+## Cara Menjalankan Program di Local
+1. Clone Repository
 
 ```
 git clone https://github.com/abrahammegantoro/IF2212-Tugas-Besar-OOP.git
 ```
 
-## CARA PUSH KE REPO
-
-1. Pastiin Git ada di branch main, terus pull req
+2. Pindah ke folder clone
 
 ```
-git pull
+cd IF2212-Tugas-Besar-OOP
 ```
 
-2. Bikin branch baru
+3. Buka Terminal dan jalankan perintah berikut
 
 ```
-git checkout -b <nama_branch>
-```
 
-3. Kerjain
+```
 
 4. Setelah itu, commit
 
