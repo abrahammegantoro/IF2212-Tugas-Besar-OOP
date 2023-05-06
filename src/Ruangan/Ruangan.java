@@ -293,7 +293,7 @@ public class Ruangan {
     }
 
     public boolean addFurniture(Furniture furniture, Point point) {
-        Furniture lokasiFurniture = gridRuangan[point.getX()][point.getY()];
+        Furniture lokasiFurniture = gridRuangan[point.getY()][point.getX()];
         if (lokasiFurniture == null) {
             int panjang = furniture.getPanjang();
             int lebar = furniture.getLebar();

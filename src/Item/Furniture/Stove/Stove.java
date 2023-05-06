@@ -10,6 +10,7 @@ import src.Item.Item;
 import src.Item.BahanBaku.BahanBaku;
 import src.Item.Furniture.Furniture;
 import src.Item.Masakan.Masakan;
+import src.MainMenu.MainMenu;
 import src.Sim.Sim;
 import src.World.Time;
 
@@ -123,6 +124,7 @@ public abstract class Stove extends Furniture {
                             sim.setIsTidur(false);
                             sim.setLamaTidakTidur(0);
                             sim.setLamaTidur(0);
+                            MainMenu.setAddSim(false);
                         }
                         sim.incrementLamaTidakTidur();
                     } catch (InterruptedException e) {

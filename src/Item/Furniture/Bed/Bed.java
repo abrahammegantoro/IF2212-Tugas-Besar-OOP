@@ -1,6 +1,7 @@
 package src.Item.Furniture.Bed;
 
 import src.Item.Furniture.Furniture;
+import src.MainMenu.MainMenu;
 import src.Sim.Sim;
 import src.World.Time;
 
@@ -46,6 +47,7 @@ public abstract class Bed extends Furniture {
                             sim.setIsTidur(false);
                             sim.setLamaTidakTidur(0);
                             sim.setLamaTidur(0);
+                            MainMenu.setAddSim(false);
                         }
                         sim.incrementLamaTidur();
                         counter++;

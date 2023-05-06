@@ -53,10 +53,10 @@ public class Sim {
         Random random = new Random();
         this.nama = nama;
         this.pekerjaan = new Pekerjaan(random.nextInt(5) + 1);
-        this.uang = 2000; // GANTI JADI 100
+        this.uang = 100; // GANTI JADI 100
         this.inventory = new Inventory<>();
-        this.kekenyangan = 100;
-        this.mood = 100;
+        this.kekenyangan = 80;
+        this.mood = 80;
         this.kesehatan = 80;
         this.posisiSim = new Point(0, 0);
         this.status = "None";
@@ -72,7 +72,7 @@ public class Sim {
         Clock jam = new Clock();
 
         inventory.addItem(kasurSingle, 1);
-        inventory.addItem(toilet, 2);
+        inventory.addItem(toilet, 1);
         inventory.addItem(komporGas, 1);
         inventory.addItem(mejaKursi, 1);
         inventory.addItem(jam, 1);
@@ -330,6 +330,7 @@ public class Sim {
                             setIsTidur(false);
                             setLamaTidakTidur(0);
                             setLamaTidur(0);
+                            MainMenu.setAddSim(false);
                         }
                         incrementLamaTidakTidur();
                         counter++;
@@ -412,6 +413,7 @@ public class Sim {
                             setIsTidur(false);
                             setLamaTidakTidur(0);
                             setLamaTidur(0);
+                            MainMenu.setAddSim(false);
                         }
                         incrementLamaTidakTidur();
                         counter++;
@@ -502,6 +504,7 @@ public class Sim {
                             setIsTidur(false);
                             setLamaTidakTidur(0);
                             setLamaTidur(0);
+                            MainMenu.setAddSim(false);
                         }
                         incrementLamaTidakTidur();
                         counter++;
@@ -703,6 +706,7 @@ public class Sim {
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    setUang(getUang() - barang.getHarga());
                     int deliveryTime = barang.getDeliveryTime();
                     Time.getInstance().setTimeMapBeliBarang(itemFinal, deliveryTime);
                     System.out.println("Barang akan sampai dalam " + deliveryTime + " detik");
@@ -721,7 +725,6 @@ public class Sim {
             if (value == 0) {
                 System.out.println("Barang sampai");
                 Buyable barang = (Buyable) key;
-                setUang(getUang() - barang.getHarga());
                 inventory.addItem(key, 1);
                 Time.getInstance().removeTimeMapBeliBarang(key);
             }
@@ -1097,16 +1100,8 @@ public class Sim {
                 System.out.println("Anda tidak memiliki uang yang cukup mengganti ke perkerjaan ini");
             } else {
                 setUang(uang - biaya); // kurangi uang sebanyak biaya
-                // Thread mengganti pekerjaan
                 isGantiPekerjaan = true; // Dijadikan true agar tidak bisa ganti pekerjaan lagi
-                // waktuGantiPekerjaan = Time.getInstance().getDayTimeRemaining(); // Waktu
-                // ganti pekerjaan
                 waktuGantiPekerjaan = 30; // Waktu ganti pekerjaan
-
-                // Harinya sudah berganti, kemudian diganti pekerjaan selama 1 hari
-                // setPekerjaan(pekerjaanPilihan);
-                // isGantiPekerjaan = false;
-
             }
         }
     }

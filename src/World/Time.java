@@ -82,7 +82,7 @@ public class Time {
             System.out.println("\nTidak ada aktivitas yang ditunggu\n");
         } else {
             System.out.println("------------------------------");
-            System.out.println("| Aktivitas     | Sisa waktu |");
+            System.out.println("| Aktivitas    | Sisa waktu |");
             System.out.println("------------------------------");
             for (Map.Entry<Item, Integer> entry : timeMapBeliBarang.entrySet()) {
                 Item key = entry.getKey();

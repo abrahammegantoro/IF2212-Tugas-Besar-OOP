@@ -27,6 +27,7 @@ public class MainMenu {
     private static boolean isGameStarted = false;
     private static Sim currentSim;
     private static Scanner in = new Scanner(System.in);
+    private static boolean isAddSim = false;
 
     public static void start() {
         addSim();
@@ -42,6 +43,10 @@ public class MainMenu {
 
     public static void addSim(Sim sim) {
         listSim.add(sim);
+    }
+
+    public static void setAddSim(boolean isAddSim) {
+        MainMenu.isAddSim = isAddSim;
     }
 
     // Hapus sim dari listSim dan ganti currentSim dengan inputan pengguna
@@ -518,60 +523,69 @@ public class MainMenu {
     }
 
     public static void addSim() { // Menambahkan sim baru
-        System.out.print("Silakan masukkan nama sim Anda : ");
-        String nama = in.nextLine();
-
-        // handling input nama sim yang kosong dan juga kurang dari empat karakter
-        while (nama.equals("") || nama.length() < 4) {
-            System.out.println("Nama sim tidak boleh kosong dan harus lebih dari 4 karakter.");
+        if (isAddSim) {
+            System.out.println("Anda sudah membuat sim hari ini.");
+            System.out.println("Tekan Enter untuk melanjutkan...");
+            in.nextLine();
+            clearTerminal();
+            showInGameMenu();
+        } else {
             System.out.print("Silakan masukkan nama sim Anda : ");
-            nama = in.nextLine();
-        }
-
-        // Cek apakah ada nama sim yang sama
-        for (Sim sim : listSim) {
-            if (sim.getNama().equals(nama)) {
-                System.out.println("Nama sim sudah ada.");
+            String nama = in.nextLine();
+    
+            // handling input nama sim yang kosong dan juga kurang dari empat karakter
+            while (nama.equals("") || nama.length() < 4) {
+                System.out.println("Nama sim tidak boleh kosong dan harus lebih dari 4 karakter.");
                 System.out.print("Silakan masukkan nama sim Anda : ");
                 nama = in.nextLine();
             }
-        }
-
-        Sim sim = new Sim(nama);
-        System.out.println("Sim berhasil dibuat.");
-
-        // Pembuatan rumah, user memilih untuk dibuatkan rumah di point yang di mana
-        // saja ataupun yang dipilih oleh user secara langsung
-        System.out.println(
-                "Apakah anda ingin menentukan lokasi/titik tertentu ((0, 0) s.d. (64, 64)) dari rumah sim? Jika tidak, akan dipilihkan secara otomatis. (Y/N)");
-        String input = in.nextLine();
-
-        while (!input.equals("Y") && !input.equals("N")) {
-            System.out.println("Input tidak valid.");
-            System.out.print("Masukkan ulang input (Y/N) : ");
-            input = in.nextLine();
-        }
-
-        // handling input yang tidak valid
-        if (input.equals("Y")) {
-            try {
-                System.out.println("Silakan masukkan koordinat X dan Y untuk lokasi rumah untuk sim yang baru dibuat.");
-                System.out.print("X : ");
-                int x = in.nextInt();
-                System.out.print("Y : ");
-                int y = in.nextInt();
-                world.addRumah(sim, new Point(x, y));
-                // System.out.println("Rumah sim berhasil dibuat di titik (" + x + ", " + y + ")");
-            } catch (InputMismatchException e) {
-                System.out.println("Input tidak valid.");
-                System.out.println("Silakan ulangi pembuatan rumah sim.");
-                System.out.println("Tekan Enter untuk melanjutkan...");
-                in.nextLine();
-                in.nextLine();
-                addSim();
+    
+            // Cek apakah ada nama sim yang sama
+            for (Sim sim : listSim) {
+                if (sim.getNama().equals(nama)) {
+                    System.out.println("Nama sim sudah ada.");
+                    System.out.print("Silakan masukkan nama sim Anda : ");
+                    nama = in.nextLine();
+                }
             }
-        } else if (input.equals("N")) {
-            world.addRumah(sim);
+    
+            Sim sim = new Sim(nama);
+            System.out.println("Sim berhasil dibuat.");
+    
+            // Pembuatan rumah, user memilih untuk dibuatkan rumah di point yang di mana
+            // saja ataupun yang dipilih oleh user secara langsung
+            System.out.println(
+                    "Apakah anda ingin menentukan lokasi/titik tertentu ((0, 0) s.d. (64, 64)) dari rumah sim? Jika tidak, akan dipilihkan secara otomatis. (Y/N)");
+            String input = in.nextLine();
+    
+            while (!input.equals("Y") && !input.equals("N")) {
+                System.out.println("Input tidak valid.");
+                System.out.print("Masukkan ulang input (Y/N) : ");
+                input = in.nextLine();
+            }
+    
+            // handling input yang tidak valid
+            if (input.equals("Y")) {
+                try {
+                    System.out.println("Silakan masukkan koordinat X dan Y untuk lokasi rumah untuk sim yang baru dibuat.");
+                    System.out.print("X : ");
+                    int x = in.nextInt();
+                    System.out.print("Y : ");
+                    int y = in.nextInt();
+                    world.addRumah(sim, new Point(x, y));
+                    // System.out.println("Rumah sim berhasil dibuat di titik (" + x + ", " + y + ")");
+                } catch (InputMismatchException e) {
+                    System.out.println("Input tidak valid.");
+                    System.out.println("Silakan ulangi pembuatan rumah sim.");
+                    System.out.println("Tekan Enter untuk melanjutkan...");
+                    in.nextLine();
+                    in.nextLine();
+                    addSim();
+                }
+            } else if (input.equals("N")) {
+                world.addRumah(sim);
+            }
+            isAddSim = true;
         }
     }
 

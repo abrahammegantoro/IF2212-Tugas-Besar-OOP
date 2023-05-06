@@ -1,5 +1,6 @@
 package src.Item.Furniture;
 
+import src.MainMenu.MainMenu;
 import src.Sim.Sim;
 import src.World.Time;
 
@@ -31,6 +32,7 @@ public class Komputer extends Furniture{
                             sim.setIsTidur(false);
                             sim.setLamaTidakTidur(0);
                             sim.setLamaTidur(0);
+                            MainMenu.setAddSim(false);
                         }
                         sim.incrementLamaTidakTidur();
                         durasi--;

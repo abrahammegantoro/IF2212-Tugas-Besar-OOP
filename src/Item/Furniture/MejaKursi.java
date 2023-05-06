@@ -3,6 +3,7 @@ package src.Item.Furniture;
 import src.Inventory.Inventory;
 import src.Item.Edible;
 import src.Item.Item;
+import src.MainMenu.MainMenu;
 import src.Sim.Sim;
 // import src.Item.BahanBaku.BahanBaku;
 // import src.Item.Masakan.Masakan;
@@ -60,6 +61,7 @@ public class MejaKursi extends Furniture {
                                 sim.setIsTidur(false);
                                 sim.setLamaTidakTidur(0);
                                 sim.setLamaTidur(0);
+                                MainMenu.setAddSim(false);
                             }
                             sim.incrementLamaTidakTidur();
                             durasi--;
