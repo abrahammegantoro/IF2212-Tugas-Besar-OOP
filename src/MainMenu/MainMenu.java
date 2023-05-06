@@ -64,7 +64,18 @@ public class MainMenu {
     public static void showGameMenu() {
         try {
             clearTerminal();
-            System.out.println("Selamat datang di Simpli-City!");
+            System.out.println("███████╗███████╗██╗      █████╗ ███╗   ███╗ █████╗ ████████╗    ██████╗  █████╗ ████████╗ █████╗ ███╗   ██╗ ██████╗ ");
+            System.out.println("██╔════╝██╔════╝██║     ██╔══██╗████╗ ████║██╔══██╗╚══██╔══╝    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗████╗  ██║██╔════╝ ");
+            System.out.println("███████╗█████╗  ██║     ███████║██╔████╔██║███████║   ██║       ██║  ██║███████║   ██║   ███████║██╔██╗ ██║██║  ███╗");
+            System.out.println("╚════██║██╔══╝  ██║     ██╔══██║██║╚██╔╝██║██╔══██║   ██║       ██║  ██║██╔══██║   ██║   ██╔══██║██║╚██╗██║██║   ██║");
+            System.out.println("███████║███████╗███████╗██║  ██║██║ ╚═╝ ██║██║  ██║   ██║       ██████╔╝██║  ██║   ██║   ██║  ██║██║ ╚████║╚██████╔╝");
+            System.out.println("╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝       ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ");
+            System.out.println("                 ██████╗ ██╗    ███████╗██╗███╗   ███╗██████╗ ██╗     ██╗ ██████╗██╗████████╗██╗   ██╗");
+            System.out.println("                 ██╔══██╗██║    ██╔════╝██║████╗ ████║██╔══██╗██║     ██║██╔════╝██║╚══██╔══╝╚██╗ ██╔╝");
+            System.out.println("                 ██║  ██║██║    ███████╗██║██╔████╔██║██████╔╝██║     ██║██║     ██║   ██║    ╚████╔╝ ");
+            System.out.println("                 ██║  ██║██║    ╚════██║██║██║╚██╔╝██║██╔═══╝ ██║     ██║██║     ██║   ██║     ╚██╔╝  ");
+            System.out.println("                 ██████╔╝██║    ███████║██║██║ ╚═╝ ██║██║     ███████╗██║╚██████╗██║   ██║      ██║   ");
+            System.out.println("                 ╚═════╝ ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚═╝     ╚══════╝╚═╝ ╚═════╝╚═╝   ╚═╝      ╚═╝   ");
             System.out.println("Silakan pilih menu yang tersedia :");
             System.out.println("1. Start Game");
             System.out.println("2. Help");
@@ -110,6 +121,12 @@ public class MainMenu {
     // Menu kedua yang ditampilkan
     public static void showGameMenuNewGameOrLoadGame() {
         try {
+            System.out.println("███╗   ██╗███████╗██╗    ██╗     ██████╗ ██████╗     ██╗      ██████╗  █████╗ ██████╗ ");
+            System.out.println("████╗  ██║██╔════╝██║    ██║    ██╔═══██╗██╔══██╗    ██║     ██╔═══██╗██╔══██╗██╔══██╗");
+            System.out.println("██╔██╗ ██║█████╗  ██║ █╗ ██║    ██║   ██║██████╔╝    ██║     ██║   ██║███████║██║  ██║");
+            System.out.println("██║╚██╗██║██╔══╝  ██║███╗██║    ██║   ██║██╔══██╗    ██║     ██║   ██║██╔══██║██║  ██║");
+            System.out.println("██║ ╚████║███████╗╚███╔███╔╝    ╚██████╔╝██║  ██║    ███████╗╚██████╔╝██║  ██║██████╔╝");
+            System.out.println("╚═╝  ╚═══╝╚══════╝ ╚══╝╚══╝      ╚═════╝ ╚═╝  ╚═╝    ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ ");
             System.out.println("Silakan pilih menu yang tersedia :");
             System.out.println("1. New Game");
             System.out.println("2. Load Game (msh blm bisa)");
@@ -159,6 +176,12 @@ public class MainMenu {
     public static void showInGameMenu() {
         if (!isAllSimDead()) {
             try {
+                System.out.println("███╗   ███╗ █████╗ ██╗███╗   ██╗    ███╗   ███╗███████╗███╗   ██╗██╗   ██╗");
+                System.out.println("████╗ ████║██╔══██╗██║████╗  ██║    ████╗ ████║██╔════╝████╗  ██║██║   ██║");
+                System.out.println("██╔████╔██║███████║██║██╔██╗ ██║    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║");
+                System.out.println("██║╚██╔╝██║██╔══██║██║██║╚██╗██║    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║");
+                System.out.println("██║ ╚═╝ ██║██║  ██║██║██║ ╚████║    ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝");
+                System.out.println("╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ ");
                 System.out.println("Silakan pilih menu yang tersedia :");
                 for (int i = 1; i <= 10; i++) {
                     System.out.printf("%2d. %-25s", i, getMenuOption(i));
@@ -630,7 +653,13 @@ public class MainMenu {
         int input;
 
         while (!end) {
-            System.out.println("HELP MENU :");
+            System.out.println("██╗  ██╗███████╗██╗     ██████╗     ███╗   ███╗███████╗███╗   ██╗██╗   ██╗");
+            System.out.println("██║  ██║██╔════╝██║     ██╔══██╗    ████╗ ████║██╔════╝████╗  ██║██║   ██║");
+            System.out.println("███████║█████╗  ██║     ██████╔╝    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║");
+            System.out.println("██╔══██║██╔══╝  ██║     ██╔═══╝     ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║");
+            System.out.println("██║  ██║███████╗███████╗██║         ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝");
+            System.out.println("╚═╝  ╚═╝╚══════╝╚══════╝╚═╝         ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ ");
+            System.out.println("Silakan pilih menu yang tersedia :");
             System.out.println("1. Apa itu Simplicity?");
             System.out.println("2. Bagaimana cara memulai game ini?");
             System.out.println("3. Tentang Rumah");
