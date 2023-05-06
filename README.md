@@ -23,22 +23,16 @@ git clone https://github.com/abrahammegantoro/IF2212-Tugas-Besar-OOP.git
 cd IF2212-Tugas-Besar-OOP
 ```
 
-3. Buka Terminal dan jalankan perintah berikut
+3. Buka Command Prompt dan jalankan perintah berikut
 
 ```
-
+javac -cp gson-2.10.1.jar -encoding UTF-8 -d bin src/AllData/*.java src/Inventory/Inventory.java src/Item/BahanBaku/*.java src/Item/Furniture/*.java src/Item/Furniture/Bed/*.java src/Item/Furniture/Stove/*.java src/Item/Masakan/*.java src/Item/*.java src/MainMenu/*.java src/Pekerjaan/Pekerjaan.java src/Ruangan/Ruangan.java src/Rumah/Rumah.java src/Sim/Sim.java src/World/*.java src/Main.java
 ```
 
-4. Setelah itu, commit
+4. Setelah itu, Jalankan program
 
 ```
-git add .
-git commit -m "<Pesan commit>"
+java -cp bin;gson-2.10.1.jar src/Main
 ```
 
-5. Push pake cara di bawah ini
-
-```
-git push -u origin <nama_branch>
-```
-6. Compare & Pull req
+5. Selamat Bermain :)
