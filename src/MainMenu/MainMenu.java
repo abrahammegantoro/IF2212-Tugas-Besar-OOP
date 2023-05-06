@@ -453,7 +453,7 @@ public class MainMenu {
                 System.out.print("Nonton TV");
             }
             System.out.println("\n0. Kembali");
-            System.out.print("Pilihan: ");
+            System.out.print("Pilihan (input Angka): ");
             String pilihan = in.nextLine();
             try {
                 switch (pilihan) {
@@ -630,16 +630,15 @@ public class MainMenu {
         // printRuangan dan print simMap
         world.printWorld();
         System.out.println("\n");
+        System.out.println("Berikut adalah daftar furniture yang ada di ruangan ini :");
+        currentSim.getRuanganSaatIni().printDaftarFurnitureNameSemua();
+        System.out.println("\n");
         currentSim.getRuanganSaatIni().printRuangan();
         System.out.println("\n");
         // print daftarSim
         System.out.println("Berikut adalah daftar sim yang sedang berada di ruangan ini :");
-        Map<Sim, Point> map = currentSim.getRuanganSaatIni().getDaftarSim();
-        for (Map.Entry<Sim, Point> entry : map.entrySet()) {
-            System.out.println(entry.getKey().getNama() + " pada titik (" +
-                    entry.getValue().getX() + ", "
-                    + entry.getValue().getY() + ")");
-        }
+        currentSim.getRuanganSaatIni().printDaftarSim();
+        System.out.println("\n");
         currentSim.getRuanganSaatIni().printSim();
         System.out.println("\nSim sedang berada di " + currentSim.getRumahSaatIni().getNamaRumah()
                 + " pada titik dunia " + "(" + currentSim.getRumahSaatIni().getLokasi().getX() + ", "
