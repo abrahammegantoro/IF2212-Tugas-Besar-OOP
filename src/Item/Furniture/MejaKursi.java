@@ -102,7 +102,8 @@ public class MejaKursi extends Furniture {
 
     public static boolean showMakanan(Inventory<Item> inventory) {
         System.out.println("Inventory: ");
-        System.out.printf("| %-20s| %s\n", "Makanan", "Amount");
+        System.out.println("---------------------------------");
+        System.out.printf("| %-20s| %s |\n", "Makanan", "Amount");
         System.out.println("---------------------------------");
         
         boolean foundEdible = false;
@@ -111,7 +112,7 @@ public class MejaKursi extends Furniture {
             Item item = (Item) entry.getKey();
             int amount = entry.getValue();
             if (item instanceof Edible) {
-                System.out.printf("| %-20s| %d\n", item.getNama(), amount);
+                System.out.printf("| %-20s| %d |\n\n", item.getNama(), amount);
                 foundEdible = true;
             }
         }
