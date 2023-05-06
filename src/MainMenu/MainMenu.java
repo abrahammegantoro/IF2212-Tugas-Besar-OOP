@@ -28,6 +28,7 @@ public class MainMenu {
     private static Sim currentSim;
     private static Scanner in = new Scanner(System.in);
     private static boolean isAddSim = false;
+    private static boolean isStart = true;
 
     public static void start() {
         addSim();
@@ -572,6 +573,10 @@ public class MainMenu {
                     int x = in.nextInt();
                     System.out.print("Y : ");
                     int y = in.nextInt();
+                    if (!isStart) {
+                        isAddSim = true;
+                    }
+                    isStart = false;
                     world.addRumah(sim, new Point(x, y));
                     // System.out.println("Rumah sim berhasil dibuat di titik (" + x + ", " + y + ")");
                 } catch (InputMismatchException e) {
@@ -583,9 +588,12 @@ public class MainMenu {
                     addSim();
                 }
             } else if (input.equals("N")) {
+                if (!isStart) {
+                    isAddSim = true;
+                }
+                isStart = false;
                 world.addRumah(sim);
             }
-            isAddSim = true;
         }
     }
 
