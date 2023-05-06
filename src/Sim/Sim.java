@@ -39,7 +39,7 @@ public class Sim {
     private Ruangan ruanganSaatIni;
     private String status;
     private int waktuGantiPekerjaan = -1; // atribut ini digunakan untuk menentukan kapan bisa melakukan
-                                                // penggantian pekerjaan
+                                          // penggantian pekerjaan
     private Pekerjaan pekerjaanBaru = null;
     private boolean isGantiPekerjaan = false; // atribut ini digunakan untuk validasi apakah bisa melakukan penggantian
                                               // pekerjaan
@@ -885,14 +885,19 @@ public class Sim {
                 }
 
                 // Input point
-                System.out.print("Masukkan koordinat X: ");
-                int x = scanner.nextInt();
-                System.out.print("Masukkan koordinat Y: ");
-                int y = scanner.nextInt();
+                try {
+                    System.out.print("Masukkan koordinat X: ");
+                    int x = scanner.nextInt();
+                    System.out.print("Masukkan koordinat Y: ");
+                    int y = scanner.nextInt();
 
-                Point point = new Point(x, y);
-                if (ruanganSaatIni.addFurniture(furniture, point)) {
-                    inventory.removeItem(furniture);
+                    Point point = new Point(x, y);
+                    if (ruanganSaatIni.addFurniture(furniture, point)) {
+                        inventory.removeItem(furniture);
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println(
+                            "Koordinat yang dimasukkan tidak valid atau furniture tidak muat di koordinat tersebut.");
                 }
                 break;
             case 3:
@@ -1034,13 +1039,14 @@ public class Sim {
                 setUang(uang - biaya); // kurangi uang sebanyak biaya
                 // Thread mengganti pekerjaan
                 isGantiPekerjaan = true; // Dijadikan true agar tidak bisa ganti pekerjaan lagi
-                // waktuGantiPekerjaan = Time.getInstance().getDayTimeRemaining(); // Waktu ganti pekerjaan
+                // waktuGantiPekerjaan = Time.getInstance().getDayTimeRemaining(); // Waktu
+                // ganti pekerjaan
                 waktuGantiPekerjaan = 30; // Waktu ganti pekerjaan
 
                 // Harinya sudah berganti, kemudian diganti pekerjaan selama 1 hari
                 // setPekerjaan(pekerjaanPilihan);
                 // isGantiPekerjaan = false;
-                
+
             }
         }
     }
@@ -1050,7 +1056,7 @@ public class Sim {
         if (waktuGantiPekerjaan != -1) {
             // Harinya sudah berganti, kemudian diganti pekerjaan selama 1 hari
             waktuGantiPekerjaan--;
-            if(waktuGantiPekerjaan == 0) {
+            if (waktuGantiPekerjaan == 0) {
                 setPekerjaan(pekerjaanBaru);
                 isGantiPekerjaan = false;
                 waktuGantiPekerjaan = -1;
