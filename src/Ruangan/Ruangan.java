@@ -175,7 +175,7 @@ public class Ruangan {
 
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 6; col++) {
-                Object obj = gridRuangan[row][col];
+                Object obj = gridRuangan[5 - row][col];
 
                 if (obj instanceof Sim) {
                     Sim sim = (Sim) obj;
@@ -236,7 +236,7 @@ public class Ruangan {
         for (Map.Entry<Sim, Point> entry : daftarSim.entrySet()) {
             Sim sim = entry.getKey();
             Point simPosition = entry.getValue();
-            int row = simPosition.getX();
+            int row = 5 - simPosition.getX();
             int col = simPosition.getY();
             String simName = sim.getNama();
             if (simName.length() > 3) {

@@ -47,7 +47,7 @@ public class World {
         for (int i = 0; i < 64; i++) {
             System.out.print("|");
             for (int j = 0; j < 64; j++) {
-                if (gridRumah[i][j] == null) {
+                if (gridRumah[63 - i][j] == null) {
                     System.out.print("- ");
                 } else {
                     System.out.print("R ");
