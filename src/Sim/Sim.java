@@ -286,7 +286,7 @@ public class Sim {
         Thread kerjaThread = new Thread(new Runnable() {
             public void run() {
                 int counter = 0;
-                int lastHourCount = pekerjaan.getTimesWorked() / 240; 
+                int lastHourCount = pekerjaan.getTimesWorked() / 240;
                 int tempDay = Time.getInstance().getCurrentDay();
                 int lastTidakTidur = lamaTidakTidur / 600;
                 while (counter < durasiAkhir) {
@@ -488,10 +488,15 @@ public class Sim {
 
     public void pindahRuangan() {
         Scanner input = new Scanner(System.in);
+        // jika ruangan hanya satu pada rumah maka tidak bisa pindah ruangan
+        if (getRumahSaatIni().getDaftarRuangan().size() == 1) {
+            System.out.println("Tidak bisa pindah ruangan karena hanya ada satu ruangan pada rumah ini.");
+            return;
+        }
         getRumahSaatIni().printDaftarRuanganExceptSim(getRuanganSaatIni().getNamaRuangan());
         System.out.print("Pilihan (input String): ");
         String pilihan = input.nextLine();
-        if (pilihan.equals("Exit")) {
+        if (pilihan.equals("Back")) {
             return;
         }
 
@@ -499,7 +504,7 @@ public class Sim {
             System.out.println("Anda sudah berada di ruangan tersebut.");
             System.out.print("Silakan pilih ulang (input String): ");
             pilihan = input.nextLine();
-            if (pilihan.equals("Exit")) {
+            if (pilihan.equals("Back")) {
                 return;
             }
         }
@@ -508,7 +513,7 @@ public class Sim {
             System.out.println("Ruangan tidak ditemukan");
             System.out.print("Silakan pilih ulang (input String): ");
             pilihan = input.nextLine();
-            if (pilihan.equals("Exit")) {
+            if (pilihan.equals("Back")) {
                 return;
             }
         }
@@ -886,6 +891,7 @@ public class Sim {
                         System.out.print("Pilih furniture yang ingin dipasang: ");
                         pilih = scanner.nextLine();
                     }
+
                 }
 
                 // Input point
@@ -899,9 +905,16 @@ public class Sim {
                     if (ruanganSaatIni.addFurniture(furniture, point)) {
                         inventory.removeItem(furniture);
                     }
-                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println(furniture.getNama() + " berhasil dipasang di titik (" + x + ", " + y + ")");
+                } catch (Exception e) {
                     System.out.println(
                             "Koordinat yang dimasukkan tidak valid atau furniture tidak muat di koordinat tersebut.");
+                    System.out.println("Tekan Enter untuk melanjutkan...");
+                    scanner.nextLine();
+                    scanner.nextLine();
+                    // tampilkan menu lagi
+                    clearTerminal();
+                    editRoom();
                 }
                 break;
             case 3:
@@ -977,7 +990,7 @@ public class Sim {
     public void gantiPekerjaan() {
         Scanner in = new Scanner(System.in);
         // Pengecekan apakah Sim bisa mengganti pekerjaan
-        if (this.pekerjaan.getTimesWorked() < 720) { 
+        if (this.pekerjaan.getTimesWorked() < 720) {
             System.out.println("Anda harus bekerja minimal 12 menit untuk pekerjaan sekarang!!");
             int seconds = pekerjaan.getTimesWorked() % 60;
             int minutes = (pekerjaan.getTimesWorked() / 60) % 60;
