@@ -502,6 +502,15 @@ public class MainMenu {
             nama = in.nextLine();
         }
 
+        // Cek apakah ada nama sim yang sama
+        for (Sim sim : listSim) {
+            if (sim.getNama().equals(nama)) {
+                System.out.println("Nama sim sudah ada.");
+                System.out.print("Silakan masukkan nama sim Anda : ");
+                nama = in.nextLine();
+            }
+        }
+
         Sim sim = new Sim(nama);
         listSim.add(sim);
         currentSim = sim;

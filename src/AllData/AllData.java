@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import src.MainMenu.MainMenu;
 import src.Sim.Sim;
@@ -51,10 +52,11 @@ public class AllData {
     public static void save(Path path){
         AllData data = new AllData();
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(data);
         
         try {
+            Files.deleteIfExists(path);
             Files.write(path, json.getBytes(), StandardOpenOption.CREATE);
         } catch (IOException e) {
             e.printStackTrace();

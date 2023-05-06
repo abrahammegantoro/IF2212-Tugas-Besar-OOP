@@ -304,7 +304,7 @@ public class Ruangan {
             boolean isAvailable = true;
             for (int i = 0; i < panjang; i++) {
                 for (int j = 0; j < lebar; j++) {
-                    if (gridRuangan[point.getX() + i][point.getY() + j] != null) {
+                    if (gridRuangan[point.getY() + j][point.getX() + i] != null) {
                         isAvailable = false;
                     }
                 }
@@ -314,7 +314,7 @@ public class Ruangan {
                 List<Point> listPoint = new ArrayList<Point>();
                 for (int i = 0; i < panjang; i++) {
                     for (int j = 0; j < lebar; j++) {
-                        gridRuangan[point.getX() + i][point.getY() + j] = furniture;
+                        gridRuangan[point.getY() + j][point.getX() + i] = furniture;
                         listPoint.add(new Point(point.getX() + i, point.getY() + j));
                     }
                 }
@@ -338,7 +338,7 @@ public class Ruangan {
             boolean isAvailable = true;
             for (int i = 0; i < panjang; i++) {
                 for (int j = 0; j < lebar; j++) {
-                    if (gridRuangan[point.getX() + i][point.getY() + j] != null) {
+                    if (gridRuangan[point.getY() + j][point.getX() + i] != null) {
                         isAvailable = false;
                     }
                 }
@@ -346,14 +346,15 @@ public class Ruangan {
 
             if (isAvailable) {
                 for (Point p : listPoint) {
-                    gridRuangan[p.getX()][p.getY()] = null;
+                    gridRuangan[p.getY()][p.getX()] = null;
                 }
                 for (int i = 0; i < panjang; i++) {
                     for (int j = 0; j < lebar; j++) {
-                        gridRuangan[point.getX() + i][point.getY() + j] = furniture;
+                        gridRuangan[point.getY() + j][point.getX() + i] = furniture;
                         listPoint.add(new Point(point.getX() + i, point.getY() + j));
                     }
                 }
+                // update posisi furniture yang lama dihapus
                 daftarFurniture.put(furniture, listPoint);
             } else {
                 System.out.println("Tidak bisa memindahkan " + furniture.getNama() + " ke koordinat tersebut karena sudah ada furniture lain, yaitu " + gridRuangan[point.getX()][point.getY()].getNama() + ".");

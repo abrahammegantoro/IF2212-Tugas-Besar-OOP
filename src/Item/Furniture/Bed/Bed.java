@@ -44,6 +44,7 @@ public abstract class Bed extends Furniture {
                             sim.setLamaTidur(0);
                         }
                         sim.incrementLamaTidur();
+                        counter++;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

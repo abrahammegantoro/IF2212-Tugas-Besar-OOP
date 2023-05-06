@@ -948,6 +948,7 @@ public class Sim {
             System.out.println("Furniture tidak ada di ruangan");
             System.out.print("Masukkan nama furniture yang ingin dipindahkan: ");
             pilih = scanner.nextLine();
+            furniturePilihan = ruanganSaatIni.selectFurniture(pilih);
         }
 
         // Input point
