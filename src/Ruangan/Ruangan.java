@@ -330,7 +330,7 @@ public class Ruangan {
         return true;
     }
 
-    public void moveFurniture(Furniture furniture, Point point) {
+    public boolean moveFurniture(Furniture furniture, Point point) {
         List<Point> listPoint = daftarFurniture.get(furniture);
         if (listPoint != null) {
             int panjang = furniture.getPanjang();
@@ -361,10 +361,13 @@ public class Ruangan {
                 daftarFurniture.put(furniture, newListPoint);
             } else {
                 System.out.println("Tidak bisa memindahkan " + furniture.getNama() + " ke koordinat tersebut karena sudah ada furniture lain, yaitu " + gridRuangan[point.getX()][point.getY()].getNama() + ".");
+                return false;
             }
         } else {
             System.out.println("Tidak ada furniture dengan nama tersebut.");
+            return false;
         }
+        return true;
     }
     
 
@@ -458,10 +461,8 @@ public class Ruangan {
                     }
                 }
                 
-                gridRuangan[targetPosition.getX()][targetPosition.getY()] = furniture;
-                // daftarSim.put(sim, targetPosition);
-                // sim.setPosisiSim(targetPosition);
                 putSim(sim, targetPosition);
+
                 // Print success message
                 System.out.println("Sim berhasil dipindahkan ke " + furniture.getNama() + " pada titik "
                         + "(" + targetPosition.getX() + ", " + targetPosition.getY() + ").");
@@ -479,7 +480,7 @@ public class Ruangan {
                 for (Map.Entry<Furniture, List<Point>> furnitureEntry : daftarFurniture.entrySet()) {
                     if (furnitureClass.isInstance(furnitureEntry.getKey())) {
                         for (Point point : furnitureEntry.getValue()) {
-                            if ((point.getX() == simEntry.getValue().getX()) && (point.getY() == simEntry.getValue().getX())) { // point.equals(simEntry.getValue())
+                            if ((point.getX() == simEntry.getValue().getX()) && (point.getY() == simEntry.getValue().getY())) { // point.equals(simEntry.getValue())
                                 return true;
                             }
                         }

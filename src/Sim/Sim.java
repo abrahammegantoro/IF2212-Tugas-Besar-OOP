@@ -904,8 +904,8 @@ public class Sim {
                     Point point = new Point(x, y);
                     if (ruanganSaatIni.addFurniture(furniture, point)) {
                         inventory.removeItem(furniture);
+                        System.out.println(furniture.getNama() + " berhasil dipasang di titik (" + x + ", " + y + ")");
                     }
-                    System.out.println(furniture.getNama() + " berhasil dipasang di titik (" + x + ", " + y + ")");
                 } catch (Exception e) {
                     System.out.println(
                             "Koordinat yang dimasukkan tidak valid atau furniture tidak muat di koordinat tersebut.");
@@ -971,8 +971,10 @@ public class Sim {
         int y = scanner.nextInt();
 
         Point point = new Point(x, y);
-        ruanganSaatIni.moveFurniture(furniturePilihan, point);
-        System.out.println(furniturePilihan.getNama() + " berhasil dipindahkan");
+        if (ruanganSaatIni.moveFurniture(furniturePilihan, point)) {
+            System.out.println(furniturePilihan.getNama() + " berhasil dipindahkan");
+        }
+        
     }
 
     public void showPekerjaan() {
