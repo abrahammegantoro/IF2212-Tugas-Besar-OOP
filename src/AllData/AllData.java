@@ -46,6 +46,7 @@ public class AllData {
         Path path = Paths.get(place + "\\file").resolve(input + ".json");
         save(path);
 
+        MainMenu.clearTerminal();
         System.out.println("Data berhasil disave.");
     }
     
@@ -56,6 +57,7 @@ public class AllData {
         String json = gson.toJson(data);
         
         try {
+            Files.createDirectories(path.getParent());
             Files.deleteIfExists(path);
             Files.write(path, json.getBytes(), StandardOpenOption.CREATE);
         } catch (IOException e) {
