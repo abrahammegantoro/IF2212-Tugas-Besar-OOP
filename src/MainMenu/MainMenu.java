@@ -40,6 +40,10 @@ public class MainMenu {
     // //masih dalam proses
     // }
 
+    public static void addSim(Sim sim) {
+        listSim.add(sim);
+    }
+
     // Hapus sim dari listSim dan ganti currentSim dengan inputan pengguna
     public static void removeSimAndChangeSim(Sim sim) {
         listSim.remove(sim);
@@ -285,7 +289,6 @@ public class MainMenu {
                         System.out.println("Tekan Enter untuk melanjutkan...");
                         in.nextLine();
                         clearTerminal();
-                        showInGameMenu();
                         break;
                     case 15:
                         clearTerminal();
@@ -512,8 +515,6 @@ public class MainMenu {
         }
 
         Sim sim = new Sim(nama);
-        listSim.add(sim);
-        currentSim = sim;
         System.out.println("Sim berhasil dibuat.");
 
         // Pembuatan rumah, user memilih untuk dibuatkan rumah di point yang di mana
@@ -531,13 +532,13 @@ public class MainMenu {
         // handling input yang tidak valid
         if (input.equals("Y")) {
             try {
-                System.out.println("Silakan masukkan koordinat X dan Y untuk lokasi rumah sim yang baru dibuat.");
+                System.out.println("Silakan masukkan koordinat X dan Y untuk lokasi rumah untuk sim yang baru dibuat.");
                 System.out.print("X : ");
                 int x = in.nextInt();
                 System.out.print("Y : ");
                 int y = in.nextInt();
                 world.addRumah(sim, new Point(x, y));
-                System.out.println("Rumah sim berhasil dibuat di titik (" + x + ", " + y + ")");
+                // System.out.println("Rumah sim berhasil dibuat di titik (" + x + ", " + y + ")");
             } catch (InputMismatchException e) {
                 System.out.println("Input tidak valid.");
                 System.out.println("Silakan ulangi pembuatan rumah sim.");
@@ -548,9 +549,6 @@ public class MainMenu {
             }
         } else if (input.equals("N")) {
             world.addRumah(sim);
-            System.out.println("Rumah sim berhasil dibuat di titik random, yaitu di ("
-                    + currentSim.getRumahUtama().getLokasi().getX() + ", "
-                    + currentSim.getRumahUtama().getLokasi().getY() + ")");
         }
     }
 
@@ -558,9 +556,8 @@ public class MainMenu {
         // Kalau isi furnitures kosong
         if (currentSim.getRuanganSaatIni().getDaftarFurniture().size() == 0) {
             System.out.println("Tidak ada furniture di ruangan ini.\n");
-            System.out.println("Anda saat ini berada pada titik (" + currentSim.getPosisiSim().getX()
-            + ", " + currentSim.getPosisiSim().getY() + ")");
-
+            // System.out.println("Anda tetap berada pada titik (" + currentSim.getPosisiSim().getX()
+            // + ", " + currentSim.getPosisiSim().getY() + ")");
             System.out.println("Tekan Enter untuk melanjutkan...");
             in.nextLine();
             clearTerminal();
@@ -572,9 +569,6 @@ public class MainMenu {
             System.out.println("Silakan pilih furniture yang ingin Anda tuju :");
             String furnitureName = in.nextLine();
             currentSim.getRuanganSaatIni().moveSimToFurniture(currentSim, furnitureName);
-            // udah bisa make aksi di furniture
-            System.out.println("Anda sudah berada di " + furnitureName + " pada titik (" + currentSim.getPosisiSim().getX()
-                    + ", " + currentSim.getPosisiSim().getY() + ")");
         }       
     }
 

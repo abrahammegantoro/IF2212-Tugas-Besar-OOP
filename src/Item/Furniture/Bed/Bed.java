@@ -22,7 +22,7 @@ public abstract class Bed extends Furniture {
 
         // Periksa apakah input durasi tidur valid
         while (durasi < 180) {
-            System.out.println("Durasi tidur tidak valid, mohon masukkan durasi maksimal 180 detik (3 menit)");
+            System.out.println("Durasi tidur tidak valid, mohon masukkan durasi minimal 180 detik (3 menit)");
             durasi = input.nextInt();
         }
         final int durasiAkhir = durasi;
@@ -33,7 +33,8 @@ public abstract class Bed extends Furniture {
                 int tempDay = Time.getInstance().getCurrentDay();
                 while (counter < durasiAkhir) {
                     try {
-                        Thread.sleep(durasiAkhir * 1000);
+                        System.out.println(counter);
+                        Thread.sleep(1000);
                         Time.getInstance().incrementTime();
                         sim.decrementBeliBarangTime();
                         sim.decrementUpgradeRumahTime();
