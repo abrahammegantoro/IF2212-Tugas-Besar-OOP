@@ -20,6 +20,7 @@ import src.World.Point;
 import src.Item.Buyable;
 
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -42,6 +43,9 @@ public class Sim {
     private Pekerjaan pekerjaanBaru = null;
     private boolean isGantiPekerjaan = false; // atribut ini digunakan untuk validasi apakah bisa melakukan penggantian
                                               // pekerjaan
+    private boolean isTidur = false; // atribut ini digunakan untuk validasi apakah sudah tidur atau belum
+    private int lamaTidakTidur = 0;
+    private int lamaTidur = 0;
 
     public Sim(String nama) {
         Random random = new Random();
@@ -100,6 +104,38 @@ public class Sim {
 
     public boolean isItemInInventory(Item item) {
         return inventory.isItemExist(item);
+    }
+
+    public int getLamaTidur() {
+        return lamaTidur;
+    }
+
+    public void setLamaTidur(int lamaTidur) {
+        this.lamaTidur = lamaTidur;
+    }
+
+    public void incrementLamaTidur() {
+        this.lamaTidur++;
+    }
+
+    public int getLamaTidakTidur() {
+        return lamaTidakTidur;
+    }
+
+    public void setLamaTidakTidur(int lamaTidakTidur) {
+        this.lamaTidakTidur = lamaTidakTidur;
+    }
+
+    public void incrementLamaTidakTidur() {
+        this.lamaTidakTidur++;
+    }
+
+    public boolean getIsTidur() {
+        return isTidur;
+    }
+
+    public void setIsTidur(boolean isTidur) {
+        this.isTidur = isTidur;
     }
 
     public int getKekenyangan() {
@@ -251,6 +287,7 @@ public class Sim {
             public void run() {
                 int counter = 0;
                 int lastHourCount = pekerjaan.getTimesWorked() / 240; 
+                int tempDay = Time.getInstance().getCurrentDay();
                 while (counter < durasiAkhir) {
                     try {
                         Thread.sleep(1000);
@@ -258,11 +295,22 @@ public class Sim {
                         decrementBeliBarangTime();
                         decrementUpgradeRumahTime();
                         setPekerjaanBaru();
+                        if (tempDay != Time.getInstance().getCurrentDay()) {
+                            setIsTidur(false);
+                            setLamaTidakTidur(0);
+                            setLamaTidur(0);
+                        }
+                        incrementLamaTidakTidur();
                         counter++;
                         System.out.println(counter);
                     } catch (InterruptedException e) {
                         System.out.println("Thread interrupted");
                     }
+                }
+                if (lamaTidakTidur >= 600) {
+                    System.out.println(nama + " lelah karena tidak tidur.");
+                    kesehatan -= 5;
+                    mood -= 5;
                 }
                 System.out.println("Sim telah selesai bekerja.");
                 kekenyangan -= (durasiAkhir / 30) * 10;
@@ -309,6 +357,7 @@ public class Sim {
         Thread olahragaThread = new Thread(new Runnable() {
             public void run() {
                 int counter = 0;
+                int tempDay = Time.getInstance().getCurrentDay();
                 while (counter < durasiFinal) {
                     try {
                         Thread.sleep(1000);
@@ -316,11 +365,22 @@ public class Sim {
                         decrementBeliBarangTime();
                         decrementUpgradeRumahTime();
                         setPekerjaanBaru();
+                        if (tempDay != Time.getInstance().getCurrentDay()) {
+                            setIsTidur(false);
+                            setLamaTidakTidur(0);
+                            setLamaTidur(0);
+                        }
+                        incrementLamaTidakTidur();
                         counter++;
                         System.out.println(counter);
                     } catch (InterruptedException e) {
                         System.out.println("Thread interrupted");
                     }
+                }
+                if (lamaTidakTidur >= 600) {
+                    System.out.println(nama + " lelah karena tidak tidur.");
+                    kesehatan -= 5;
+                    mood -= 5;
                 }
                 setKesehatan(kesehatan + ((durasiFinal / 20) * 5));
                 setMood(mood + ((durasiFinal / 20) * 10));
@@ -605,7 +665,8 @@ public class Sim {
     }
 
     public synchronized void decrementBeliBarangTime() {
-        for (Map.Entry<Item, Integer> entry : Time.getInstance().getTimeMapBeliBarang().entrySet()) {
+        Map<Item, Integer> timeMapBeliBarang = new HashMap<>(Time.getInstance().getTimeMapBeliBarang());
+        for (Map.Entry<Item, Integer> entry : timeMapBeliBarang.entrySet()) {
             Item key = entry.getKey();
             Integer value = entry.getValue() - 1;
             Time.getInstance().setTimeMapBeliBarang(key, value);
@@ -907,8 +968,7 @@ public class Sim {
     public void gantiPekerjaan() {
         Scanner in = new Scanner(System.in);
         // Pengecekan apakah Sim bisa mengganti pekerjaan
-        // if (this.pekerjaan.getTimesWorked() < 720) {
-        if (this.pekerjaan.getTimesWorked() < 30) { // jangan lupa diganti
+        if (this.pekerjaan.getTimesWorked() < 720) { 
             System.out.println("Anda harus bekerja minimal 12 menit untuk pekerjaan sekarang!!");
             int seconds = pekerjaan.getTimesWorked() % 60;
             int minutes = (pekerjaan.getTimesWorked() / 60) % 60;

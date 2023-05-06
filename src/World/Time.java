@@ -64,6 +64,10 @@ public class Time {
         return 720 - (currentTime % 720);
     }
 
+    public synchronized int getCurrentDay() {
+        return currentDay;
+    }
+    
     public synchronized String getTimeRemaining() {
         // return 720 - (currentTime % 720);
         int timeRemainingSeconds = 720 - (currentTime % 720);
@@ -78,17 +82,17 @@ public class Time {
             System.out.println("\nTidak ada aktivitas yang ditunggu\n");
         } else {
             System.out.println("------------------------------");
-            System.out.println("| Aktivitas    |   Sisa waktu |");
+            System.out.println("| Aktivitas     | Sisa waktu |");
             System.out.println("------------------------------");
             for (Map.Entry<Item, Integer> entry : timeMapBeliBarang.entrySet()) {
                 Item key = entry.getKey();
                 Integer value = entry.getValue();
-                System.out.printf("| %-13s | %02d:%02d     |\n", "Beli " + key.getNama(), value / 60, value % 60);
+                System.out.printf("| %-13s | %02d:%02d      |\n", "Beli " + key.getNama(), value / 60, value % 60);
             }
             for (Map.Entry<Rumah, Integer> entry : timeMapUpgradeRumah.entrySet()) {
                 Rumah key = entry.getKey();
                 Integer value = entry.getValue();
-                System.out.printf("| %-13s| %02d:%02d     |\n", key.getNamaRumah(), value / 60, value % 60);
+                System.out.printf("| %-13s| %02d:%02d      |\n", key.getNamaRumah(), value / 60, value % 60);
             }
         }
     }
