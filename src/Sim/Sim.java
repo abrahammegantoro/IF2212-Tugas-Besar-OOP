@@ -90,7 +90,7 @@ public class Sim {
         return pekerjaan;
     }
 
-    public boolean isMakan() {
+    public boolean getIsMakan() {
         return isMakan;
     }
 
@@ -338,17 +338,18 @@ public class Sim {
                         System.out.println("Thread interrupted");
                     }
                 }
-                int tidakTidur = lamaTidakTidur / 600;
                 if (waktuSetelahMakan >= 240) {
                     System.out.println(nama + " belum buang air.");
                     setKesehatan(kesehatan - 5);
                     setMood(mood - 5);
                     waktuSetelahMakan = 0;
+                    setIsMakan(false);
                 }
+                int tidakTidur = lamaTidakTidur / 600;
                 if (!isTidur && tidakTidur > lastTidakTidur) {
                     System.out.println(nama + " lelah karena tidak tidur.");
-                    kesehatan -= 5;
-                    mood -= 5;
+                    setKesehatan(kesehatan - 5);
+                    setMood(mood - 5);
                 }
                 System.out.println("Sim telah selesai bekerja.");
                 setKekenyangan(kekenyangan - ((durasiAkhir / 30) * 10));
@@ -404,6 +405,9 @@ public class Sim {
                         decrementBeliBarangTime();
                         decrementUpgradeRumahTime();
                         setPekerjaanBaru();
+                        if (isMakan) {
+                            incrementWaktuSetelahMakan();
+                        }
                         if (tempDay != Time.getInstance().getCurrentDay()) {
                             setIsTidur(false);
                             setLamaTidakTidur(0);
@@ -416,11 +420,19 @@ public class Sim {
                         System.out.println("Thread interrupted");
                     }
                 }
+                if (waktuSetelahMakan >= 240) {
+                    System.out.println(nama + " belum buang air.");
+                    setKesehatan(kesehatan - 5);
+                    setMood(mood - 5);
+                    waktuSetelahMakan = 0;
+                    setIsMakan(false);
+                }
+
                 int tidakTidur = lamaTidakTidur / 600;
                 if (!isTidur && tidakTidur > lastTidakTidur) {
                     System.out.println(nama + " lelah karena tidak tidur.");
-                    kesehatan -= 5;
-                    mood -= 5;
+                    setKesehatan(kesehatan - 5);
+                    setMood(mood - 5);
                 }
                 setKesehatan(kesehatan + ((durasiFinal / 20) * 5));
                 setMood(mood + ((durasiFinal / 20) * 10));
@@ -473,6 +485,8 @@ public class Sim {
         Thread berkunjungThread = new Thread(new Runnable() {
             public void run() {
                 int counter = 0;
+                int tempDay = Time.getInstance().getCurrentDay();
+                int lastTidakTidur = lamaTidakTidur / 600;
                 System.out.println("Perjalanan dimulai!, waktu yang diperlukan adalah " + lamaBerkunjung + " detik.");
                 while (counter < lamaBerkunjung) {
                     try {
@@ -481,11 +495,33 @@ public class Sim {
                         decrementBeliBarangTime();
                         decrementUpgradeRumahTime();
                         setPekerjaanBaru();
+                        if (isMakan) {
+                            incrementWaktuSetelahMakan();
+                        }
+                        if (tempDay != Time.getInstance().getCurrentDay()) {
+                            setIsTidur(false);
+                            setLamaTidakTidur(0);
+                            setLamaTidur(0);
+                        }
+                        incrementLamaTidakTidur();
                         counter++;
                         System.out.println(counter);
                     } catch (InterruptedException e) {
                         System.out.println("Thread interrupted");
                     }
+                }
+                int tidakTidur = lamaTidakTidur / 600;
+                if (waktuSetelahMakan >= 240) {
+                    System.out.println(nama + " belum buang air.");
+                    setKesehatan(kesehatan - 5);
+                    setMood(mood - 5);
+                    waktuSetelahMakan = 0;
+                    setIsMakan(false);
+                }
+                if (!isTidur && tidakTidur > lastTidakTidur) {
+                    System.out.println(nama + " lelah karena tidak tidur.");
+                    setKesehatan(kesehatan - 5);
+                    setMood(mood - 5);
                 }
             }
         });
@@ -731,7 +767,7 @@ public class Sim {
             Integer value = entry.getValue() - 1;
             Time.getInstance().setTimeMapUpgradeRumah(key, value);
             if (value == 0) {
-                System.out.printf("%s berhasil ditambahkan ke rumah %s%n", key.getNamaRuanganBaru(),
+                System.out.printf("%s berhasil ditambahkan ke %s%n", key.getNamaRuanganBaru(),
                         key.getNamaRumah());
                 System.out.println("Rumah berhasil diupgrade");
                 key.addRuangan(key.getRuanganToUpgrade(), key.getArahFinal(), key.getNamaRuanganBaru());
@@ -789,7 +825,7 @@ public class Sim {
                     if (pilih.equals("Jam")) {
                         // check apakah ada jam di inventory
                         if (inventory.getFurniture("Jam") != null) {
-                            furniture = inventory.getFurniture("Jam");
+                            furniture = new Clock();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Jam tidak ada di inventory");
@@ -798,7 +834,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("TV")) {
                         if (inventory.getFurniture("TV") != null) {
-                            furniture = inventory.getFurniture("TV");
+                            furniture = new TV();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("TV tidak ada di inventory");
@@ -807,7 +843,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Komputer")) {
                         if (inventory.getFurniture("Komputer") != null) {
-                            furniture = inventory.getFurniture("Komputer");
+                            furniture = new Komputer();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Komputer tidak ada di inventory");
@@ -816,7 +852,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Piano")) {
                         if (inventory.getFurniture("Piano") != null) {
-                            furniture = inventory.getFurniture("Piano");
+                            furniture = new Piano();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Piano tidak ada di inventory");
@@ -825,7 +861,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Meja dan Kursi")) {
                         if (inventory.getFurniture("Meja dan Kursi") != null) {
-                            furniture = inventory.getFurniture("Meja dan Kursi");
+                            furniture = new MejaKursi();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Meja dan Kursi tidak ada di inventory");
@@ -834,7 +870,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Sajadah")) {
                         if (inventory.getFurniture("Sajadah") != null) {
-                            furniture = inventory.getFurniture("Sajadah");
+                            furniture = new Sajadah();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Sajadah tidak ada di inventory");
@@ -843,7 +879,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Teleskop")) {
                         if (inventory.getFurniture("Teleskop") != null) {
-                            furniture = inventory.getFurniture("Teleskop");
+                            furniture = new Teleskop();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Teleskop tidak ada di inventory");
@@ -852,7 +888,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Rak Buku")) {
                         if (inventory.getFurniture("Rak Buku") != null) {
-                            furniture = inventory.getFurniture("Rak Buku");
+                            furniture = new RakBuku();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Rak Buku tidak ada di inventory");
@@ -861,7 +897,8 @@ public class Sim {
                         }
                     } else if (pilih.equals("Toilet")) {
                         if (inventory.getFurniture("Toilet") != null) {
-                            furniture = inventory.getFurniture("Toilet");
+                            // furniture = inventory.getFurniture("Toilet");
+                            furniture = new Toilet();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Toilet tidak ada di inventory");
@@ -870,7 +907,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Kompor Gas")) {
                         if (inventory.getFurniture("Kompor Gas") != null) {
-                            furniture = inventory.getFurniture("Kompor Gas");
+                            furniture = new GasStove();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Kompor Gas tidak ada di inventory");
@@ -879,7 +916,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Kompor Listrik")) {
                         if (inventory.getFurniture("Kompor Listrik") != null) {
-                            furniture = inventory.getFurniture("Kompor Listrik");
+                            furniture = new EStove();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Kompor Listrik tidak ada di inventory");
@@ -888,7 +925,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Shower")) {
                         if (inventory.getFurniture("Shower") != null) {
-                            furniture = inventory.getFurniture("Shower");
+                            furniture = new Shower();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Shower tidak ada di inventory");
@@ -897,7 +934,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Kasur Single")) {
                         if (inventory.getFurniture("Kasur Single") != null) {
-                            furniture = inventory.getFurniture("Kasur Single");
+                            furniture = new SingleBed();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Kasur Single tidak ada di inventory");
@@ -906,7 +943,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Kasur Queen Size")) {
                         if (inventory.getFurniture("Kasur Queen Size") != null) {
-                            furniture = inventory.getFurniture("Kasur Queen Size");
+                            furniture = new QueenBed();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Kasur Queen Size tidak ada di inventory");
@@ -915,7 +952,7 @@ public class Sim {
                         }
                     } else if (pilih.equals("Kasur King Size")) {
                         if (inventory.getFurniture("Kasur King Size") != null) {
-                            furniture = inventory.getFurniture("Kasur King Size");
+                            furniture = new KingBed();
                             // inventory.removeItem(furniture);
                         } else {
                             System.out.println("Kasur King Size tidak ada di inventory");

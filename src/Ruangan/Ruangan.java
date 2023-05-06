@@ -69,52 +69,67 @@ public class Ruangan {
         return daftarFurniture;
     }
 
-    // UNTUK SEMUA TITIK
-    // public void printDaftarFurnitureName() {
-    // List<String> furnitureNames = new ArrayList<>();
-    // for (Map.Entry<Furniture, List<Point>> entry : daftarFurniture.entrySet()) {
-    // Furniture furniture = entry.getKey();
-    // List<Point> furniturePositions = entry.getValue();
-    // String furnitureName = furniture.getNama();
+    public void printDaftarSim() {
+        System.out.println("-------------------------");
+        System.out.printf("%-5s%-15s%-10s\n", "No.", "Nama Sim", "Point");
+        System.out.println("-------------------------");
+    
+        int count = 1;
+        for (Map.Entry<Sim, Point> entry : daftarSim.entrySet()) {
+            Sim sim = entry.getKey();
+            Point position = entry.getValue();
+            System.out.printf("%-5d%-15s(%d,%d)\n", count, sim.getNama(), position.getX(), position.getY());
+            count++;
+        }
+    
+        System.out.println("-------------------------");
+    }
+    
 
-    // if (!furniturePositions.isEmpty()) {
-    // StringBuilder sb = new StringBuilder();
-    // sb.append(furnitureName).append(" (");
-    // for (int i = 0; i < furniturePositions.size(); i++) {
-    // Point position = furniturePositions.get(i);
-    // sb.append("(").append(position.getX()).append(",
-    // ").append(position.getY()).append(")");
-    // if (i < furniturePositions.size() - 1) {
-    // sb.append(", ");
-    // }
-    // }
-    // sb.append(")");
-    // furnitureName = sb.toString();
-    // }
+    public void printDaftarFurnitureNameSemua() {
+        List<String> furnitureNames = new ArrayList<>();
+        for (Map.Entry<Furniture, List<Point>> entry : daftarFurniture.entrySet()) {
+            Furniture furniture = entry.getKey();
+            List<Point> furniturePositions = entry.getValue();
+            String furnitureName = furniture.getNama();
 
-    // furnitureNames.add(furnitureName);
-    // }
-    // System.out.println("Furniture Names:");
-    // System.out.println("-------------------------");
-    // System.out.printf("%-7s%-15s\n", "No.", "Name");
-    // System.out.println("-------------------------");
+            if (!furniturePositions.isEmpty()) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(furnitureName).append(" (");
+                for (int i = 0; i < furniturePositions.size(); i++) {
+                    Point position = furniturePositions.get(i);
+                    sb.append("(").append(position.getX()).append(",").append(position.getY()).append(")");
+                    if (i < furniturePositions.size() - 1) {
+                        sb.append(", ");
+                    }
+                }
+                sb.append(")");
+                furnitureName = sb.toString();
+            }
 
-    // Map<String, Integer> nameCountMap = new HashMap<>();
-    // for (int i = 0; i < furnitureNames.size(); i++) {
-    // String furnitureName = furnitureNames.get(i);
-    // if (nameCountMap.containsKey(furnitureName)) {
-    // int count = nameCountMap.get(furnitureName);
-    // count++;
-    // nameCountMap.put(furnitureName, count);
-    // furnitureName += " " + count;
-    // } else {
-    // nameCountMap.put(furnitureName, 1);
-    // }
-    // System.out.printf("%-7d%-15s\n", (i + 1), furnitureName);
-    // }
+            furnitureNames.add(furnitureName);
+        }
+        System.out.println("Furniture Names:");
+        System.out.println("-------------------------");
+        System.out.printf("%-7s%-15s\n", "No.", "Name");
+        System.out.println("-------------------------");
 
-    // System.out.println("-------------------------");
-    // }
+        Map<String, Integer> nameCountMap = new HashMap<>();
+        for (int i = 0; i < furnitureNames.size(); i++) {
+            String furnitureName = furnitureNames.get(i);
+            if (nameCountMap.containsKey(furnitureName)) {
+                int count = nameCountMap.get(furnitureName);
+                count++;
+                nameCountMap.put(furnitureName, count);
+                furnitureName += " " + count;
+            } else {
+                nameCountMap.put(furnitureName, 1);
+            }
+            System.out.printf("%-7d%-15s\n", (i + 1), furnitureName);
+        }
+
+        System.out.println("-------------------------");
+    }
 
     // UNTUK TITIK TERKECIL
     public void printDaftarFurnitureName() {
@@ -123,12 +138,10 @@ public class Ruangan {
         System.out.printf("%-7s%-15s\n", "No.", "Name");
         System.out.println("-------------------------");
 
-
         int count = 1;
         for (Furniture furniture : daftarFurniture.keySet()) {
             List<Point> furniturePositions = daftarFurniture.get(furniture);
             String furnitureName;
-
 
             if (!furniturePositions.isEmpty()) {
                 Point smallestPosition = furniturePositions.get(0);
@@ -343,7 +356,7 @@ public class Ruangan {
                     }
                 }
             }
-    
+
             if (isAvailable) {
                 List<Point> newListPoint = new ArrayList<Point>();
                 // Remove the furniture's previous position from the daftarFurniture map
@@ -360,7 +373,9 @@ public class Ruangan {
                 // Add the furniture's new position to the daftarFurniture map
                 daftarFurniture.put(furniture, newListPoint);
             } else {
-                System.out.println("Tidak bisa memindahkan " + furniture.getNama() + " ke koordinat tersebut karena sudah ada furniture lain, yaitu " + gridRuangan[point.getX()][point.getY()].getNama() + ".");
+                System.out.println("Tidak bisa memindahkan " + furniture.getNama()
+                        + " ke koordinat tersebut karena sudah ada furniture lain, yaitu "
+                        + gridRuangan[point.getX()][point.getY()].getNama() + ".");
                 return false;
             }
         } else {
@@ -369,7 +384,6 @@ public class Ruangan {
         }
         return true;
     }
-    
 
     private List<Point> getPositionsOfFurniture(Furniture furniture) {
         List<Point> positions = new ArrayList<>();
@@ -439,7 +453,7 @@ public class Ruangan {
 
         if (daftarFurniture.containsKey(furniture)) {
             List<Point> furniturePositions = daftarFurniture.get(furniture);
-            if (!furniturePositions.isEmpty()) { // artinya 
+            if (!furniturePositions.isEmpty()) { // artinya
                 // Remove Sim's current position
                 // Point currentSimPosition = daftarSim.get(sim);
                 // gridRuangan[currentSimPosition.getX()][currentSimPosition.getY()] = null;
@@ -451,16 +465,17 @@ public class Ruangan {
                     if (simEntry.getValue().equals(targetPosition)) {
                         // check if sim name is the same as the sim name that is going to be moved
                         if (simEntry.getKey().getNama().equals(sim.getNama())) {
-                            System.out.println("Tidak bisa memindahkan sim ke posisi tersebut karena sim sudah berada di titik tersebut.");
+                            System.out.println(
+                                    "Tidak bisa memindahkan sim ke posisi tersebut karena sim sudah berada di titik tersebut.");
                             return;
-                        }
-                        else {
-                            System.out.println("Tidak bisa memindahkan sim ke posisi tersebut karena sudah ada sim lain.");
+                        } else {
+                            System.out.println(
+                                    "Tidak bisa memindahkan sim ke posisi tersebut karena sudah ada sim lain.");
                             return;
                         }
                     }
                 }
-                
+
                 putSim(sim, targetPosition);
 
                 // Print success message
@@ -480,7 +495,8 @@ public class Ruangan {
                 for (Map.Entry<Furniture, List<Point>> furnitureEntry : daftarFurniture.entrySet()) {
                     if (furnitureClass.isInstance(furnitureEntry.getKey())) {
                         for (Point point : furnitureEntry.getValue()) {
-                            if ((point.getX() == simEntry.getValue().getX()) && (point.getY() == simEntry.getValue().getY())) { // point.equals(simEntry.getValue())
+                            if ((point.getX() == simEntry.getValue().getX())
+                                    && (point.getY() == simEntry.getValue().getY())) { // point.equals(simEntry.getValue())
                                 return true;
                             }
                         }

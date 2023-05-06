@@ -116,6 +116,9 @@ public abstract class Stove extends Furniture {
                         sim.decrementBeliBarangTime();
                         sim.decrementUpgradeRumahTime();
                         sim.setPekerjaanBaru();
+                        if (sim.getIsMakan()) {
+                            sim.incrementWaktuSetelahMakan();
+                        }
                         if (tempDay != Time.getInstance().getCurrentDay()) {
                             sim.setIsTidur(false);
                             sim.setLamaTidakTidur(0);
@@ -126,6 +129,13 @@ public abstract class Stove extends Furniture {
                         e.printStackTrace();
                     }
                     counter++;
+                }
+                if (sim.getWaktuSetelahMakan() >= 240) {
+                    System.out.println(sim.getNama() + " belum buang air.");
+                    sim.setKesehatan(sim.getKesehatan() - 5);
+                    sim.setMood(sim.getMood() - 5);
+                    sim.setWaktuSetelahMakan(0);
+                    sim.setIsMakan(false);
                 }
                 int tidakTidur = sim.getLamaTidakTidur() / 600;
                 if (!sim.getIsTidur() && tidakTidur > lastTidakTidur) {

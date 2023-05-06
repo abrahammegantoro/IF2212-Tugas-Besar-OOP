@@ -34,6 +34,8 @@ public class Toilet extends Furniture{
                         return;
                     }
                 }
+                sim.setIsMakan(false);
+                sim.setWaktuSetelahMakan(0);
                 int tidakTidur = sim.getLamaTidakTidur() / 600;
                 if (!sim.getIsTidur() && tidakTidur > lastTidakTidur) {
                     System.out.println(sim.getNama() + " lelah karena tidak tidur.");
