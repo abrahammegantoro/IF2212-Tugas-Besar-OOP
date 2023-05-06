@@ -757,8 +757,4 @@ public class MainMenu {
             e.printStackTrace();
         }
     }
-
-    // public static void main(String[] args) {
-    // showGameMenu();
-    // }
 }

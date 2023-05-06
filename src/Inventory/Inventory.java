@@ -108,23 +108,4 @@ public class Inventory<T extends Item> { // T adalah tipe data yang akan digunak
             }
         }
     }
-
-    // Driver code
-    public static void main(String[] args) {
-        Inventory<Item> inventory = new Inventory<>();
-        Masakan nasiAyam = new Masakan("Nasi Ayam", 16);
-        Masakan nasiKari = new Masakan("Nasi Kari", 30);
-        Masakan nasiKari2 = new Masakan("Nasi Kari", 30);
-
-        try {
-            inventory.addItem(nasiAyam, 1);
-            inventory.addItem(nasiKari, 15);
-            inventory.addItem(nasiKari2, 21);
-            inventory.showInventory();
-
-            System.out.println("\nKekenyangan Nasi Ayam : " + nasiAyam.getKekenyangan());
-        } catch (IllegalArgumentException e) {
-            System.out.println("Terjadi kesalahan: " + e.getMessage());
-        }
-    }
 }

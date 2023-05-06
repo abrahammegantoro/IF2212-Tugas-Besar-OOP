@@ -62,6 +62,7 @@ public class MejaKursi extends Furniture {
                             durasi--;
                         }
                         int tidakTidur = sim.getLamaTidakTidur() / 600;
+                        sim.setIsMakan(true);
                         if (!sim.getIsTidur() && tidakTidur > lastTidakTidur) {
                             System.out.println(sim.getNama() + " lelah karena tidak tidur.");
                             sim.setKesehatan(sim.getKesehatan() - 5);

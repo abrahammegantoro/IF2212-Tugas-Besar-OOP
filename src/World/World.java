@@ -202,22 +202,4 @@ public class World {
         }
         return false;
     }
-
-    // driver world
-    // public static void main(String[] args) {
-    // World world = new World();
-    // Point point = new Point(0, 0);
-    // Sim sim = new Sim("Sim1");
-    // world.addSim(sim);
-    // world.addRumah(sim, new Point(0, 0));
-
-    // Sim sim2 = new Sim("Sim2");
-    // world.addSim(sim2);
-    // world.addRumah(sim2, new Point(0, 0));
-
-    // // print daftar sim
-    // for (Sim s : world.getDaftarSim()) {
-    // System.out.println(s.getNama());
-    // }
-    // }
 }
